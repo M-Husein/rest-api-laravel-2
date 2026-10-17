@@ -7,8 +7,8 @@
   "license": "MIT",
   "require": {
     "php": "^8.3",
-    "dedoc/scramble": "^0.13.26",
-    "laravel/framework": "^13.0",
+    "dedoc/scramble": "^0.13.48",
+    "laravel/framework": "^13.37",
     "laravel/sanctum": "^4.0",
     "laravel/socialite": "^5.27",
     "laravel/tinker": "^3.0",
@@ -21,10 +21,10 @@
     "fakerphp/faker": "^1.23",
     "laravel/pail": "^1.2.2",
     "laravel/pint": "^1.24",
-    "laravel/sail": "^1.41",
+    "laravel/sail": "^1.69",
     "mockery/mockery": "^1.6",
     "nunomaduro/collision": "^8.6",
-    "phpunit/phpunit": "^12.0"
+    "phpunit/phpunit": "^12.5"
   },
   "autoload": {
     "psr-4": {

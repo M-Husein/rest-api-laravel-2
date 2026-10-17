@@ -15,8 +15,8 @@ export default defineConfig({
         'resources/ts/main.tsx',
         // 'resources/ts/admin.tsx'
       ],
-      // buildDirectory: 'build', // outputs to public/build
 			refresh: true,
+      // buildDirectory: 'build', // outputs to public/build
 		}),
     // ViteMinifyPlugin({
     //   // You can pass options to html-minifier-terser here if needed
