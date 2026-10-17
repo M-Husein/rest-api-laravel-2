@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useGetIdentity } from "@refinedev/core";
-import { useDocumentTitle } from "@/utils/hooks/useDocumentTitle";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { Avatar, Card, Tabs } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { ProfileInfoSection } from "./parts/ProfileInfoSection";
@@ -11,7 +11,7 @@ import { SessionsSection } from "./parts/SessionsSection";
 import { TokensSection } from "./parts/TokensSection";
 
 export default function Page(){
-  useDocumentTitle('Settings • ' + APP.name);
+  useDocumentTitle('Settings');
 
   const { data: identity, refetch } = useGetIdentity<any>();
   // console.log('identity:', identity);

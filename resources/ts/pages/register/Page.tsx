@@ -11,7 +11,7 @@ import { Layout } from '@/components/layout/auth/Layout';
 import { Form } from '@/components/forms/Form';
 import { Field } from '@/components/forms/Field';
 import { socialsProvider } from '@/providers/socialsProvider';
-import { useSocialAuth } from '@/utils/hooks/useSocialAuth';
+import { useSocialAuth } from '@/hooks/useSocialAuth';
 
 type IFormValues = {
   name: string;

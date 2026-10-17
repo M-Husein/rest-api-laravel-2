@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 /**
  * A hook that manages the document title.
@@ -16,19 +16,14 @@ import { useState, useEffect, useCallback } from "react";
  * // Update on a button click
  * <button onClick={() => setTitle("New Title")}>Change</button>
  */
-export const useDocumentTitle = (initialTitle?: string) => {
+export const useDocumentTitle = (initialTitle?: string, separator = " • ") => {
   const [title, setTitleState] = useState<string | undefined>(initialTitle);
 
   useEffect(() => {
-    // title != null
-    if (typeof title === 'string' && title.trim().length > 0) { 
-      document.title = title;
+    if (typeof title === 'string' && title.trim()) {
+      document.title = separator ? title + separator + APP.name : title;
     }
-  }, [title]);
+  }, [title, separator]);
 
-  const setTitle = useCallback((newTitle: string) => {
-    setTitleState(newTitle);
-  }, []);
-
-  return setTitle;
+  return setTitleState;
 };

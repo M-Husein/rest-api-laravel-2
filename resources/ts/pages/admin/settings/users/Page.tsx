@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDocumentTitle } from "@/utils/hooks/useDocumentTitle";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import type { TableColumnsType } from 'antd';
 import { Button, Modal } from 'antd';
 // import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -285,7 +285,7 @@ const Content = ({ title }: { title: string }) => {
 export default function Page() {
   const TITLE_PAGE = "Users";
   
-  useDocumentTitle(TITLE_PAGE + " • " + APP.name);
+  useDocumentTitle(TITLE_PAGE);
 
   const { data: accessControl } = useCan({
     resource: "users",

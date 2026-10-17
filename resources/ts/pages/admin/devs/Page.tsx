@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDocumentTitle } from "@/utils/hooks/useDocumentTitle";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useGetIdentity } from "@refinedev/core";
 import { 
   Anchor, Col, Row, 
@@ -12,7 +12,7 @@ import {
 import { updateUser } from '@/utils/user';
 
 export default function Page(){
-  useDocumentTitle("Devs • " + APP.name);
+  useDocumentTitle("Devs");
 
   const identity = useGetIdentity(); // { data: identity }
   // console.log('identity:', identity);

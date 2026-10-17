@@ -6,7 +6,7 @@ import { UserOutlined } from '@ant-design/icons'; // , MoonFilled, SunFilled, Se
 // import { NavLink } from "react-router"; // useLocation,
 // import { NavLink } from "@/components/router";
 import { LanguageMenu } from '@/components/LanguageMenu';
-import { useLogoutAlert } from '@/utils/hooks/useLogoutAlert';
+import { useLogoutAlert } from '@/hooks/useLogoutAlert';
 
 const overlayStyle = {
   left: 'auto',
