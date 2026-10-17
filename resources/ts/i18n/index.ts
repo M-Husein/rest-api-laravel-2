@@ -2,10 +2,10 @@ import i18n from 'i18next';
 import { initReactI18next } from "react-i18next";
 import { i18nBackend } from './i18nBackend';
 import { zodConfig } from './validation';
-import { getCurrentLang } from './url';
+import { zoneStrategy } from './factory';
 
 const defaultNS = 'common';
-const currentLang = getCurrentLang() || APP.defaultLang;
+const currentLang = zoneStrategy().getCurrent() || APP.defaultLang;
 
 document.documentElement.lang = currentLang;
 

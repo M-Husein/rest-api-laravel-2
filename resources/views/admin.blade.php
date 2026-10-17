@@ -42,6 +42,7 @@ const APP=Object.freeze({
   timeout:{{ config('app.timeout') }},
   defaultLang:"{{ config('app.fallback_locale') }}",
   locales:@json(config('localizer.locales')),
+  strategy:"user",
   csp:"{{$csp}}"
 });
 window.__APP__={

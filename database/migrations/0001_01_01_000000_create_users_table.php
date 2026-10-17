@@ -60,9 +60,9 @@ return new class extends Migration{
       $table->string('avatar', 255)->nullable();
 
       /**
-       * Option: For language code
+       * Option: For app language code
        */
-      // $table->string('lang', 10)->nullable();
+      $table->string('lang', 10)->nullable();
 
       /**
        * Option: For theme light or dark

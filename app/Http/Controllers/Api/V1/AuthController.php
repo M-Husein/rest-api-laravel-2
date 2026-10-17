@@ -61,6 +61,20 @@ class AuthController extends Controller{
   }
 
   /**
+   * Update authenticated user's language preference.
+   */
+  public function updateLanguage(Request $request){
+    $user = $request->user();
+    $validated = $request->validate([
+      'lang' => 'required|string|in:' . implode(',', config('localizer.supported_locales'))
+    ]);
+
+    $user->update(['lang' => $validated['lang']]);
+
+    return jsonSuccess($user->fresh());
+  }
+
+  /**
    * for social-registered users with no password
    */
   public function setPassword(Request $request){
