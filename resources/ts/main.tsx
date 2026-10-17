@@ -4,7 +4,6 @@ import { App } from "./App";
 import './i18n'; // locale
 import { getDeviceId } from '@/utils/browser';
 
-// import "@refinedev/antd/dist/reset.css";
 import "./style/style.scss";
 
 getDeviceId();
