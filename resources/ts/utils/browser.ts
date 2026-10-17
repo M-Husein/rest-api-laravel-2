@@ -237,37 +237,6 @@ export const getQueryParam = (key?: string) => {
   return key ? query.get(key) : query;
 };
 
-// export const getCurrentLang = () => 
-//   getQueryParam('lang') || localStorage.getItem("i18nextLng") || APP.defaultLang;
-
-export const localeRegex = new RegExp(`^\\/(${Object.keys(APP.locales).join('|')})(?=\\/|$)`);
-
-export const getCurrentLang = (withAdmin: boolean = false) => {
-  const currentPath = window.location.pathname;
-
-  if(!currentPath.startsWith('/app')){
-    return currentPath.match(localeRegex)?.[1] || "";
-  }
-
-  if(withAdmin) return "";
-
-  return localStorage.getItem("i18nextLng") || ""; // || APP.defaultLang
-};
-
-export const changeUrlLang = (lang: string, currentPath: string) => {
-  // Reload binds new Laravel localization headers
-  // window.location.replace(currentPath.match(localeRegex) 
-  //   ? currentPath.replace(localeRegex, "/" + lang)
-  //   : "/" + lang + currentPath
-  // );
-
-  window.location.replace(
-    currentPath.match(localeRegex) 
-      ? currentPath.replace(localeRegex, lang !== APP.defaultLang ? "/" + lang : "")
-      : "/" + lang + currentPath
-  );
-};
-
 export const getMeta = async () => {
   /**
    * Optimize referrer to save database bytes and ensure privacy compliance

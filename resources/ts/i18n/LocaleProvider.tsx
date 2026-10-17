@@ -6,7 +6,7 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import type { Locale } from "antd/es/locale";
-import { loadLocale } from "@/utils/locale/loadLocale";
+import { loadLocale } from "./loadLocale";
 
 interface LocaleContextValue {
   antdLocale?: Locale;

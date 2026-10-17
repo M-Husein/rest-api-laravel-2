@@ -1,6 +1,6 @@
 import ky, { isHTTPError } from 'ky';
 import { getCsrfToken } from '@/utils/authToken';
-import { getCurrentLang } from "@/utils/browser";
+import { zoneStrategy } from "@/i18n/factory";
 
 const MUTATING_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
 
@@ -68,7 +68,7 @@ export const api = ky.create({
         /**
          * Attach Accept-Language header from i18n setting.
          */
-        request.headers.set('Accept-Language', getCurrentLang() || APP.defaultLang);
+        request.headers.set('Accept-Language', zoneStrategy().getRequestHeaders()['Accept-Language']);
       }
     ],
     beforeError: [

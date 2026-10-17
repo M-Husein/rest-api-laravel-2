@@ -7,7 +7,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { useLocation, NavLink } from 'react-router';
 // import { NavLink, A } from '@/components/router';
 import { Img } from '@/components/Img';
-import { LanguageMenu } from '@/components/LanguageMenu';
+import { LanguageMenu } from '@/i18n';
 // import { getAvatarUrl } from '@/utils/user';
 // import { getCurrentLang } from '@/utils/browser';
 
