@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDocumentTitle } from "@/utils/hooks/useDocumentTitle";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { useParsed, useNotification } from "@refinedev/core"; // useCreate, HttpError, useOne
 import { useNavigate } from "react-router";
 // import { Card, Button } from 'antd';
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 const title = "Verification"; // Email Verification
 
 export default function Page(){
-  useDocumentTitle(title + " • " + APP.name);
+  useDocumentTitle(title);
 
   const { params: { status } } = useParsed<any>();
   // const { mutate, isPending } = useCreate();

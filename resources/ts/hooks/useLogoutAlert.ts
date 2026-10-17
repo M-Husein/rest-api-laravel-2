@@ -9,10 +9,8 @@ export const useLogoutAlert = (modalApi: any) => {
   // const [modalApi, modalContextHolder] = Modal.useModal();
 
   useEffect(() => {
-    const onMessage = (e: any) => {
-      // console.log('e:', e);
-      // console.log('location.href:', location.href);
-      if(e.data.type === "LOGOUT"){
+    const onMessage = (evt: any) => {
+      if(evt.data.type === "LOGOUT"){
         clearUser();
         toggleInert(true);
         

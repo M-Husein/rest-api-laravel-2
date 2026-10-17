@@ -29,8 +29,8 @@ export const useSocialAuth = (options: UseSocialAuthOptions = {}) => {
     setPopupOpen(provider);
 
     try{
-      const fetchOptions: any = { method: 'POST' };
-      const uaData = (navigator as any).userAgentData;
+      let fetchOptions: any = { method: 'POST' };
+      let uaData = (navigator as any).userAgentData;
       if(uaData){
         fetchOptions.json = { uad: uaData.toJSON() };
       }
@@ -92,12 +92,10 @@ export const useSocialAuth = (options: UseSocialAuthOptions = {}) => {
         if(options.onSuccess){
           options.onSuccess();
         }else{
-          const windowLocation = window.location;
-          if (windowLocation.pathname !== '/') {
-            windowLocation.replace('/');
-          } else {
-            windowLocation.reload();
-          }
+          let windowLocation = window.location;
+          windowLocation.pathname !== '/'
+            ? windowLocation.replace('/')
+            : windowLocation.reload();
         }
       };
 

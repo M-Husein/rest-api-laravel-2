@@ -33,7 +33,6 @@ export default defineConfig({
   },
   server: {
     // port: 5175,
-    // host: true,
     host: '127.0.0.1', // ✅ Force IPv4
     hmr: {
       host: 'localhost', // ✅ Prevent [::] fallback

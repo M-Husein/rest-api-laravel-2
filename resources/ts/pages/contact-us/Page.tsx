@@ -1,5 +1,5 @@
 // import { useEffect } from "react";
-import { useDocumentTitle } from "@/utils/hooks/useDocumentTitle"; // "@refinedev/react-router"
+import { useDocumentTitle } from "@/hooks/useDocumentTitle"; // "@refinedev/react-router"
 import { HttpError, useList } from "@refinedev/core";
 import { Card } from 'antd'; // , Button
 import { useTranslation } from 'react-i18next';
@@ -31,7 +31,7 @@ export default function Page(){
   const { t } = useTranslation([ns]);
 
   const titlePage = t('title', ns); // , "Contact Us"
-  useDocumentTitle(titlePage + " • " + APP.name);
+  useDocumentTitle(titlePage);
 
   const {
     result: dataContacts,

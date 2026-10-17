@@ -1,12 +1,12 @@
 import { Card, Col } from "antd";
 import { Link } from 'react-router';
-import { useDocumentTitle } from "@/utils/hooks/useDocumentTitle";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 
 export const Layout = ({
   title,
   form,
 }: any) => {
-  useDocumentTitle(title + " • " + APP.name);
+  useDocumentTitle(title);
 
   return (
     <div className="flex min-h-fullscreen p-4 bg-gray-200 bg-theme">

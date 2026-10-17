@@ -3,7 +3,7 @@ import { useList, useDelete, useInvalidate } from "@refinedev/core";
 import { Button, Popconfirm, Tag } from "antd";
 import { DisconnectOutlined, LinkOutlined } from "@ant-design/icons";
 import { socialsProvider } from "@/providers/socialsProvider";
-import { useSocialAuth } from "@/utils/hooks/useSocialAuth";
+import { useSocialAuth } from "@/hooks/useSocialAuth";
 
 type LinkedProvider = {
   provider: string;

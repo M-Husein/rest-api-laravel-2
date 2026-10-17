@@ -45,8 +45,6 @@ export const Field = ({
   
   // RHF's get helper safely parses dot-notation paths like "posts.0.title"
   const fixError = get(error, name);
-  // const fixError = error?.[name]; //  || error
-  // const fixError = error?.[name] as FieldError | undefined;
 
   // console.log({ fixError, error });
 

@@ -1,6 +1,6 @@
 import { useGetIdentity } from "@refinedev/core";
 import { Layout as AntLayout, Modal } from 'antd';
-import { useLogoutAlert } from '@/utils/hooks/useLogoutAlert';
+import { useLogoutAlert } from '@/hooks/useLogoutAlert';
 import { Nav } from './Nav';
 
 export const Layout = ({

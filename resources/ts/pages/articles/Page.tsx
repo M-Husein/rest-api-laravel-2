@@ -1,5 +1,5 @@
 // import { useEffect } from "react";
-import { useDocumentTitle } from "@/utils/hooks/useDocumentTitle";
+import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import { HttpError, useInfiniteList } from "@refinedev/core";
 import { Card, Button } from 'antd';
 // import { useTranslation } from 'react-i18next';
@@ -18,7 +18,7 @@ export default function Page(){
   // const { t } = useTranslation([ns]);
 
   const titlePage = "Articles"; // t('title', ns); // , "Contact Us"
-  useDocumentTitle(titlePage + " • " + APP.name);
+  useDocumentTitle(titlePage);
 
   const {
     result: { data: dataArticles, hasNextPage }, // , hasPreviousPage
