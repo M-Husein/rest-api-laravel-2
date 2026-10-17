@@ -105,7 +105,8 @@ Route::prefix('v1')->group(function(){
     // 2. Admin Dashboard Management (Strictly GET and DELETE)
     Route::delete('login-histories/delete', [LoginHistoriesController::class, 'destroyMany'])
       ->middleware('role:Admin');
-    Route::apiResource('login-histories', LoginHistoriesController::class)->except(['store','update'])
+    Route::apiResource('login-histories', LoginHistoriesController::class)
+      ->except(['store','update'])
       ->middleware('role:Admin');
 
     Route::post('clear-cache', ClearCacheController::class)

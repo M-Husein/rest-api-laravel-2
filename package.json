@@ -25,35 +25,35 @@
     "@refinedev/react-router": "^2.0.0",
     "@refinedev/rest": "^2.1.0",
     "@uiw/react-md-editor": "^4.0.8",
-    "antd": "^6.4.3",
+    "antd": "^6.6.6",
     "antd-img-crop": "^4.30.0",
     "bowser": "^2.14.1",
-    "i18next": "^26.0.4",
+    "i18next": "^26.4.7",
     "js-cookie": "^3.0.5",
-    "ky": "^2.0.0",
+    "ky": "^2.2.0",
     "q-js-utils": "^1.3.7",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "react-error-boundary": "^6.1.1",
-    "react-i18next": "^17.0.2",
+    "react-i18next": "^17.0.20",
     "react-icons": "^5.6.0",
     "react-router": "^7.0.2",
-    "zod": "^4.3.6"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@eslint/js": "^10",
     "@types/js-cookie": "^3.0.6",
-    "@types/lodash": "^4.17.24",
-    "@types/node": "^22",
+    "@types/lodash": "^4.17.26",
+    "@types/node": "^22.20.5",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "@vitejs/plugin-react-swc": "^4.3.0",
     "autoprefixer": "^10.4.27",
-    "concurrently": "^10",
-    "eslint": "^10",
+    "concurrently": "^10.0.6",
+    "eslint": "^10.13.0",
     "eslint-plugin-react-hooks": "^7",
     "eslint-plugin-react-refresh": "^0.5",
-    "globals": "^17",
+    "globals": "^17.13.0",
     "laravel-vite-plugin": "^3.0.1",
     "postcss": "^8.5.9",
     "postcss-replace": "^2.0.1",
@@ -61,11 +61,11 @@
     "tailwindcss": "3.4.19",
     "terser": "^5.46.1",
     "typescript": "^6",
-    "typescript-eslint": "^8.70.1",
-    "vite": "^8.0.8",
+    "typescript-eslint": "^8.71.2",
+    "vite": "^8.3.4",
     "vite-plugin-minify": "^3.0.0",
     "vite-plugin-mkcert": "^2.0.0",
-    "vite-plugin-pwa": "^1.2.0"
+    "vite-plugin-pwa": "^2.0.0"
   },
   "browserslist": {
     "production": [
@@ -79,11 +79,11 @@
       "last 1 safari version"
     ]
   },
-  "refine": {
-    "projectId": "dzXM4T-OlrABy-k1H0rJ"
-  },
   "trustedDependencies": [
     "@parcel/watcher",
     "@swc/core"
-  ]
+  ],
+  "refine": {
+    "projectId": "dzXM4T-OlrABy-k1H0rJ"
+  }
 }
