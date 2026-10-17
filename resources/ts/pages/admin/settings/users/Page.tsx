@@ -4,7 +4,7 @@ import type { TableColumnsType } from 'antd';
 import { Button, Modal } from 'antd';
 // import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useGetIdentity, useCan, useTranslate, useDelete, useDeleteMany } from "@refinedev/core";
-import { useTable, getDefaultSortOrder } from "@refinedev/antd";
+import { useTable, getDefaultSortOrder } from "@/utils/core";
 import { useSearchParams, Link } from "react-router";
 import dayjs from 'dayjs';
 import { ButtonReload } from '@/components/ButtonReload';
@@ -49,6 +49,8 @@ const Content = ({ title }: { title: string }) => {
       select: 'name,email,username,created_at,email_verified_at'
     },
   });
+
+  // console.log({ tableProps });
   
   const loadingProcess = mutationDelete.isPending || mutationDeleteMany.isPending;
 

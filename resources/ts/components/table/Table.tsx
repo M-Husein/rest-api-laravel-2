@@ -1,35 +1,35 @@
-import { Table as AntTable } from 'antd';
+import { Table as AntTable } from "antd";
+import type { TableProps as AntTableProps } from "antd";
+
+export type TableProps<T = any> = AntTableProps<T>;
 
 /**
- * @props pagination Object
- * @props ...etc antd Table props
- * @returns antd Table component
- * 
- * @DOCS : https://ant.design/components/table
+ * antd Table with project defaults:
+ * - size: "small"
+ * - rowKey: "id"
+ * - pagination: showSizeChanger + "x-y of N items" summary (or disabled when `pagination` is falsy)
+ *
+ * Consumer props win over the defaults, and an explicit `pagination` prop wins
+ * over the injected `showSizeChanger`/`showTotal` (see the trailing spread).
+ *
+ * @docs https://ant.design/components/table
  */
-export const Table = ({
+export const Table = <T = any>({
   pagination,
   ...etc
-}: any) => (
+}: TableProps<T>) => (
   <AntTable
     size="small"
     rowKey="id"
-
     {...etc}
-    
-    // pagination={fixPagination()}
     pagination={
-      pagination ? {
-        showSizeChanger: true,
-        showTotal: (total: any, [range1, range2]: any) => `${range1}-${range2} of ${total} items`,
-        ...pagination,
-        placement: pagination.position || pagination.placement,
-        // Temporary to prevent console in browser
-        position: void 0,
-        // position: ["bottomCenter"], // default = bottomRight
-      }
-      : 
-      false
+      pagination
+        ? {
+            showSizeChanger: true,
+            showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+            ...pagination,
+          }
+        : false
     }
   />
 );
