@@ -18,28 +18,6 @@ export const loadLocale = async (
       return antdLocale.default;
     }
 
-    // case "ja": {
-    //   const [antdLocale] = await Promise.all([
-    //     import("antd/es/locale/ja_JP"),
-    //     import("dayjs/locale/ja"),
-    //   ]);
-
-    //   dayjs.locale("ja");
-
-    //   return antdLocale.default;
-    // }
-
-    // case "zh": {
-    //   const [antdLocale] = await Promise.all([
-    //     import("antd/es/locale/zh_CN"),
-    //     import("dayjs/locale/zh-cn"),
-    //   ]);
-
-    //   dayjs.locale("zh-cn");
-
-    //   return antdLocale.default;
-    // }
-
     case "en":
     default: {
       const [antdLocale] = await Promise.all([

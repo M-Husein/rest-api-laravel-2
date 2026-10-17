@@ -13,7 +13,7 @@ export default defineConfig({
 			input: [
         'resources/css/app.scss', 
         'resources/ts/main.tsx',
-        // 'resources/ts/admin.tsx'
+        'resources/ts/admin.tsx'
       ],
 			refresh: true,
       // buildDirectory: 'build', // outputs to public/build

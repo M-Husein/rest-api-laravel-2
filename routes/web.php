@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\SpaController;
+use App\Http\Middleware\SetUserLang;
 use App\Http\Controllers\Api\V1\{
   AuthSpaController,
   SocialAuthController
@@ -58,4 +59,4 @@ Route::get('email/verify/{id}/{hash}', [AuthSpaController::class, 'verifyEmail']
 // Admin dashboard
 Route::get('app/{any?}', [SpaController::class, 'dashboard'])
   ->where('any', '.*')
-  ->middleware(['auth','role:Admin']);
+  ->middleware(['auth','role:Admin',SetUserLang::class]);

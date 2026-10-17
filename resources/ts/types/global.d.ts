@@ -6,6 +6,7 @@ interface AppConfig {
   locales: {
     [key: string]: string
   },
+  strategy: 'pathname' | 'query' | 'user' | 'storage',
   csp: string,
   // socials: string[],
 }

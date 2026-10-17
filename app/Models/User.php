@@ -35,9 +35,9 @@ class User extends Authenticatable implements MustVerifyEmail{
     'bio',
     'email_verified_at',
     'phone_verified_at',
-    'pending_email'
+    'pending_email',
     // 'role',
-    // 'lang',
+    'lang',
   ];
 
   /**

@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\SetUserLang;
 use App\Http\Controllers\Api\V1\{
   AuthController,
   AuthSpaController,
@@ -58,9 +59,10 @@ Route::prefix('v1')->group(function(){
     Route::post('reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:sensitive');
   });
 
-  Route::middleware('auth:sanctum')->group(function(){
+  Route::middleware(['auth:sanctum', SetUserLang::class])->group(function(){
     Route::get('me', [AuthController::class, 'me']);
     Route::put('me', [AuthController::class, 'updateUser']);
+    Route::put('me/language', [AuthController::class, 'updateLanguage']);
 
     // Set Password — for social-registered users with no password
     Route::post('me/password', [AuthController::class, 'setPassword']);

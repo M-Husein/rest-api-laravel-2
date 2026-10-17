@@ -1,6 +1,6 @@
 import { useNavigate as useNav, NavigateOptions, To } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { setLangToUrl } from '@/utils/setLangToUrl';
+import { zoneStrategy } from '@/i18n/factory';
 
 export const useNavigate = () => {
   const navigate = useNav();
@@ -8,7 +8,7 @@ export const useNavigate = () => {
   // const lang = i18n.language;
 
   return (to: To, options?: NavigateOptions) => {
-    const target = setLangToUrl(to, i18n.language);
+    const target = zoneStrategy().localizeHref(to, i18n.language);
     navigate(target, options);
   };
 };

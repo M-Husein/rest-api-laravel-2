@@ -5,7 +5,7 @@ import { Layout, Dropdown, Button, Avatar, Modal } from "antd"; // Switch, Badge
 import { UserOutlined } from '@ant-design/icons'; // , MoonFilled, SunFilled, SettingOutlined
 // import { NavLink } from "react-router"; // useLocation,
 // import { NavLink } from "@/components/router";
-import { LanguageMenu } from '@/components/LanguageMenu';
+import { LanguageMenu } from '@/i18n';
 import { useLogoutAlert } from '@/hooks/useLogoutAlert';
 
 const overlayStyle = {
