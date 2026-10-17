@@ -136,19 +136,26 @@ export const Sider = ({
             action="list"
             params={{ resource: item }}
           >
-            <NavLink
-              to={route ?? ""}
-              // to={{
-              //   pathname: route ?? "",
-              //   search: i18n.language !== APP.defaultLang ? `lang=${i18n.language}` : void 0
-              // }}
-              // style={isActiveLink}
-              tabIndex={isSelected || disabled ? -1 : void 0}
-              title={!isMobile && !siderCollapsed ? label : void 0}
-              onClick={clickLink(isSelected)}
-            >
-              {label}
-            </NavLink>
+            {meta?.external ? (
+              <a
+                href={route ?? ""}
+                rel="nofollow noreferrer"
+                tabIndex={isSelected || disabled ? -1 : void 0}
+                title={!isMobile && !siderCollapsed ? label : void 0}
+                onClick={clickLink(isSelected)}
+              >
+                {label}
+              </a>
+            ) : (
+              <NavLink
+                to={route ?? ""}
+                tabIndex={isSelected || disabled ? -1 : void 0}
+                title={!isMobile && !siderCollapsed ? label : void 0}
+                onClick={clickLink(isSelected)}
+              >
+                {label}
+              </NavLink>
+            )}
             {!siderCollapsed && isSelected && <div className="a-menu-tree-arrow" />}
           </CanAccess>
         )

@@ -51,8 +51,8 @@ window.__APP__={
 };
 </script>
 @viteReactRefresh
-@vite(['resources/css/app.scss','resources/ts/main.tsx'])
-{{-- @vite(['resources/css/app.scss','resources/ts/admin.tsx']) --}}
+@vite(['resources/css/app.scss','resources/ts/admin.tsx'])
+{{-- @vite(['resources/css/app.scss','resources/ts/main.tsx']) --}}
 </head>
 <body class="antialiased min-h-fullscreen bg-main admin">
   <div id="loaderApp" data-nosnippet>

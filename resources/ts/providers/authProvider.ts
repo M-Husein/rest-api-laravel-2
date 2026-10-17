@@ -13,6 +13,20 @@ import i18n from "@/i18n";
 
 let authCheckPromise: Promise<any> | null | undefined;
 
+const isAdminZone = () => window.location.pathname.startsWith('/app');
+
+/**
+ * Public routes (/login, /403, ...) live in a separate router/bundle.
+ * From the admin zone we must leave the SPA and hard-reload into it.
+ */
+const publicRedirect = (path: string): { redirectTo?: string } => {
+  if (isAdminZone()) {
+    window.location.replace(path);
+    return {};
+  }
+  return { redirectTo: path };
+};
+
 export const authProvider: AuthProvider = {
   register: async ({ ...json }) => {
     const errorResponse = {
@@ -177,7 +191,7 @@ export const authProvider: AuthProvider = {
 
       return {
         success: true,
-        redirectTo: '/login',
+        ...publicRedirect('/login'),
       };
 
     } catch(err: any) {
@@ -188,7 +202,7 @@ export const authProvider: AuthProvider = {
         // window.location.replace('/login');
         return {
           success: true,
-          redirectTo: '/login',
+          ...publicRedirect('/login'),
         };
       }
 
@@ -248,7 +262,7 @@ export const authProvider: AuthProvider = {
         return {
           authenticated: false,
           logout: true,
-          redirectTo: '/login',
+          ...publicRedirect('/login'),
           error: {
             name: "Unauthorized",
             message: response?.message || i18n.t('error.check'),
@@ -270,7 +284,7 @@ export const authProvider: AuthProvider = {
 
           return {
             authenticated: false,
-            redirectTo: '/login',
+            ...publicRedirect('/login'),
             logout: true,
             error: {
               name: 'SessionExpired',
@@ -359,7 +373,7 @@ export const authProvider: AuthProvider = {
 
         return {
           logout: true,
-          redirectTo: '/login',
+          ...publicRedirect('/login'),
           error: {
             name: 'SessionExpired', // Unauthorized
             message: i18n.t('notifs.sessionExpired'),
