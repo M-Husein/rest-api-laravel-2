@@ -1,0 +1,15 @@
+{
+  "title": "Register",
+  "subtitle": "Let's get to know each other!",
+  "desc": "Already have an account",
+  "login": "Login",
+  "fields": {
+    "email": "Email",
+    "fullname": "Fullname",
+    "username": "Username",
+    "password": "Password"
+  },
+  "buttons": {
+    "submit": "Register"
+  }
+}

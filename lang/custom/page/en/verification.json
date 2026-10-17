@@ -1,0 +1,25 @@
+{
+  "title": "Account Verification",
+  "fields": {
+    "password": "New Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password"
+  },
+  "placeholder": {
+    "password": "Enter your new password",
+    "newPassword": "Enter your new password",
+    "confirmPassword": "Confirm your new password"
+  },
+  "errors": {
+    "successVerification": "Verification Successful",
+    "failedVerification": "Verification Failed",
+    "passwordMismatch": "Passwords don't match"
+  },
+  "buttons": {
+    "submit": "Verification"
+  },
+  "info": {
+    "success": "Please login using your account",
+    "failed": "There is an error"
+  }
+}

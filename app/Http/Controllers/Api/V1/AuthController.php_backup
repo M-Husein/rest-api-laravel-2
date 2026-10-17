@@ -1,0 +1,272 @@
+<?php
+namespace App\Http\Controllers\Api\V1;
+
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\RefreshToken;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Auth\Access\AuthorizationException;
+
+class AuthController extends Controller{
+  /**
+   * Token-based, requires verified email and password.
+   * Returns a plain text token that must be stored securely on the client.
+   */
+  public function login(Request $request){
+    $request->validate([
+      'email' => 'required|email',
+      'password' => 'required|string',
+      'device_name' => 'sometimes|string|max:255' // optional, for identifying the device
+    ]);
+
+    $user = User::where('email', $request->email)->first();
+
+    if(!$user || !Hash::check($request->password, $user->password)){
+      throw ValidationException::withMessages([
+        'email' => [__('auth.failed')],
+      ]);
+    }
+
+    if(!$user->hasVerifiedEmail()){
+      throw ValidationException::withMessages([
+        'email' => [__('verification.unverified')],
+      ]);
+    }
+
+    if(!$user->password){
+      throw ValidationException::withMessages([
+        'email' => [__('auth.no_password_set')],
+      ]);
+    }
+
+    $expire = config('sanctum.expiration');
+    $deviceName = $request->input('device_name', $request->userAgent() ?? 'unknown');
+    // $token = $user->createToken($deviceName)->plainTextToken;
+    $token = $user->createToken(
+      $deviceName,
+      ['*'],
+      now()->addMinutes($expire)
+    )->plainTextToken;
+
+    // Generate refresh token
+    $rtExpire = config('sanctum.rt_expiration');
+    $refreshToken = RefreshToken::generateToken($user->id, $deviceName, $rtExpire);
+
+    // Set refresh token as HttpOnly cookie (recommended)
+    $cookie = cookie(
+      'refresh_token',
+      $refreshToken->plainToken,
+      $rtExpire * 24 * 60, // Cookie must in minutes
+      '/',
+      null,
+      $request->secure(), // secure (HTTPS only in production)
+      true, // httpOnly
+      false,
+      'lax'
+    );
+
+    return jsonSuccess([
+      'user' => $user,
+      'token' => $token,
+      'expiresIn' => $expire * 60,
+    ])->withCookie($cookie);
+  }
+
+  /**
+   * Deletes the current access token (or all tokens).
+   */
+  public function logout(Request $request){
+    $user = $request->user();
+    // Delete current access token
+    $user->currentAccessToken()->delete();
+
+    // Delete refresh token from cookie
+    $refreshTokenPlain = $request->cookie('refresh_token');
+    if($refreshTokenPlain){
+      $hashed = hash('sha256', $refreshTokenPlain);
+      RefreshToken::where('token', $hashed)->where('user_id', $user->id)->delete();
+    }
+
+    // Clear the cookie
+    $cookie = cookie()->forget('refresh_token');
+    return jsonSuccess()->withCookie($cookie);
+  }
+
+  /**
+   * Get the authenticated user (works for both web and mobile).
+   */
+  public function me(Request $request){
+    $user = $request->user();
+    if($user){
+      return jsonSuccess($user);
+    }
+    return jsonError(__('auth.unauthenticated'), 401);
+  }
+
+  /**
+   * Send a password reset link to the given email.
+   */
+  public function forgotPassword(Request $request){
+    $request->validate([
+      'email' => 'required|email'
+    ]);
+
+    $status = Password::sendResetLink(
+      $request->only('email')
+    );
+
+    if($status === Password::RESET_LINK_SENT){
+      return jsonSuccess(); // null, __($status)
+    }
+
+    throw ValidationException::withMessages([
+      'email' => [__($status)]
+    ]);
+  }
+
+  /**
+   * Reset the user's password.
+   */
+  public function resetPassword(Request $request){
+    $request->validate([
+      'token' => 'required|string',
+      'email' => 'required|email',
+      'password' => 'required|string|min:6|confirmed'
+    ]);
+
+    $status = Password::reset(
+      $request->only('email', 'password', 'password_confirmation', 'token'),
+      function($user, $password){
+        $user->forceFill([
+          'password' => Hash::make($password),
+        ])->save();
+
+        // Optional: delete all user tokens after password reset
+        $user->tokens()->delete();
+      }
+    );
+
+    if($status === Password::PASSWORD_RESET){
+      return jsonSuccess(null, __($status));
+    }
+
+    throw ValidationException::withMessages([
+      'email' => [__($status)]
+    ]);
+  }
+
+  /**
+   * Send email verification notification.
+   * Requires authenticated user (must be logged in).
+   */
+  public function sendVerificationNotif(Request $request){
+    $user = $request->user();
+
+    if($user->hasVerifiedEmail()){
+      return jsonError(__('verification.already_verified'));
+    }
+
+    $user->sendEmailVerificationNotification();
+    return jsonSuccess(null, __('verification.link_sent'));
+  }
+
+  /**
+   * Verify email using signed URL.
+   */
+  public function verify(Request $request, $id, $hash){
+    $user = User::findOrFail($id);
+
+    if(!hash_equals((string) $hash, sha1($user->getEmailForVerification()))){
+      throw new AuthorizationException;
+    }
+
+    if($user->hasVerifiedEmail()){
+      return jsonError(__('verification.already_verified'));
+    }
+
+    if($user->markEmailAsVerified()){
+      event(new Verified($user));
+    }
+
+    return jsonSuccess(null, __('verification.verified'));
+  }
+
+  /**
+   * Check if the authenticated user's email is verified.
+   */
+  public function checkVerificationStatus(Request $request){
+    $user = $request->user();
+    return jsonSuccess([
+      'verified' => $user->hasVerifiedEmail(),
+      'email' => $user->email
+    ]);
+  }
+
+  /**
+   * Set or update password for authenticated user (social login users can set first password).
+   */
+  public function setPassword(Request $request){
+    $request->validate([
+      'password' => 'required|string|min:6|confirmed'
+    ]);
+
+    $user = $request->user();
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    return jsonSuccess(null, __('auth.password_set'));
+  }
+
+  /**
+   * Refresh access token using refresh token (from HttpOnly cookie).
+   */
+  public function refresh(Request $request){
+    $refreshTokenPlain = $request->cookie('refresh_token');
+    if(!$refreshTokenPlain){
+      return jsonError('Refresh token not provided.', 401);
+    }
+
+    $hashed = hash('sha256', $refreshTokenPlain);
+    $refreshToken = RefreshToken::valid()->where('token', $hashed)->first();
+
+    if(!$refreshToken){
+      return jsonError('Invalid or expired refresh token.', 401);
+    }
+
+    $user = $refreshToken->user;
+
+    // Revoke the old refresh token (one‑time use) – you can choose to rotate
+    $refreshToken->revoke();
+
+    // Create new access token (short‑lived)
+    $deviceName = $refreshToken->device_name ?? 'refreshed';
+    $accessToken = $user->createToken($deviceName)->plainTextToken;
+    $tokenModel = $user->tokens()->latest()->first();
+    $tokenModel->expires_at = now()->addMinutes(config('sanctum.expiration'));
+    $tokenModel->save();
+
+    // Generate a **new** refresh token (optional rotation for better security)
+    $rtExpire = config('sanctum.rt_expiration');
+    $newRefreshToken = RefreshToken::generateToken($user->id, $deviceName, $rtExpire);
+    $cookie = cookie(
+      'refresh_token',
+      $newRefreshToken->plainToken,
+      $rtExpire,
+      '/',
+      null,
+      true,
+      true,
+      false,
+      'lax'
+    );
+
+    return jsonSuccess([
+      'token' => $accessToken,
+      'expiresIn' => config('sanctum.expiration') * 60,
+    ])->withCookie($cookie);
+  }
+}

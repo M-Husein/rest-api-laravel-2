@@ -1,0 +1,147 @@
+:root {
+  --q-bg-main: #fff;
+  --q-bg-nav: #dbeafe;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  border: 0 solid #d9d9d9; // #e5e7eb;
+}
+
+html {
+  // scrollbar-width: thin;
+
+  /*
+    stable
+    Prevent unneeded layout changes as the content growing or shrinking 
+    causes the scrollbar to appear/disappear, a space is reserved for it.
+    
+    stable both-edges
+    Add symmetric spacing to both sides of the box so the content is centered.
+    
+    https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/scrollbar-gutter
+  */
+  scrollbar-gutter: stable;
+}
+
+body {
+  margin: 0;
+
+  /*
+    Use this when html scrollbar-gutter: stable | stable both-edges (check code above)
+    Because antd Modal open added html body { width: calc(100% - 15px) }
+  */
+  min-width: 100%;
+
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent; // rgba(0,0,0,0)
+  // font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';
+  // font-size: 14px;
+  // line-height: 1.5714285714285714;
+}
+
+// html.dark {
+//   color-scheme: dark;
+// }
+
+// .dark .bg-theme {
+//   background-color: #001529;
+// }
+
+label {
+  display: inline-block;
+}
+
+.bg-main {
+  background-color: var(--q-bg-main);
+}
+
+// Navbar main
+.bg-nav {
+  background-color: var(--q-bg-nav);
+}
+
+// :root.dark {
+//   --q-bg-main: #1f1f1f;
+//   --q-bg-nav: #1f1f1f;
+// }
+
+.txt-main {
+  color: #212529;
+}
+// .dark .txt-main {
+//   color: #fff;
+// }
+
+#loaderApp,
+.nojs {
+  display: grid;
+  place-content: center;
+  text-align: center;
+  // background-color: var(--q-bg-main);
+  background: var(--q-bg-main); // rgba(255, 255, 255, .7);
+}
+
+#loaderApp,
+#loaderApp img,
+.nojs {
+  position: fixed;
+  inset: 0;
+}
+
+#loaderApp {
+  z-index: 1055;
+  cursor: wait;
+  user-select: none;
+}
+
+#loaderApp img,
+.nojs a {
+  margin: auto;
+  font-weight: 700;
+}
+
+/* Option to hide next elements when show loader App. */
+#loaderApp:not([hidden]) ~ div {
+  interactivity: inert; //  !important
+  user-select: none;
+}
+
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.spin-border {
+  color: #1677ff;
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: -0.125em;
+  border: .25em solid currentcolor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: .75s linear infinite spin;
+}
+
+.spin-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: .2em;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .spin-border {
+    animation-duration: 1.5s;
+  }
+}

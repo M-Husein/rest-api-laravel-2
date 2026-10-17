@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+
+# Block internal admin panels and backend endpoints
+Disallow: /api
+Disallow: /api/*
+Disallow: /app
+Disallow: /app/*
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /auth
+Disallow: /auth/*
+Disallow: email/verify
+Disallow: email/verify/*
+Disallow: /verification
+Disallow: /reset-password
+Disallow: /settings
+Disallow: /settings/*
+
+# Block URL parameters if you have heavy filter query strings
+Disallow: /*?*sort=
+Disallow: /*?*filter=
+
+# Point crawlers to your sitemap
+# Sitemap: https://interact.com/sitemap.xml

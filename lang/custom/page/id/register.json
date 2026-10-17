@@ -1,0 +1,15 @@
+{
+  "title": "Daftar",
+  "subtitle": "Yuk kenalan!",
+  "desc": "Sudah punya akun",
+  "login": "Masuk",
+  "fields": {
+    "email": "Email",
+    "fullname": "Nama lengkap",
+    "username": "Nama Pengguna",
+    "password": "Password"
+  },
+  "buttons": {
+    "submit": "Daftar"
+  }
+}

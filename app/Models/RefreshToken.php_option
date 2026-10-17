@@ -1,0 +1,53 @@
+<?php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+
+class RefreshToken extends Model{
+  protected $fillable = [
+    'user_id',
+    'token',
+    'device_name',
+    'expires_at',
+    'revoked_at'
+  ];
+
+  protected $casts = [
+    'expires_at' => 'datetime',
+    'revoked_at' => 'datetime'
+  ];
+
+  // Generate a unique, hashed token
+  public static function generateToken(
+    int $userId, 
+    string $deviceName, 
+    int $days = 7
+  ): self{
+    $plainToken = Str::random(80);
+    $hashed = hash('sha256', $plainToken);
+
+    $refreshToken = self::create([
+      'user_id' => $userId,
+      'token' => $hashed,
+      'device_name' => $deviceName,
+      'expires_at' => now()->addDays($days)
+    ]);
+
+    // Return the model instance AND the plain token (to send to client)
+    $refreshToken->plainToken = $plainToken;
+    return $refreshToken;
+  }
+
+  // Scope for valid (not expired, not revoked)
+  public function scopeValid($query){
+    return $query->whereNull('revoked_at')
+                 ->where('expires_at', '>', now());
+  }
+
+  // Revoke the refresh token
+  public function revoke(){
+    $this->revoked_at = now();
+    $this->save();
+  }
+}

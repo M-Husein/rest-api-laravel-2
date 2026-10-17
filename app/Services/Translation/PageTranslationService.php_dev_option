@@ -1,0 +1,126 @@
+<?php
+namespace App\Services;
+
+use App\Models\PageTranslation;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Pagination\LengthAwarePaginator;
+// use Illuminate\Support\Facades\DB;
+
+class PageTranslationService{
+  /**
+   * Get paginated translations with optional filters.
+   */
+  public function getPaginated(array $filters = [], int $perPage = 10): LengthAwarePaginator{
+    $query = PageTranslation::query();
+    if(!empty($filters['name'])){
+      $query->where('name', $filters['name']);
+    }
+    if(!empty($filters['lang'])){
+      $query->where('lang', $filters['lang']);
+    }
+    return $query->paginate($perPage);
+  }
+
+  /**
+   * Create a new translation.
+   *
+   * @throws \RuntimeException If duplicate exists.
+   */
+  public function create(array $data): PageTranslation{
+    // Check duplicate
+    $exists = PageTranslation::where('name', $data['name'])
+      ->where('lang', $data['lang'])
+      ->exists();
+
+    if ($exists) {
+      throw new \RuntimeException('Duplicate entry for name and lang.');
+    }
+
+    try {
+      return PageTranslation::create($data);
+    } catch (QueryException $e) {
+      /** @var \Throwable $e */
+      $pdoException = $e->getPrevious();
+      if ($pdoException && $pdoException->errorInfo[1] == 1062) {
+        throw new \RuntimeException('Duplicate entry for name and lang.');
+      }
+      throw $e; // rethrow other DB errors
+    }
+  }
+
+  /**
+   * Find a translation by ID or throw exception.
+   *
+   * @throws ModelNotFoundException
+   */
+  public function findOrFail(int $id): PageTranslation{
+    return PageTranslation::query()->where('id', $id)->firstOrFail();
+  }
+
+  /**
+   * Update a translation.
+   *
+   * @throws ModelNotFoundException If translation not found.
+   * @throws \RuntimeException If duplicate conflict occurs.
+   */
+  public function update(int $id, array $data): PageTranslation{
+    $translation = $this->findOrFail($id);
+
+    // If name or lang is being changed, check for duplicates
+    $newName = $data['name'] ?? $translation->name;
+    $newLang = $data['lang'] ?? $translation->lang;
+
+    if ($newName !== $translation->name || $newLang !== $translation->lang) {
+      $exists = PageTranslation::query()
+        ->where('name', $newName)
+        ->where('lang', $newLang)
+        ->where('id', '<>', $id)
+        ->exists();
+
+      if ($exists) {
+        throw new \RuntimeException('Duplicate entry for name and lang.');
+      }
+    }
+
+    try {
+      $translation->update($data);
+      return $translation->fresh();
+    } catch (QueryException $e) {
+      /** @var \Throwable $e */
+      $pdoException = $e->getPrevious();
+      if ($pdoException && $pdoException->errorInfo[1] == 1062) {
+        throw new \RuntimeException('Duplicate entry for name and lang.');
+      }
+      throw $e;
+    }
+  }
+
+  /**
+   * Delete a translation by ID.
+   *
+   * @return bool True if deleted, false if not found.
+   */
+  public function delete(int $id): bool{
+    return PageTranslation::destroy($id) > 0;
+  }
+
+  /**
+   * Get translations for a specific page and language (frontend).
+   *
+   * @throws ModelNotFoundException If not found.
+   */
+  public function getByPageLang(string $name, string $lang): array{
+    $translation = PageTranslation::query()
+      ->where('name', $name)
+      ->where('lang', $lang)
+      ->first();
+
+    return $translation;
+
+    // if (!$translation) {
+    //   throw new ModelNotFoundException('Page translation not found.');
+    // }
+    // return $translation->text;
+  }
+}

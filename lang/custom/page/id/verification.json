@@ -1,0 +1,25 @@
+{
+  "title": "Verifikasi Akun",
+  "fields": {
+    "password": "New Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password"
+  },
+  "placeholder": {
+    "password": "Masukkan password baru",
+    "newPassword": "Masukkan password baru",
+    "confirmPassword": "Konfirmasi password baru"
+  },
+  "errors": {
+    "successVerification": "Verifikasi Berhasil",
+    "failedVerification": "Verifikasi Gagal",
+    "passwordMismatch": "Password tidak sama"
+  },
+  "buttons": {
+    "submit": "Verifikasi"
+  },
+  "info": {
+    "success": "Silahkan login menggunakan akun anda",
+    "failed": "Terjadi kesalahan"
+  }
+}

@@ -1,0 +1,13 @@
+import { useTranslation as useReacti18nTranslation } from 'react-i18next';
+// import i18n from "@/i18n";
+
+export const useTranslation = (nameSpace?: string, options?: any) => {
+  const ns = nameSpace || window.location.pathname.split('/').at(-1);
+  const translations = useReacti18nTranslation([ns], options);
+
+  return {
+    ns, 
+    // nsCommon: { ns: "common" }, 
+    ...translations
+  };
+};

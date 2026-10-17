@@ -1,0 +1,18 @@
+{
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "intelephense.environment.includePaths": [
+    "./vendor/laravel/framework"
+  ],
+  "intelephense.environment.documentRoot": "./public",
+  "intelephense.stubs": [
+    "laravel",
+    "phpunit",
+    "pest",
+    "wordpress"
+  ],
+  "intelephense.diagnostics.undefinedMethods": false,
+  "intelephense.diagnostics.undefinedFunctions": false,
+  "intelephense.diagnostics.undefinedTypes": false,
+  "intelephense.diagnostics.undefinedConstants": false
+}

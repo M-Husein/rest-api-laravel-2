@@ -1,0 +1,10 @@
+# Bun configuration (replaces .npmrc)
+# Docs: https://bun.sh/docs/runtime/bunfig
+
+[install]
+# Bun resolves peer dependencies leniently by default,
+# which is the equivalent of npm's legacy-peer-deps=true.
+# No extra flag is needed.
+
+# Uncomment to get a human-readable text lockfile alongside bun.lock:
+# saveTextLockfile = true

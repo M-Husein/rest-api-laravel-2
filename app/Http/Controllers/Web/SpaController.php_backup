@@ -1,0 +1,131 @@
+<?php
+namespace App\Http\Controllers\Web;
+use App\Http\Controllers\Controller;
+// use Illuminate\Http\Request;
+
+#[ExcludeAllRoutesFromDocs]
+class SpaController extends Controller{
+  /**
+   * Default meta tag values.
+   */
+  private array $defaults;
+
+  public function __construct(){
+    $this->defaults = [
+      'title' => config('app.name'),
+      'description' => config('seo.default_description', 'Welcome to ' . config('app.name')),
+      'image' => asset(config('seo.default_image', 'images/og-default.jpg')),
+      'url' => request()->url(),
+      'type' => 'website',
+      'robots' => 'index, follow'
+    ];
+  }
+
+  /**
+   * Merge custom meta with defaults and return the SPA view.
+   */
+  private function renderSpa(
+    array $meta = [],
+    string $view = 'spa'
+  ){
+    $meta = array_merge(
+      $this->defaults, 
+      $meta, 
+      ['url' => request()->url()]
+    );
+    return view($view, compact('meta'));
+  }
+
+  /**
+   * Catch-all fallback — React 404 page handles unknown routes.
+   */
+  public function index(){
+    return $this->renderSpa();
+  }
+
+  /**
+   * Home page.
+   */
+  public function home(){
+    return $this->renderSpa([
+      'title' => config('app.name') . ' • Your Tagline Here',
+      'description' => 'Welcome to ' . config('app.name') . '. Your platform description here.',
+      'type' => 'website'
+    ]);
+  }
+
+  /**
+   * About page.
+   */
+  public function about(){
+    return $this->renderSpa([
+      'title' => 'About Us • ' . config('app.name'),
+      'description' => 'Learn more about who we are and what we do.'
+    ]);
+  }
+
+  /**
+   * Contact page.
+   */
+  public function contact(){
+    return $this->renderSpa([
+      'title' => 'Contact Us • ' . config('app.name'),
+      'description' => 'Get in touch with our team.'
+    ]);
+  }
+
+  /**
+   * Login page (guest only — enforced by web.php middleware).
+   */
+  public function login(){
+    return $this->renderSpa([
+      'title' => 'Sign In • ' . config('app.name'),
+      'description' => 'Sign in to your account.',
+      'robots' => 'noindex, nofollow'
+    ]);
+  }
+
+  /**
+   * Register page (guest only).
+   */
+  public function register(){
+    return $this->renderSpa([
+      'title' => 'Create Account • ' . config('app.name'),
+      'description' => 'Create a new account and get started.',
+      'robots' => 'noindex, nofollow'
+    ]);
+  }
+
+  /**
+   * Forgot password page (guest only).
+   */
+  public function forgotPassword(){
+    return $this->renderSpa([
+      'title' => 'Forgot Password • ' . config('app.name'),
+      'description' => 'Reset your account password.',
+      'robots' => 'noindex, nofollow'
+    ]);
+  }
+
+  /**
+   * Dashboard (auth only — enforced by web.php middleware).
+   */
+  public function dashboard(){
+    return $this->renderSpa([
+      'title' => 'Dashboard • ' . config('app.name'),
+      'description' => 'Your personal dashboard.',
+      'robots' => 'noindex, nofollow'
+    ], 'admin');
+  }
+
+  /**
+   * Settings page (auth only).
+   */
+  public function settings(){
+    return $this->renderSpa([
+      'title' => 'Settings • ' . config('app.name'),
+      'description' => 'Manage your account settings.',
+      'robots' => 'noindex, nofollow'
+    ]);
+  }
+}

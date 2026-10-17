@@ -1,0 +1,155 @@
+<?php
+namespace App\Http\Controllers\Api\V1;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\InvalidStateException;
+use App\Models\User;
+use App\Models\UserProvider;
+use App\Traits\HasSupportedProviders;
+
+class SocialAuthController extends Controller{
+  use HasSupportedProviders;
+
+  /**
+   * OAuth callback
+   *
+   * SPA:
+   * GET /api/v1/auth/google/callback
+   *
+   * Mobile:
+   * GET /api/v1/auth/google/callback?mobile=1
+   */
+  public function callback(
+    Request $request,
+    string $provider
+  ){
+    if(!$this->isSupportedProvider($provider)){
+      return $this->redirectError($provider,'unsupported_provider');
+    }
+
+    try{
+      $driver = Socialite::driver($provider);
+
+      // Mobile apps
+      if($request->boolean('mobile')){
+        $driver = $driver->stateless();
+      }
+
+      $socialiteUser = $driver->user();
+      $providerId = $socialiteUser->getId();
+      $email = $socialiteUser->getEmail();
+      $name =
+        $socialiteUser->getName()
+        ?: $socialiteUser->getNickname()
+        ?: 'User';
+
+      // Some providers may not provide email
+      if(empty($email)){
+        return $this->redirectError($provider,'email_not_provided');
+      }
+
+      DB::beginTransaction();
+
+      // Find existing provider account
+      $providerAccount = UserProvider::query()
+        ->where('provider', $provider)
+        ->where('provider_id', $providerId)
+        ->first();
+
+      // Existing provider account
+      if($providerAccount){
+        $user = $providerAccount->user;
+      }else{
+        // Logged in user → link provider
+        if(Auth::check()){
+          $user = Auth::user();
+
+          // Prevent duplicate provider link
+          if($user->hasProvider($provider)){
+            return $this->redirectError($provider,'provider_already_linked');
+          }
+        }else{
+          // Try find existing user by email
+          $user = User::query()
+            ->where('email', $email)
+            ->first();
+
+          // Register new user
+          if(!$user){
+            $user = new User();
+            $user->name = $name;
+            $user->email = $email;
+            $user->username = $user->generateUsername($email);
+
+            // OAuth email considered verified
+            $user->email_verified_at = now();
+
+            /**
+             * Password nullable
+             * User can set password later
+             */
+            $user->password = null;
+            $user->save();
+          }
+        }
+
+        // Link provider
+        $user->providers()->create([
+          'provider' => $provider,
+          'provider_id' => $providerId,
+          'data' => [
+            // 'avatar' => $socialiteUser->getAvatar(),
+            'nickname' => $socialiteUser->getNickname(),
+            'name' => $socialiteUser->getName(),
+            'email' => $socialiteUser->getEmail()
+          ],
+        ]);
+      }
+
+      DB::commit();
+
+      /**
+       * SPA / Browser Login
+       * Uses Sanctum session auth
+       */
+      if(!$request->boolean('mobile')){
+        Auth::login($user, true);
+
+        if($request->hasSession()){
+          $request->session()->regenerate();
+        }
+        // Redirect back to SPA
+        return redirect("/auth/$provider/success");
+      }
+
+      /**
+       * Mobile Login
+       * Returns Sanctum token
+       */
+      $token = $user->createToken(
+        $request->input('device_name', $provider . '-oauth'),
+        ['*'],
+        now()->addDays(7)
+      );
+
+      return jsonSuccess([
+        'token' => $token->plainTextToken,
+        // 'token_type' => 'Bearer',
+        'user' => $user
+      ]);
+
+    }catch(InvalidStateException $e){
+      DB::rollBack();
+      report($e);
+      return $this->redirectError($provider,'invalid_oauth_state');
+    }catch(\Throwable $e){
+      DB::rollBack();
+      report($e);
+      return $this->redirectError($provider,'authentication_failed');
+    }
+  }
+}

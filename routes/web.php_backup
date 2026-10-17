@@ -1,0 +1,23 @@
+<?php
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Web\{
+  LoginController
+};
+
+Route::middleware('guest')->group(function(){
+  Route::get('login', LoginController::class)->name('login');
+});
+
+// All route
+Route::get('/{any}', function(){
+  $view = view('app', ['user' => auth()->user()]);
+	return response($view)->withHeaders([
+		'X-Frame-Options' => 'SAMEORIGIN',
+		'X-XSS-Protection' => '1; mode=block',
+    // 'X-Powered-By' => config('app.name', 'InterAct'), // Option
+	]);
+})->where('any', '.*');
+
+// Route::get('/', function(){
+//   return view('welcome');
+// });

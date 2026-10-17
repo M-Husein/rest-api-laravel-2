@@ -1,0 +1,83 @@
+import ky, { KyInstance, Options as KyOptions } from 'ky';
+import type { Services, InitOptions, BackendModule } from 'i18next';
+
+export interface i18nBackendOptions {
+  commonEndpoint?: string;   // pattern: /locales/{{lng}}/common
+  pageEndpoint?: string;     // pattern: /locales/{{lng}}/page/{{ns}}
+  kyOptions?: KyOptions;
+}
+
+export class i18nBackend implements BackendModule<i18nBackendOptions> {
+  static type = 'backend' as const;
+  type = 'backend' as const;
+  options: i18nBackendOptions;
+  private kyInstance: KyInstance;
+  private i18nextOptions: InitOptions;
+
+  constructor(
+    _services: Services,
+    options: i18nBackendOptions = {},
+    i18nextOptions: InitOptions = {}
+  ) {
+    // Default endpoints – adjust base URL and version as needed.
+    // APP.api is assumed to be defined globally (e.g., http://localhost:8000/api)
+    // const base = typeof APP !== 'undefined' ? APP.api : '';
+    this.options = {
+      commonEndpoint: APP.api + "/locales/{{lng}}/common",
+      // /locales/{lang}/page/{name}
+      pageEndpoint: APP.api + "/locales/{{lng}}/page/{{ns}}",
+      ...options,
+    };
+    this.i18nextOptions = i18nextOptions;
+    this.kyInstance = ky.extend(this.options.kyOptions || { retry: 2 });
+  }
+
+  init(
+    _services: Services,
+    options: i18nBackendOptions,
+    i18nextOptions: InitOptions
+  ): void {
+    this.options = { ...this.options, ...options };
+    this.i18nextOptions = i18nextOptions;
+    this.kyInstance = ky.extend(this.options.kyOptions || { retry: 2 });
+  }
+
+  // Core loading logic
+  read(
+    language: string,
+    namespace: string,
+    callback?: (error: Error | null, result: any) => void
+  ): void {
+    let url: string;
+
+    if (namespace === 'common') {
+      url = this.options.commonEndpoint!
+        .replace('{{lng}}', language);
+    } else {
+      url = this.options.pageEndpoint!
+        .replace('{{lng}}', language)
+        .replace('{{ns}}', namespace);
+    }
+
+    this.kyInstance(url)
+      .json<any>()
+      .then(res => {
+        // Expecting { success: true, data: {...} }
+        callback?.(null, res?.data);
+      })
+      .catch(error => {
+        console.error(`Failed to load namespace "${namespace}" for language "${language}"`, error);
+        callback?.(error as Error, null);
+      });
+  }
+
+  // // Optional: for saving missing keys (if you implement later)
+  // create?(
+  //   languages: string[],
+  //   namespace: string,
+  //   key: string,
+  //   fallbackValue: string
+  // ): void {
+  //   // Not implemented – you can leave empty or add logic later
+  // }
+}

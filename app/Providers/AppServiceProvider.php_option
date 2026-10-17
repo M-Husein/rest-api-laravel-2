@@ -1,0 +1,170 @@
+<?php
+
+namespace App\Providers;
+
+use App\Http\Middleware\SecurityHeaders;
+use App\Listeners\HandleEmailVerified;
+use App\Listeners\HandleFailedLogin;
+use App\Listeners\HandlePasswordReset;
+use App\Listeners\HandleSuccessfulLogin;
+use App\Mail\PendingEmailVerification;
+use Dedoc\Scramble\Scramble;
+use Dedoc\Scramble\Support\Generator\OpenApi;
+use Dedoc\Scramble\Support\Generator\SecurityScheme;
+use Illuminate\Auth\Events\Failed;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider{
+  public function register(): void{
+    //
+  }
+
+  public function boot(): void{
+    $this->bootSecurityHeaders();
+    $this->bootRateLimiters();
+    $this->bootEventListeners();
+    $this->bootPasswordReset();
+    $this->bootScramble();
+  }
+
+  // ---------------------------------------------------------------------------
+  // Security Headers — applied globally to all responses
+  // ---------------------------------------------------------------------------
+  private function bootSecurityHeaders(): void{
+    app('router')->pushMiddlewareToGroup('api', SecurityHeaders::class);
+    app('router')->pushMiddlewareToGroup('web', SecurityHeaders::class);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Rate Limiters
+  // ---------------------------------------------------------------------------
+  private function bootRateLimiters(): void{
+    // Brute force protection — login endpoints
+    RateLimiter::for('login', function(Request $request){
+      return [
+        Limit::perMinute(5)->by($request->ip()),
+        Limit::perMinute(3)->by(
+          $request->input('identifier', '') . '|' . $request->ip()
+        )
+      ];
+    });
+
+    // Mass account creation prevention
+    RateLimiter::for('register', function(Request $request){
+      return Limit::perHour(10)->by($request->ip());
+    });
+
+    // Sensitive endpoints — password reset, email resend
+    RateLimiter::for('sensitive', function(Request $request){
+      return [
+        Limit::perMinute(3)->by($request->ip()),
+        Limit::perHour(10)->by($request->ip())
+      ];
+    });
+
+    // Social OAuth redirect spam prevention
+    RateLimiter::for('oauth', function(Request $request){
+      return Limit::perMinute(10)->by($request->ip());
+    });
+
+    // Storage abuse prevention — avatar uploads
+    RateLimiter::for('upload', function(Request $request){
+      return Limit::perMinute(5)
+        ->by($request->user()?->id ?: $request->ip());
+    });
+
+    // Write operations — authenticated mutations
+    RateLimiter::for('mutations', function(Request $request){
+      return Limit::perMinute(30)
+        ->by($request->user()?->id ?: $request->ip());
+    });
+
+    // General API — higher limit for authenticated users
+    RateLimiter::for('api', function(Request $request){
+      return $request->user()
+        ? Limit::perMinute(120)->by($request->user()->id)
+        : Limit::perMinute(30)->by($request->ip());
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Event Listeners
+  // ---------------------------------------------------------------------------
+  private function bootEventListeners(): void{
+    // Failed login — brute force detection and logging
+    Event::listen(
+      Failed::class,
+      HandleFailedLogin::class
+    );
+
+    // Successful login — clear failed counters, update last_login_at,
+    // detect new IP and send security alert email
+    Event::listen(
+      Login::class,
+      HandleSuccessfulLogin::class
+    );
+
+    // Password reset — auto-revoke all other sessions and tokens
+    Event::listen(
+      PasswordReset::class,
+      HandlePasswordReset::class
+    );
+
+    // Email verified — send welcome email
+    Event::listen(
+      Verified::class,
+      HandleEmailVerified::class
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Password Reset — point link to SPA frontend instead of Laravel route
+  // ---------------------------------------------------------------------------
+  private function bootPasswordReset(): void{
+    ResetPassword::createUrlUsing(function($user, string $token){
+      return config('app.url') . '/reset-password?' . http_build_query([
+        'token' => $token,
+        'email' => $user->getEmailForPasswordReset()
+      ]);
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Scramble API Docs
+  // ---------------------------------------------------------------------------
+  private function bootScramble(): void{
+    Scramble::configure()
+      ->routes(function(Route $route){
+        return str_starts_with($route->uri, 'api/v1');
+      })
+      ->withDocumentTransformers(function(OpenApi $openApi){
+        // Mobile — Bearer token
+        $openApi->components->securitySchemes['bearerAuth'] =
+          SecurityScheme::http('bearer');
+
+        // SPA — XSRF cookie
+        $openApi->components->securitySchemes['cookieAuth'] =
+          SecurityScheme::apiKey('header', 'X-XSRF-TOKEN');
+
+        // Default security for docs UI testing
+        $openApi->secure(
+          SecurityScheme::http('bearer')
+        );
+      });
+
+    // Only allow access in local env — change for production
+    Gate::define('viewApiDocs', function($user = null){
+      return app()->environment('local');
+    });
+  }
+}

@@ -1,0 +1,23 @@
+// Resize handle using <line />
+.dot {
+  // fill: #fff;
+  stroke: #fff;
+  stroke-width: 11;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 1px #1677ff) drop-shadow(0 0 1px #1677ff);
+}
+
+// .rect, 
+// .rhand
+.ve-nss {
+  vector-effect: non-scaling-stroke;
+}
+ 
+.rhand {
+  stroke-width: 9;
+}
+
+// .dot {
+//   stroke: "#1677ff";
+//   // strokeWidth: isSel ? "3px" : "2px";
+// }
