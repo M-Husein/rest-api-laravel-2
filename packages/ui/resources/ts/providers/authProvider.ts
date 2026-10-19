@@ -47,7 +47,7 @@ export const authProvider: AuthProvider = {
       if(response?.success){
         return {
           success: true,
-          redirectTo: '/',
+          redirectTo: APP.redirectAfterLogin,
           successNotification: {
             message: response.message || featureApi.translate('notifs.checkVerificationEmail'),
             description: featureApi.translate('notifs.registerSuccess'),
@@ -120,7 +120,7 @@ export const authProvider: AuthProvider = {
         
         return {
           success: true,
-          redirectTo: "/" // "/app", // For admin
+          redirectTo: APP.redirectAfterLogin, // "/" public site, "/app" API-only + UI
         };
       }
 

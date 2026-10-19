@@ -58,56 +58,6 @@ class SpaController extends Controller{
       ]);
   }
 
-  /**
-   * Login page — noindex (guest only).
-   */
-  public function login(){
-    return Spa::render()
-      ->title('Sign In')
-      ->description('Sign in to your account.')
-      ->noIndex();
-  }
-
-  /**
-   * Register page — noindex (guest only).
-   */
-  public function register(){
-    return Spa::render()
-      ->title('Create Account')
-      ->description('Create a new account and get started.')
-      ->noIndex();
-  }
-
-  /**
-   * Forgot password page — noindex (guest only).
-   */
-  public function forgotPassword(){
-    return Spa::render()
-      ->title('Forgot Password')
-      ->description('Reset your account password.')
-      ->noIndex();
-  }
-
-  /**
-   * Settings page — noindex (auth only).
-   */
-  public function settings(){
-    return Spa::render()
-      ->title('Settings')
-      ->description('Manage your account settings.')
-      ->noIndex();
-  }
-
-  /**
-   * Admin dashboard — separate shell view, noindex.
-   */
-  public function dashboard(){
-    return Spa::admin()
-      ->title('Dashboard')
-      ->description('Admin dashboard.')
-      ->noIndex();
-  }
-
   public function getByPageLang(string $name){
     $data = PageTranslation::where('name', $name)
       ->where('lang', app()->getLocale())

@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const manifestPath = resolve(root, 'features.json');
-const outPath = resolve(root, 'resources/ts/features.generated.ts');
+const outPath = resolve(root, 'packages/ui/resources/ts/features.generated.ts');
 
 const toIdentifier = (name) =>
   name

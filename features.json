@@ -1,7 +1,8 @@
 {
     "features": [
         "locale-switcher",
-        "seo"
+        "seo",
+        "ui"
     ],
     "inRepo": {},
     "frontend": [

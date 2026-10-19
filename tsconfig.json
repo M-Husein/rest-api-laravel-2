@@ -108,16 +108,13 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "paths": {
-      "@/*": ["./resources/ts/*"],
+      "@/*": ["./packages/ui/resources/ts/*"],
       "@programmeria/*": ["./packages/*/resources/ts/index.ts"]
       // "ziggy-js": ["./vendor/tightenco/ziggy"]
     },
     "jsx": "react-jsx"
   },
   "include": [
-    "resources/ts/**/*.ts",
-    "resources/ts/**/*.d.ts",
-    "resources/ts/**/*.tsx",
     "packages/*/resources/ts/**/*.ts",
     "packages/*/resources/ts/**/*.d.ts",
     "packages/*/resources/ts/**/*.tsx",

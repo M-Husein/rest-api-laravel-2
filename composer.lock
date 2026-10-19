@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f85c07253cbb7cbccd4412d284d3462",
+    "content-hash": "329a44183bc7225269d2678a27c207ee",
     "packages": [
         {
             "name": "brick/math",
@@ -3470,11 +3470,12 @@
             "dist": {
                 "type": "path",
                 "url": "packages/seo",
-                "reference": "7a771a0c180910df8e368d010ff26135626b150a"
+                "reference": "d2803f829f807f40c45285892040b04886e32678"
             },
             "require": {
                 "laravel/framework": "^13.0",
-                "php": "^8.3"
+                "php": "^8.3",
+                "programmeria/laravel-ui": "0.1.*"
             },
             "suggest": {
                 "dedoc/scramble": "Keeps the SPA shell routes out of the generated API documentation."
@@ -3496,6 +3497,43 @@
                 "MIT"
             ],
             "description": "First-load SEO shell (meta tags, Open Graph, JSON-LD) and localized page translations for the starterkit.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "programmeria/laravel-ui",
+            "version": "0.1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/ui",
+                "reference": "098c7df3f65828cee477e1f1b904cb1df489e396"
+            },
+            "require": {
+                "laravel/framework": "^13.0",
+                "php": "^8.3"
+            },
+            "suggest": {
+                "dedoc/scramble": "Keeps the SPA shell routes out of the generated API documentation."
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Programmeria\\Ui\\UiServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Programmeria\\Ui\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Bundled React + Ant Design application shell (admin dashboard, authentication, account settings) for the starterkit.",
             "transport-options": {
                 "symlink": true,
                 "relative": true

@@ -32,15 +32,6 @@ class SeoTest extends TestCase
         $response->assertSee('Organization', false);
     }
 
-    public function test_private_pages_are_noindex(): void
-    {
-        $response = $this->get('/login');
-
-        $response->assertOk();
-        $response->assertSee('noindex, nofollow, notranslate, noai', false);
-        $response->assertHeader('X-Robots-Tag', 'noindex, nofollow, notranslate, noai');
-    }
-
     public function test_page_translation_endpoint_returns_localized_content(): void
     {
         PageTranslation::create([

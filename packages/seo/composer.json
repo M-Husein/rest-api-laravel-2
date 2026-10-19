@@ -6,7 +6,8 @@
   "license": "MIT",
   "require": {
     "php": "^8.3",
-    "laravel/framework": "^13.0"
+    "laravel/framework": "^13.0",
+    "programmeria/laravel-ui": "0.1.*"
   },
   "suggest": {
     "dedoc/scramble": "Keeps the SPA shell routes out of the generated API documentation."
