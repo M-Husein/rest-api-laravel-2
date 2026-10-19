@@ -5,7 +5,8 @@ import { Layout, Dropdown, Button, Avatar, Modal } from "antd"; // Switch, Badge
 import { UserOutlined } from '@ant-design/icons'; // , MoonFilled, SunFilled, SettingOutlined
 // import { NavLink } from "react-router"; // useLocation,
 // import { NavLink } from "@/components/router";
-import { LanguageMenu } from '@/i18n';
+import { Fragment } from 'react';
+import { featureApi } from '@/core/feature';
 import { useLogoutAlert } from '@/hooks/useLogoutAlert';
 
 const overlayStyle = {
@@ -49,10 +50,11 @@ export const Header = () => {
     >
       <div className="relative h-12 ml-auto flex items-center">
         <div className="h-full flex items-center relative mx-3">
-          <LanguageMenu
-            overlayStyle={overlayStyle}
-            // user={currentUser}
-          />
+          {featureApi.getNavItems().map((item) =>
+            item.render ? (
+              <Fragment key={item.key}>{item.render()}</Fragment>
+            ) : null
+          )}
         </div>
 
         <Dropdown

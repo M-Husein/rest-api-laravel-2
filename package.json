@@ -6,12 +6,16 @@
   "private": true,
   "type": "module",
   "packageManager": "bun@1.4.0",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "refine dev --devtools=false",
     "build": "tsc && refine build",
     "start": "refine start",
     "refine": "refine",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate:features": "node scripts/generate-features.mjs"
   },
   "dependencies": {
     "@ant-design/icons": "^6.1.1",

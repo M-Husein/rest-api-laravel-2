@@ -109,6 +109,7 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "paths": {
       "@/*": ["./resources/ts/*"],
+      "@programmeria/*": ["./packages/*/resources/ts/index.ts"]
       // "ziggy-js": ["./vendor/tightenco/ziggy"]
     },
     "jsx": "react-jsx"
@@ -117,6 +118,9 @@
     "resources/ts/**/*.ts",
     "resources/ts/**/*.d.ts",
     "resources/ts/**/*.tsx",
+    "packages/*/resources/ts/**/*.ts",
+    "packages/*/resources/ts/**/*.d.ts",
+    "packages/*/resources/ts/**/*.tsx",
     "postcss.config.ts"
   ]
 }

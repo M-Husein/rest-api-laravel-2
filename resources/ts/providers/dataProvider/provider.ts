@@ -2,7 +2,7 @@ import { DataProvider } from "@refinedev/core";
 // import { httpRequest, generateSort, generateFilter } from "./utils";
 import { KyInstance } from "ky";
 import { httpRequest } from "./utils/httpRequest";
-import i18n from "@/i18n";
+import { featureApi } from '@/core/feature';
 
 // For support response type
 // type ResponseType = 'json' | 'text' | 'blob' | 'formData' | 'arrayBuffer';
@@ -107,7 +107,7 @@ const parseApiResponse = (
   if(!response?.success){
     throw new CustomError(
       "ApiError",
-      response?.message || i18n.t("error.unspecific"),
+      response?.message || featureApi.translate("error.unspecific"),
       response
     );
   }
@@ -179,7 +179,7 @@ export const dataProvider = (
 
   //     throw new CustomError(
   //       'ReadError', 
-  //       response?.message || i18n.t('error.unspecific'), 
+  //       response?.message || featureApi.translate('error.unspecific'), 
   //       response
   //     );
   //   } catch(err){
@@ -236,12 +236,12 @@ export const dataProvider = (
 
     throw new CustomError(
       'CreateError', 
-      response?.message || i18n.t('error.unspecific'), 
+      response?.message || featureApi.translate('error.unspecific'), 
       response
     );
     // Error normalization (disabled — errors propagate unchanged):
     // throw {
-    //   message: err?.message || i18n.t('error.unspecific'),
+    //   message: err?.message || featureApi.translate('error.unspecific'),
     //   statusCode: err?.statusCode || 500,
     //   errors: err?.data?.errors || {}
     // };
@@ -270,7 +270,7 @@ export const dataProvider = (
     
     throw new CustomError(
       'UpdateError', 
-      response?.message || i18n.t('error.unspecific'), 
+      response?.message || featureApi.translate('error.unspecific'), 
       response
     );
   },
@@ -295,7 +295,7 @@ export const dataProvider = (
     
     throw new CustomError(
       'ReadError', 
-      response?.message || i18n.t('error.unspecific'), 
+      response?.message || featureApi.translate('error.unspecific'), 
       response
     );
   },
@@ -321,7 +321,7 @@ export const dataProvider = (
     
     throw new CustomError(
       'DeleteError', 
-      response?.message || i18n.t('error.unspecific'), 
+      response?.message || featureApi.translate('error.unspecific'), 
       response
     );
   },
@@ -347,7 +347,7 @@ export const dataProvider = (
     
     throw new CustomError(
       'DeleteManyError', 
-      response?.message || i18n.t('error.unspecific'), 
+      response?.message || featureApi.translate('error.unspecific'), 
       response
     );
   },

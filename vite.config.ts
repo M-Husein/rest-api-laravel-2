@@ -1,3 +1,4 @@
+import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from "vite";
 // import react from "@vitejs/plugin-react";
 import react from '@vitejs/plugin-react-swc';
@@ -27,9 +28,17 @@ export default defineConfig({
 		// tailwindcss(),
 	],
   resolve: {
-    alias: {
-      '@': '/resources/ts',
-    },
+    alias: [
+      { find: '@', replacement: '/resources/ts' },
+      {
+        // Feature packages (workspace: packages/*/resources/ts). Source .ts is
+        // consumed directly by the bundler; entry point is resources/ts/index.ts.
+        find: /^@programmeria\/([^/]+)$/,
+        replacement: fileURLToPath(
+          new URL('./packages/$1/resources/ts/index.ts', import.meta.url)
+        ),
+      },
+    ],
   },
   server: {
     // port: 5175,

@@ -1,11 +1,11 @@
 import i18n from 'i18next';
 import { initReactI18next } from "react-i18next";
+import { featureApi } from '@/core/feature';
 import { i18nBackend } from './i18nBackend';
 import { zodConfig } from './validation';
-import { zoneStrategy } from './factory';
 
 const defaultNS = 'common';
-const currentLang = zoneStrategy().getCurrent() || APP.defaultLang;
+const currentLang = featureApi.getInitialLocale() || APP.defaultLang;
 
 document.documentElement.lang = currentLang;
 
@@ -29,13 +29,20 @@ i18n
 
 zodConfig(i18n);
 
+/**
+ * Core i18n runtime hooks. The translation runtime is always present, even in
+ * single-language apps; only the locale *switcher* feature is optional.
+ */
+featureApi.registerTranslator((key, params) =>
+  i18n.t(key, params as any) as string
+);
+featureApi.registerLocaleGetter(() => i18n.language);
+featureApi.registerRequestHeaders(() => ({
+  'Accept-Language': i18n.language || APP.defaultLang,
+}));
+
 export default i18n;
 
 export { i18n };
-export { LocaleProvider, useLocaleContext } from './LocaleProvider';
-export { LanguageMenu } from './LanguageMenu';
+export { LocaleProvider } from './LocaleProvider';
 export { loadLocale } from './loadLocale';
-export { localeRegex, getCurrentLang, changeUrlLang } from './url';
-export { setLangToUrl } from './setLangToUrl';
-export * from './contract';
-export * from './factory';

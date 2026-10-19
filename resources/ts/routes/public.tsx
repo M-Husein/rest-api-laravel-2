@@ -10,7 +10,7 @@ import { lazyComponent } from '@/utils/components';
 
 const PrivateRoute = ({ children }: any) => (
   <Authenticated
-    key="authenticated-inner"
+    key="auth-inner"
     fallback={<CatchAllNavigate to="/login" />}
   >
     {children}
@@ -19,7 +19,7 @@ const PrivateRoute = ({ children }: any) => (
 
 const LayoutAuth = () => (
   <Authenticated
-    key="authenticated-outer"
+    key="auth-outer"
     fallback={<Outlet />}
   >
     <CrossZoneRedirect to="/app" />

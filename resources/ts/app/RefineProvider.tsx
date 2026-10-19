@@ -10,8 +10,8 @@ import { AppTheme } from '@/contexts/app/Context';
 import { SplashScreen } from '@/components/SplashScreen';
 import { useNotificationProvider } from '@/providers/notificationProvider';
 import { RESOURCES } from '@/routes/resources';
-import { useLocaleContext, loadLocale } from '@/i18n';
-import { zoneStrategy } from '@/i18n/factory';
+import { featureApi } from '@/core/feature';
+import { useAppLocale } from '@/core/locale';
 
 const customTitleHandler = () => document.title || APP.name;
 
@@ -33,22 +33,21 @@ const handleRetry = (failureCount: number, error: any) => {
 
 export const RefineProvider = () => {
   const { t, i18n } = useTranslation();
-  const strategy = zoneStrategy();
 
   const i18nProvider = useMemo<I18nProvider>(
     () => ({
       changeLocale: async (lang: string) => {
-        await strategy.apply(lang, { i18n, loadLocale });
+        await featureApi.changeLocale(lang);
       },
       getLocale: () => i18n.language,
       translate: (key, params) => t(key, params) as string,
     }),
-    [t, i18n, strategy]
+    [t, i18n]
   );
 
-  const { antdLocale } = useLocaleContext();
+  const { antdLocale, ready } = useAppLocale();
 
-  if (!antdLocale) {
+  if (!ready) {
     return <SplashScreen />;
   }
 

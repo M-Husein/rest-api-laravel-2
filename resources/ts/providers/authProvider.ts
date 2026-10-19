@@ -3,7 +3,7 @@ import { api, httpRequest, retryOnServerErrors } from '@/providers/dataProvider'
 import { toggleLoaderApp } from '@/utils/dom';
 import { getUser, updateUser, clearUser, getAvatarUrl } from '@/utils/user';
 import { getMeta } from '@/utils/browser';
-import i18n from "@/i18n";
+import { featureApi } from '@/core/feature';
 
 // const setLang = (lang: string): void => {
 //   localStorage.setItem("i18nextLng", lang);
@@ -33,7 +33,7 @@ export const authProvider: AuthProvider = {
       success: false,
       error: {
         name: "RegisterError",
-        message: i18n.t('error.register'),
+        message: featureApi.translate('error.register'),
       },
     };
 
@@ -49,8 +49,8 @@ export const authProvider: AuthProvider = {
           success: true,
           redirectTo: '/',
           successNotification: {
-            message: response.message || i18n.t('notifs.checkVerificationEmail'),
-            description: i18n.t('notifs.registerSuccess'),
+            message: response.message || featureApi.translate('notifs.checkVerificationEmail'),
+            description: featureApi.translate('notifs.registerSuccess'),
           },
           user: response.data?.user, // <- Custom
         };
@@ -73,7 +73,7 @@ export const authProvider: AuthProvider = {
       success: false,
       error: {
         name: "LoginError",
-        message: i18n.t('error.login'),
+        message: featureApi.translate('error.login'),
       },
     };
 
@@ -140,7 +140,7 @@ export const authProvider: AuthProvider = {
     //   success: false,
     //   error: {
     //     name: "LogoutError",
-    //     message: i18n.t('error.logout'),
+    //     message: featureApi.translate('error.logout'),
     //   },
     // };
 
@@ -184,6 +184,7 @@ export const authProvider: AuthProvider = {
       await httpRequest.post('logout', { keepalive: true }).json();
 
       clearUser(); // Clear data
+      featureApi.clearLocale(); // Reset the active locale strategy's stored value
 
       const bc = new BroadcastChannel(import.meta.env.VITE_BC_NAME);
       bc.postMessage({ type: "LOGOUT" });
@@ -200,6 +201,8 @@ export const authProvider: AuthProvider = {
       // 401 = session expired or not logged in
       if (status === 401) {
         // window.location.replace('/login');
+        clearUser();
+        featureApi.clearLocale();
         return {
           success: true,
           ...publicRedirect('/login'),
@@ -210,7 +213,7 @@ export const authProvider: AuthProvider = {
         success: false,
         error: {
           name: "LogoutError",
-          message: err?.message || i18n.t('error.logout'),
+          message: err?.message || featureApi.translate('error.logout'),
         },
       }
     } finally {
@@ -265,7 +268,7 @@ export const authProvider: AuthProvider = {
           ...publicRedirect('/login'),
           error: {
             name: "Unauthorized",
-            message: response?.message || i18n.t('error.check'),
+            message: response?.message || featureApi.translate('error.check'),
           },
         };
       } catch(err: any) {
@@ -288,7 +291,7 @@ export const authProvider: AuthProvider = {
             logout: true,
             error: {
               name: 'SessionExpired',
-              message: i18n.t('notifs.sessionExpired'),
+              message: featureApi.translate('notifs.sessionExpired'),
             },
           };
         }
@@ -326,7 +329,7 @@ export const authProvider: AuthProvider = {
       success: false,
       error: {
         name: "ForgotPasswordError",
-        message: i18n.t('error.forgotPassword'),
+        message: featureApi.translate('error.forgotPassword'),
       },
     };
 
@@ -339,7 +342,7 @@ export const authProvider: AuthProvider = {
           success: true,
           redirectTo: "/login",
           successNotification: {
-            message: response.message || i18n.t('notifs.forgotPassword'),
+            message: response.message || featureApi.translate('notifs.forgotPassword'),
             // description: 
           }
         };
@@ -376,7 +379,7 @@ export const authProvider: AuthProvider = {
           ...publicRedirect('/login'),
           error: {
             name: 'SessionExpired', // Unauthorized
-            message: i18n.t('notifs.sessionExpired'),
+            message: featureApi.translate('notifs.sessionExpired'),
           },
         };
       }
@@ -386,7 +389,7 @@ export const authProvider: AuthProvider = {
           redirectTo: '/403',
           error: {
             name: 'Forbidden',
-            message: i18n.t('error.403'), // 'You do not have permission to perform this action.'
+            message: featureApi.translate('error.403'), // 'You do not have permission to perform this action.'
           },
         };
       }

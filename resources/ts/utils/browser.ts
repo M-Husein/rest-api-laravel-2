@@ -1,4 +1,5 @@
 import { isMobile } from '@/utils/checking';
+import { featureApi } from '@/core/feature';
 
 export interface OpenWindowParams {
   url: string;
@@ -316,13 +317,8 @@ export const getMeta = async () => {
     metas.referrer = referrerHost;
   }
 
-  // Locale: Capture Active App Language safely (Your elegant i18next SPA refactor)
-  let appLang = document.documentElement.lang;
-  try {
-    appLang = localStorage.getItem('i18nextLng') || appLang;
-  } catch {
-    // Silently retain document.documentElement.lang if storage is blocked
-  }
+  // Locale: capture the active language resolved by the current zone strategy
+  const appLang = featureApi.getLocale() || document.documentElement.lang;
   if (appLang) {
     metas.locale.appLanguage = appLang;
   }

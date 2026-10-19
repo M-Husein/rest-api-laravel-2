@@ -19,7 +19,7 @@ const lazyApp = (component: any) => (
 
 const LayoutAdminApp = () => (
   <Authenticated
-    key="authenticated-admin"
+    key="auth-admin"
     fallback={<CrossZoneRedirect to="/login" />}
   >
     {lazyApp(

@@ -1,7 +1,7 @@
 import ky, { KyInstance, Options as KyOptions } from 'ky';
 import type { Services, InitOptions, BackendModule } from 'i18next';
 import { retryOnServerErrors } from '@/providers/dataProvider';
-import { getCurrentLang } from './url';
+import { featureApi } from '@/core/feature';
 
 export interface i18nBackendOptions {
   commonEndpoint?: string;
@@ -29,7 +29,7 @@ export class i18nBackend implements BackendModule<i18nBackendOptions> {
     };
     this.i18nextOptions = i18nextOptions;
     this.kyInstance = ky.extend(this.options.kyOptions || {});
-    this.initialLanguage = i18nextOptions.lng || getCurrentLang() || APP.defaultLang;
+    this.initialLanguage = i18nextOptions.lng || featureApi.getInitialLocale() || APP.defaultLang;
   }
 
   init(

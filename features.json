@@ -1,0 +1,10 @@
+{
+    "features": [
+        "locale-switcher",
+        "seo"
+    ],
+    "inRepo": {},
+    "frontend": [
+        "locale-switcher"
+    ]
+}

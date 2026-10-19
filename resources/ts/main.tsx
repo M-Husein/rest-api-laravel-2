@@ -1,5 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import './features.generated';
 import './i18n';
 import { bootstrap } from './app/bootstrap';
 import { PublicApp } from './app/PublicApp';

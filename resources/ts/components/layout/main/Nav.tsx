@@ -7,7 +7,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { useLocation, NavLink } from 'react-router';
 // import { NavLink, A } from '@/components/router';
 import { Img } from '@/components/Img';
-import { LanguageMenu } from '@/i18n';
+import { featureApi } from '@/core/feature';
 // import { getAvatarUrl } from '@/utils/user';
 // import { getCurrentLang } from '@/utils/browser';
 
@@ -41,11 +41,11 @@ const MENUS: MenuProps['items'] = [
   createMenu('/contact-us', 'Contact Us'),
 ];
 
-const languageMenu = () => ({
-  key: 'lang',
-  label: <LanguageMenu />,
-  className: "after-no",
-});
+const featureMenus = (): NonNullable<MenuProps['items']> =>
+  featureApi
+    .getNavItems()
+    .map((item) => item.renderMenu?.())
+    .filter(Boolean) as NonNullable<MenuProps['items']>;
 
 export const Nav = ({ loading, user }:  any) => {
   const location = useLocation();
@@ -65,7 +65,7 @@ export const Nav = ({ loading, user }:  any) => {
           label: <Skeleton.Button active style={{ width: 32, minWidth: 32 }} />,
           className: "after-no leading-normal",
         },
-        languageMenu(),
+        ...featureMenus(),
       ];
     }
 
@@ -118,7 +118,7 @@ export const Nav = ({ loading, user }:  any) => {
           popupOffset: [-130, 0],
           children: userMenus,
         },
-        languageMenu(),
+        ...featureMenus(),
       ];
     }
 
@@ -146,7 +146,7 @@ export const Nav = ({ loading, user }:  any) => {
           </NavLink>
         ),
       },
-      languageMenu(),
+      ...featureMenus(),
     ];
   }
 

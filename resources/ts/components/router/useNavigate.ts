@@ -1,6 +1,6 @@
 import { useNavigate as useNav, NavigateOptions, To } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { zoneStrategy } from '@/i18n/factory';
+import { featureApi } from '@/core/feature';
 
 export const useNavigate = () => {
   const navigate = useNav();
@@ -8,7 +8,7 @@ export const useNavigate = () => {
   // const lang = i18n.language;
 
   return (to: To, options?: NavigateOptions) => {
-    const target = zoneStrategy().localizeHref(to, i18n.language);
+    const target = featureApi.localizeHref(to, i18n.language);
     navigate(target, options);
   };
 };
