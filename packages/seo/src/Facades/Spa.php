@@ -1,9 +1,9 @@
 <?php
-namespace App\Facades;
-use App\Services\Spa\SpaResponse;
+namespace Programmeria\Seo\Facades;
+use Programmeria\Seo\Services\SpaResponse;
 
 /**
- * @method static SpaResponse title(string $title, bool $withSuffix = true)
+ * @method static SpaResponse title(string $title, string $separator = ' • ')
  * @method static SpaResponse description(string $description)
  * @method static SpaResponse image(string $url)
  * @method static SpaResponse type(string $type)
@@ -23,14 +23,14 @@ class Spa{
    * Create a new SpaResponse for the public SPA shell.
    */
   public static function render(): SpaResponse{
-    return new SpaResponse('spa');
+    return new SpaResponse('seo::spa');
   }
 
   /**
    * Create a new SpaResponse for the admin shell.
    */
   public static function admin(): SpaResponse{
-    return new SpaResponse('admin');
+    return new SpaResponse('seo::admin');
   }
 
   /**

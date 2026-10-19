@@ -1,8 +1,8 @@
 <?php
-namespace App\Http\Controllers\Api\V1;
+namespace Programmeria\Seo\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\PageTranslation;
+use Illuminate\Routing\Controller;
+use Programmeria\Seo\Models\PageTranslation;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\QueryException;

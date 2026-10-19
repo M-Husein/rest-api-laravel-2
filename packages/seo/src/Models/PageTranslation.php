@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace Programmeria\Seo\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class PageTranslation extends Model{

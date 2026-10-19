@@ -1,9 +1,9 @@
 <?php
-namespace App\Http\Controllers\Web;
-use App\Http\Controllers\Controller;
+namespace Programmeria\Seo\Http\Controllers;
+use Illuminate\Routing\Controller;
 use Dedoc\Scramble\Attributes\ExcludeAllRoutesFromDocs;
-use App\Facades\Spa;
-use App\Models\PageTranslation;
+use Programmeria\Seo\Facades\Spa;
+use Programmeria\Seo\Models\PageTranslation;
 
 #[ExcludeAllRoutesFromDocs]
 class SpaController extends Controller{

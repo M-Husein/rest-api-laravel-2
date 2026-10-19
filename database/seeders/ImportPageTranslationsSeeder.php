@@ -3,7 +3,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
-use App\Models\PageTranslation;
+use Programmeria\Seo\Models\PageTranslation;
 
 class ImportPageTranslationsSeeder extends Seeder{
   protected $basePath;
@@ -15,6 +15,11 @@ class ImportPageTranslationsSeeder extends Seeder{
   }
 
   public function run(){
+    if(!class_exists(PageTranslation::class)){
+      $this->command->warn('The seo package is not installed; skipping page translations.');
+      return;
+    }
+
     if(empty($this->locales) || !is_array($this->locales)){
       $this->command->error('No locales defined in config("localizer.supported_locales"). Please add locales array.');
       return;

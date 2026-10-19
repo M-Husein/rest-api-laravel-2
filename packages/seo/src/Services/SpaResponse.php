@@ -1,5 +1,5 @@
 <?php
-namespace App\Services\Spa;
+namespace Programmeria\Seo\Services;
 use Illuminate\Contracts\Support\Responsable;
 
 class SpaResponse implements Responsable{
@@ -9,7 +9,7 @@ class SpaResponse implements Responsable{
   private array $jsonLd;
   private array $headers;
 
-  public function __construct(string $view = 'spa'){
+  public function __construct(string $view = 'seo::spa'){
     $this->view = $view;
     $this->props = [];
     $this->jsonLd = [];
