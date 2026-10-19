@@ -362,21 +362,24 @@ Guidelines for future ports:
 
 ## Documentation and wiki
 
-`README.md` is the current source of truth. `README-id_ID.md` contains the same content in
-Indonesian. The documentation is planned to move to the GitHub wiki:
+`README.md` and `README-id_ID.md` are the short entry points. The long-form documentation
+lives in [`docs/wiki`](docs/wiki) and is mirrored to the GitHub wiki:
 
-| No | Wiki page | Contents |
-|----|-----------|----------|
-| 1 | Home | Overview and links |
-| 2 | Getting Started | Requirements, installation, first run |
-| 3 | Presets | Preset contract and use cases |
-| 4 | Architecture | Core, UI, locale-switcher, SEO boundaries |
-| 5 | Feature Management | Install, remove, dry-run, safety |
-| 6 | UI | Bundled React/Ant Design app and build |
-| 7 | Internationalization | Locale backend and UI strategies |
-| 8 | SEO | Public shell, metadata, page translations |
-| 9 | Language Ports | Cross-language contract and roadmap |
-| 10 | Contributing | Development workflow and tests |
+| No | Page | Contents |
+|----|------|----------|
+| 1 | [Home](docs/wiki/Home.md) | Overview and links |
+| 2 | [Getting Started](docs/wiki/Getting-Started.md) | Requirements, installation, first run |
+| 3 | [Presets](docs/wiki/Presets.md) | Preset contract and use cases |
+| 4 | [Architecture](docs/wiki/Architecture.md) | Core, UI, locale-switcher, SEO boundaries |
+| 5 | [Feature Management](docs/wiki/Feature-Management.md) | Install, remove, dry-run, safety |
+| 6 | [UI](docs/wiki/UI.md) | Bundled React/Ant Design app and build |
+| 7 | [Internationalization](docs/wiki/Internationalization.md) | Locale backend and UI strategies |
+| 8 | [SEO](docs/wiki/SEO.md) | Public shell, metadata, page translations |
+| 9 | [Language Ports](docs/wiki/Language-Ports.md) | Cross-language contract and roadmap |
+| 10 | [Contributing](docs/wiki/Contributing.md) | Development workflow and tests |
+
+To publish updates to the GitHub wiki, copy the contents of `docs/wiki` into a clone of
+`https://github.com/M-Husein/rest-api-laravel-2.wiki.git` and push.
 
 ## Security
 

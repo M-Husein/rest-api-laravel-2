@@ -362,21 +362,24 @@ Panduan untuk port berikutnya:
 
 ## Dokumentasi dan wiki
 
-`README.md` adalah sumber kebenaran saat ini. `README-id_ID.md` berisi konten yang sama dalam
-Bahasa Indonesia. Dokumentasi direncanakan pindah ke GitHub wiki:
+`README.md` dan `README-id_ID.md` adalah pintu masuk singkat. Dokumentasi lengkap berada di
+[`docs/wiki`](docs/wiki) dan dicerminkan ke GitHub wiki:
 
-| No | Halaman wiki | Isi |
-|----|--------------|-----|
-| 1 | Home | Ringkasan dan tautan |
-| 2 | Getting Started | Kebutuhan, instalasi, menjalankan pertama kali |
-| 3 | Presets | Kontrak preset dan penggunaan |
-| 4 | Architecture | Batas core, UI, locale-switcher, SEO |
-| 5 | Feature Management | Install, remove, dry-run, keamanan |
-| 6 | UI | Aplikasi React/Ant Design bawaan dan build |
-| 7 | Internationalization | Backend locale dan strategi UI |
-| 8 | SEO | Shell publik, metadata, terjemahan halaman |
-| 9 | Language Ports | Kontrak lintas bahasa dan roadmap |
-| 10 | Contributing | Alur pengembangan dan tes |
+| No | Halaman | Isi |
+|----|---------|-----|
+| 1 | [Home](docs/wiki/Home.md) | Ringkasan dan tautan |
+| 2 | [Getting Started](docs/wiki/Getting-Started.md) | Kebutuhan, instalasi, menjalankan pertama kali |
+| 3 | [Presets](docs/wiki/Presets.md) | Kontrak preset dan penggunaan |
+| 4 | [Architecture](docs/wiki/Architecture.md) | Batas core, UI, locale-switcher, SEO |
+| 5 | [Feature Management](docs/wiki/Feature-Management.md) | Install, remove, dry-run, keamanan |
+| 6 | [UI](docs/wiki/UI.md) | Aplikasi React/Ant Design bawaan dan build |
+| 7 | [Internationalization](docs/wiki/Internationalization.md) | Backend locale dan strategi UI |
+| 8 | [SEO](docs/wiki/SEO.md) | Shell publik, metadata, terjemahan halaman |
+| 9 | [Language Ports](docs/wiki/Language-Ports.md) | Kontrak lintas bahasa dan roadmap |
+| 10 | [Contributing](docs/wiki/Contributing.md) | Alur pengembangan dan tes |
+
+Untuk mempublikasikan pembaruan ke GitHub wiki, salin isi `docs/wiki` ke clone dari
+`https://github.com/M-Husein/rest-api-laravel-2.wiki.git` lalu push.
 
 ## Keamanan
 
