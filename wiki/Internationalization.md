@@ -1,5 +1,7 @@
 # Internationalization
 
+**English** · [Bahasa Indonesia](https://github.com/M-Husein/rest-api-laravel-2/wiki/id/Internationalization)
+
 Multi-locale support is provided by the `locale-switcher` feature package
 (`programmeria/laravel-locale-switcher`).
 

@@ -1,5 +1,7 @@
 # Getting Started
 
+**English** · [Bahasa Indonesia](https://github.com/M-Husein/rest-api-laravel-2/wiki/id/Getting-Started)
+
 ## Requirements
 
 - PHP >= 8.3 with the `pdo_pgsql`, `pgsql`, `openssl`, `mbstring`, `tokenizer`, `xml`,
