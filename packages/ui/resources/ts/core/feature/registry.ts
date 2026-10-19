@@ -1,5 +1,12 @@
 import type { FC, PropsWithChildren } from 'react';
-import type { FeatureApi, FeatureDescriptor, FeatureNavItem } from './types';
+import type {
+  FeatureApi,
+  FeatureDescriptor,
+  FeatureHttp,
+  FeatureI18n,
+  FeatureNavItem,
+  FeatureUser,
+} from './types';
 
 let translator: (key: string, params?: Record<string, unknown>) => string = (
   key
@@ -11,6 +18,15 @@ let localizeHref: (to: any, lang: string) => any = (to) => to;
 let routerBasename: () => string = () => '';
 let changeLocale: (lang: string) => void | Promise<void> = async () => {};
 let clearLocale: () => void = () => {};
+let userGetter: () => FeatureUser | null = () => null;
+let userUpdater: (patch: Partial<FeatureUser>) => void = () => {};
+let httpClient: FeatureHttp = {
+  put: async () => undefined,
+};
+let i18nRuntime: FeatureI18n = {
+  changeLanguage: async () => undefined,
+};
+let localeLoader: (lang: string) => Promise<unknown> = async () => undefined;
 const navItems: FeatureNavItem[] = [];
 
 export const featureApi: FeatureApi = {
@@ -54,6 +70,31 @@ export const featureApi: FeatureApi = {
   clearLocale: () => clearLocale(),
   registerClearLocale: (fn) => {
     clearLocale = fn;
+  },
+
+  getUser: () => userGetter(),
+  registerUserGetter: (fn) => {
+    userGetter = fn;
+  },
+
+  updateUser: (patch) => userUpdater(patch),
+  registerUserUpdater: (fn) => {
+    userUpdater = fn;
+  },
+
+  getHttp: () => httpClient,
+  registerHttp: (client) => {
+    httpClient = client;
+  },
+
+  getI18n: () => i18nRuntime,
+  registerI18n: (i18n) => {
+    i18nRuntime = i18n;
+  },
+
+  loadLocale: (lang) => localeLoader(lang),
+  registerLoadLocale: (fn) => {
+    localeLoader = fn;
   },
 
   registerNavItem: (item) => {

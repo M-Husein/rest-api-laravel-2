@@ -1,3 +1,5 @@
+import { featureApi } from '@/core/feature';
+
 type UserLogged = NonNullable<Window["__APP__"]>["user"];
 
 export const isAdminRole = (user: any): boolean => 
@@ -73,3 +75,6 @@ export const getAvatarUrl = (src: string): string | null => {
 
   return avatarBaseUrl + src;
 };
+
+featureApi.registerUserGetter(() => getUser());
+featureApi.registerUserUpdater((patch) => updateUser(patch));

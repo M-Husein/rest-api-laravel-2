@@ -1,7 +1,6 @@
 import { createElement } from 'react';
-import { featureApi } from '@/core/feature';
-import type { FeatureDescriptor } from '@/core/feature';
-import { loadLocale } from '@/i18n/loadLocale';
+import { featureApi } from '@programmeria/ui/feature';
+import type { FeatureDescriptor } from '@programmeria/ui/feature';
 import { publicStrategy, zoneStrategy } from './factory';
 import { LanguageMenu } from './LanguageMenu';
 
@@ -23,8 +22,10 @@ featureApi.registerLocalizeHref((to, lang) =>
 );
 featureApi.registerRouterBasename(() => publicStrategy.getRouterBasename());
 featureApi.registerChangeLocale(async (lang) => {
-  const { i18n } = await import('@/i18n');
-  await zoneStrategy().apply(lang, { i18n, loadLocale });
+  await zoneStrategy().apply(lang, {
+    i18n: featureApi.getI18n(),
+    loadLocale: (locale) => featureApi.loadLocale(locale),
+  });
 });
 featureApi.registerClearLocale(() => zoneStrategy().clear());
 featureApi.registerNavItem({

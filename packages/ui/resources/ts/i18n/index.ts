@@ -2,6 +2,7 @@ import i18n from 'i18next';
 import { initReactI18next } from "react-i18next";
 import { featureApi } from '@/core/feature';
 import { i18nBackend } from './i18nBackend';
+import { loadLocale } from './loadLocale';
 import { zodConfig } from './validation';
 
 const defaultNS = 'common';
@@ -40,9 +41,13 @@ featureApi.registerLocaleGetter(() => i18n.language);
 featureApi.registerRequestHeaders(() => ({
   'Accept-Language': i18n.language || APP.defaultLang,
 }));
+featureApi.registerI18n({
+  changeLanguage: (lang) => i18n.changeLanguage(lang),
+});
+featureApi.registerLoadLocale(loadLocale);
 
 export default i18n;
 
 export { i18n };
 export { LocaleProvider } from './LocaleProvider';
-export { loadLocale } from './loadLocale';
+export { loadLocale };

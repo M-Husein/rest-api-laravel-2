@@ -1,25 +1,23 @@
 import type { LocaleStrategy } from '../contract';
-import { getUser, updateUser } from '@/utils/user';
+import { featureApi } from '@programmeria/ui/feature';
 
 /**
  * Persist the locale on the server without blocking the UI switch.
- * Uses a dynamic import to avoid a circular dependency between the
- * dataProvider and the i18n factory.
+ * The HTTP client is provided by the UI runtime through the feature contract.
  */
 const saveToServer = (locale: string) => {
-  import('@/providers/dataProvider').then(({ httpRequest }) => {
-    httpRequest.put('me/language', { json: { lang: locale } })
-      .catch(() => {
-        // Silently ignore — local UI already switched
-      });
-  });
+  featureApi.getHttp()
+    .put('me/language', { json: { lang: locale } })
+    .catch(() => {
+      // Silently ignore — local UI already switched
+    });
 };
 
 export const userStrategy: LocaleStrategy = {
   name: 'user',
-  getCurrent: () => getUser()?.lang || undefined,
+  getCurrent: () => featureApi.getUser()?.lang || undefined,
   apply: async (locale, ctx) => {
-    updateUser({ lang: locale });
+    featureApi.updateUser({ lang: locale });
     saveToServer(locale);
     document.documentElement.lang = locale;
     await ctx.i18n.changeLanguage(locale);
@@ -28,7 +26,7 @@ export const userStrategy: LocaleStrategy = {
   getRouterBasename: () => '',
   localizeHref: (to) => to,
   getRequestHeaders: () => ({
-    'Accept-Language': getUser()?.lang || APP.defaultLang,
+    'Accept-Language': featureApi.getUser()?.lang || APP.defaultLang,
   }),
   clear: () => {},
 };
