@@ -29,6 +29,11 @@ class LanguagePreferenceTest extends TestCase
         ], $attributes));
     }
 
+    public function test_locale_switcher_registers_lang_as_fillable(): void
+    {
+        $this->assertContains('lang', (new User)->getFillable());
+    }
+
     public function test_user_can_update_language_preference(): void
     {
         $user = $this->makeUser();
