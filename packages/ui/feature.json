@@ -1,0 +1,8 @@
+{
+  "label": "UI",
+  "description": "Bundled React + Ant Design application: admin dashboard, authentication and account settings.",
+  "presets": ["api-ui", "multilingual-ui", "site"],
+  "requires": [],
+  "conflicts": [],
+  "frontend": false
+}

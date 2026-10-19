@@ -1,6 +1,6 @@
 <?php
 namespace Programmeria\Seo\Facades;
-use Programmeria\Seo\Services\SpaResponse;
+use Programmeria\Ui\Services\SpaResponse;
 
 /**
  * @method static SpaResponse title(string $title, string $separator = ' • ')
@@ -26,16 +26,9 @@ class Spa{
     return new SpaResponse('seo::spa');
   }
 
-  /**
-   * Create a new SpaResponse for the admin shell.
-   */
-  public static function admin(): SpaResponse{
-    return new SpaResponse('seo::admin');
-  }
-
-  /**
-   * Create a new SpaResponse for a custom view.
-   */
+    /**
+     * Create a new SpaResponse for a custom view.
+     */
   public static function view(string $view): SpaResponse{
     return new SpaResponse($view);
   }

@@ -1,8 +1,8 @@
 {
   "label": "SEO",
   "description": "Server-rendered SPA shell with first-load meta tags, Open Graph, JSON-LD and localized page translations.",
-  "presets": ["default", "full"],
-  "requires": [],
+  "presets": ["site"],
+  "requires": ["ui"],
   "conflicts": [],
   "frontend": false
 }

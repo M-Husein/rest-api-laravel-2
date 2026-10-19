@@ -1,8 +1,10 @@
 {
-  "defaultPreset": "default",
+  "defaultPreset": "site",
   "presets": {
-    "minimal": [],
-    "default": ["locale-switcher", "seo"],
-    "full": ["locale-switcher", "seo"]
+    "api": [],
+    "api-ui": ["ui"],
+    "multilingual": ["locale-switcher"],
+    "multilingual-ui": ["ui", "locale-switcher"],
+    "site": ["ui", "locale-switcher", "seo"]
   }
 }

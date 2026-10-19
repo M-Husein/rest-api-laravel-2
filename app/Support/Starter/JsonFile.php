@@ -29,6 +29,6 @@ final class JsonFile
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
         );
 
-        file_put_contents($path, $json . PHP_EOL);
+        file_put_contents($path, $json . "\n");
     }
 }

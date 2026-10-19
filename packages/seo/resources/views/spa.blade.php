@@ -64,7 +64,8 @@ const APP=Object.freeze({
   defaultLang:"{{$defaultLang}}",
   locales:@json(config('localizer.locales')),
   strategy:"pathname",
-  csp:"{{$csp}}"
+  csp:"{{$csp}}",
+  redirectAfterLogin:"{{ Route::has('home') ? '/' : '/app' }}"
 });
 window.__APP__={
   user:@json($user,$flags),
@@ -73,7 +74,7 @@ window.__APP__={
 };
 </script>
 @viteReactRefresh
-@vite(['resources/css/app.scss','resources/ts/main.tsx'])
+@vite(['packages/ui/resources/css/app.scss','packages/ui/resources/ts/main.tsx'])
 </head>
 <body class="antialiased min-h-fullscreen bg-main">
   <div id="loaderApp" data-nosnippet>

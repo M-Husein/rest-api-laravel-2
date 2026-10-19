@@ -10,10 +10,9 @@ Node.js (Express/NestJS), Bun (ElysiaJS), and Python.
 
 > **Project status**
 >
-> This document describes the target starterkit contract. The five-preset model and the
-> `ui` package split are in progress. Until that refactor lands, `starterkit.json` still
-> exposes the legacy `minimal`, `default`, and `full` presets. See
-> [Legacy preset names](#legacy-preset-names).
+> The five-preset model and the `ui` package split are implemented. `starterkit.json`
+> exposes `api`, `api-ui`, `multilingual`, `multilingual-ui`, and `site` (default).
+> Feature packages are discovered from `packages/*/feature.json`.
 
 ## Goals
 
@@ -92,8 +91,8 @@ The UI is only installed and built for UI presets. API-only presets do not requi
    ```bash
    php artisan starter:install --preset=site
    ```
-   Run the command without `--preset` for an interactive selection. Until the five-preset
-   refactor is released, use the legacy preset names described below.
+   Run the command without `--preset` for an interactive selection. The default preset is
+   `site`.
 
 When creating a project with `composer create-project`, the post-install script prints the
 `starter:install` command to run next. No feature is selected automatically.
@@ -228,15 +227,8 @@ Removing a feature never drops database tables or user data.
 
 ### Legacy preset names
 
-Until the five-preset refactor is released, the legacy names remain in `starterkit.json`:
-
-| Legacy | Target |
-|--------|--------|
-| `minimal` | `api` |
-| `default` | `site` |
-| `full` | `site` |
-
-The legacy names will be removed. No aliases are planned.
+The legacy `minimal`, `default`, and `full` presets were removed; no aliases are provided.
+Use `api` instead of `minimal`, and `site` instead of `default` or `full`.
 
 ## UI and no-UI presets
 
