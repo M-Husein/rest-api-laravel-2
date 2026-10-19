@@ -1,5 +1,7 @@
 # Architecture
 
+**English** · [Bahasa Indonesia](https://github.com/M-Husein/rest-api-laravel-2/wiki/id-Architecture)
+
 ## Layers
 
 | No | Layer | Package | Type | Responsibility |

@@ -1,5 +1,7 @@
 # Contributing
 
+**English** · [Bahasa Indonesia](https://github.com/M-Husein/rest-api-laravel-2/wiki/id-Contributing)
+
 ## Development setup
 
 1. Clone the repository and install PHP dependencies:
