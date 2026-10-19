@@ -1,6 +1,6 @@
 # SEO
 
-**English** · [Bahasa Indonesia](https://github.com/M-Husein/rest-api-laravel-2/wiki/id/SEO)
+**English** · [Bahasa Indonesia](https://github.com/M-Husein/rest-api-laravel-2/wiki/id-SEO)
 
 Public-site SEO is provided by the `seo` feature package (`programmeria/laravel-seo`).
 

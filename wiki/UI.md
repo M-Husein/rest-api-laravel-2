@@ -1,6 +1,6 @@
 # UI
 
-**English** · [Bahasa Indonesia](https://github.com/M-Husein/rest-api-laravel-2/wiki/id/UI)
+**English** · [Bahasa Indonesia](https://github.com/M-Husein/rest-api-laravel-2/wiki/id-UI)
 
 The bundled UI is provided by the `ui` feature package
 (`programmeria/laravel-ui` / `@programmeria/ui`).

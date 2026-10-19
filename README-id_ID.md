@@ -378,11 +378,11 @@ Panduan untuk port berikutnya:
 | 9 | [Language Ports](wiki/Language-Ports.md) | Kontrak lintas bahasa dan roadmap |
 | 10 | [Contributing](wiki/Contributing.md) | Alur pengembangan dan tes |
 
-Terjemahan Bahasa Indonesia berada di [`wiki/id`](wiki/id) dan dipublikasikan di
-`/wiki/id/Home`.
+Terjemahan Bahasa Indonesia berada di [`wiki/id-Home.md`](wiki/id-Home.md) dan dipublikasikan
+di `/wiki/id-Home`.
 
-Untuk mempublikasikan pembaruan ke GitHub wiki, salin isi `wiki` (termasuk `id/`) ke clone
-dari `https://github.com/M-Husein/rest-api-laravel-2.wiki.git` lalu push.
+Untuk mempublikasikan pembaruan ke GitHub wiki, salin isi `wiki` (termasuk halaman `id-*`)
+ke clone dari `https://github.com/M-Husein/rest-api-laravel-2.wiki.git` lalu push.
 
 ## Keamanan
 

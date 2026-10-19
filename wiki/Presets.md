@@ -1,6 +1,6 @@
 # Presets
 
-**English** · [Bahasa Indonesia](https://github.com/M-Husein/rest-api-laravel-2/wiki/id/Presets)
+**English** · [Bahasa Indonesia](https://github.com/M-Husein/rest-api-laravel-2/wiki/id-Presets)
 
 Presets are product profiles, not implementation details. The same names and capabilities
 are intended to be used by every language port.

@@ -1,6 +1,6 @@
 # Language Ports
 
-**English** · [Bahasa Indonesia](https://github.com/M-Husein/rest-api-laravel-2/wiki/id/Language-Ports)
+**English** · [Bahasa Indonesia](https://github.com/M-Husein/rest-api-laravel-2/wiki/id-Language-Ports)
 
 The preset names are language-independent. Repository and package names may differ per
 ecosystem, but the capabilities must match the preset contract.

@@ -1,6 +1,6 @@
 # Architecture
 
-**English** · [Bahasa Indonesia](https://github.com/M-Husein/rest-api-laravel-2/wiki/id/Architecture)
+**English** · [Bahasa Indonesia](https://github.com/M-Husein/rest-api-laravel-2/wiki/id-Architecture)
 
 ## Layers
 

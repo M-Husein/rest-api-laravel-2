@@ -19,15 +19,15 @@ direncanakan untuk Go, Rust, Node.js (Express/NestJS), Bun (ElysiaJS), dan Pytho
 
 | No | Halaman | Isi |
 |----|---------|-----|
-| 1 | [Memulai](Getting-Started) | Prasyarat, instalasi, menjalankan pertama kali |
-| 2 | [Preset](Presets) | Kontrak preset dan kasus penggunaan |
-| 3 | [Arsitektur](Architecture) | Batas core, UI, locale-switcher, dan SEO |
-| 4 | [Manajemen Fitur](Feature-Management) | Pasang, hapus, dry-run, keamanan |
-| 5 | [UI](UI) | Aplikasi React/Ant Design bawaan dan build |
-| 6 | [Internasionalisasi](Internationalization) | Backend locale dan strategi UI |
-| 7 | [SEO](SEO) | Shell publik, metadata, terjemahan halaman |
-| 8 | [Port Bahasa](Language-Ports) | Kontrak antar-bahasa dan roadmap |
-| 9 | [Kontribusi](Contributing) | Alur kerja pengembangan dan pengujian |
+| 1 | [Memulai](id-Getting-Started) | Prasyarat, instalasi, menjalankan pertama kali |
+| 2 | [Preset](id-Presets) | Kontrak preset dan kasus penggunaan |
+| 3 | [Arsitektur](id-Architecture) | Batas core, UI, locale-switcher, dan SEO |
+| 4 | [Manajemen Fitur](id-Feature-Management) | Pasang, hapus, dry-run, keamanan |
+| 5 | [UI](id-UI) | Aplikasi React/Ant Design bawaan dan build |
+| 6 | [Internasionalisasi](id-Internationalization) | Backend locale dan strategi UI |
+| 7 | [SEO](id-SEO) | Shell publik, metadata, terjemahan halaman |
+| 8 | [Port Bahasa](id-Language-Ports) | Kontrak antar-bahasa dan roadmap |
+| 9 | [Kontribusi](id-Contributing) | Alur kerja pengembangan dan pengujian |
 
 ## Tujuan
 

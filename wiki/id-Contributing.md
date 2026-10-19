@@ -11,7 +11,7 @@
    ```
 
 2. Buat `.env`, generate key, dan konfigurasikan PostgreSQL. Lihat
-   [Memulai](Getting-Started).
+   [Memulai](id-Getting-Started).
 
 3. Pasang dependensi frontend (hanya untuk pekerjaan UI) — selalu dari root repositori:
 
@@ -45,7 +45,7 @@ composer validate --no-check-publish
 ## Konvensi
 
 - Kode dan identifier menggunakan bahasa Inggris.
-- Nama preset dan fitur tidak terikat bahasa (lihat [Preset](Presets)).
+- Nama preset dan fitur tidak terikat bahasa (lihat [Preset](id-Presets)).
 - Jangan menambahkan komentar kecuali membawa konteks yang benar-benar diperlukan.
 - Letakkan dependensi frontend di dalam `packages/ui/package.json`.
 

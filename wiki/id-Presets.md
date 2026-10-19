@@ -74,4 +74,4 @@ Gunakan `api` sebagai pengganti `minimal`, dan `site` sebagai pengganti `default
 - Preset diselesaikan pada **waktu instalasi** oleh `php artisan starter:install`.
 - `starterkit.json` mendefinisikan pemetaan preset ke fitur dan preset default.
 - Override tersedia dengan `--with` dan `--without`.
-- Lihat [Manajemen Fitur](Feature-Management) untuk perintah dan keamanan.
+- Lihat [Manajemen Fitur](id-Feature-Management) untuk perintah dan keamanan.

@@ -378,11 +378,11 @@ lives in [`wiki`](wiki) and is mirrored to the GitHub wiki:
 | 9 | [Language Ports](wiki/Language-Ports.md) | Cross-language contract and roadmap |
 | 10 | [Contributing](wiki/Contributing.md) | Development workflow and tests |
 
-An Indonesian translation lives in [`wiki/id`](wiki/id) and is published under
-`/wiki/id/Home`.
+An Indonesian translation lives in [`wiki/id-Home.md`](wiki/id-Home.md) and is published under
+`/wiki/id-Home`.
 
-To publish updates to the GitHub wiki, copy the contents of `wiki` (including `id/`) into a
-clone of `https://github.com/M-Husein/rest-api-laravel-2.wiki.git` and push.
+To publish updates to the GitHub wiki, copy the contents of `wiki` (including the `id-*`
+pages) into a clone of `https://github.com/M-Husein/rest-api-laravel-2.wiki.git` and push.
 
 ## Security
 

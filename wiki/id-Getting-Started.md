@@ -62,8 +62,8 @@ otomatis.**
 
 ## Setelah instalasi
 
-- Tinjau [Preset](Presets) untuk memastikan profil sesuai dengan proyek Anda.
-- Tinjau [Manajemen Fitur](Feature-Management) untuk mengubah pilihan nanti.
+- Tinjau [Preset](id-Presets) untuk memastikan profil sesuai dengan proyek Anda.
+- Tinjau [Manajemen Fitur](id-Feature-Management) untuk mengubah pilihan nanti.
 - Jalankan API dengan `php artisan serve`.
 - Untuk preset UI, build aset dengan `bun install` dan `bun run build`.
 
