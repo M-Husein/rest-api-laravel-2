@@ -363,22 +363,22 @@ Panduan untuk port berikutnya:
 ## Dokumentasi dan wiki
 
 `README.md` dan `README-id_ID.md` adalah pintu masuk singkat. Dokumentasi lengkap berada di
-[`docs/wiki`](docs/wiki) dan dicerminkan ke GitHub wiki:
+[`wiki`](wiki) dan dicerminkan ke GitHub wiki:
 
 | No | Halaman | Isi |
 |----|---------|-----|
-| 1 | [Home](docs/wiki/Home.md) | Ringkasan dan tautan |
-| 2 | [Getting Started](docs/wiki/Getting-Started.md) | Kebutuhan, instalasi, menjalankan pertama kali |
-| 3 | [Presets](docs/wiki/Presets.md) | Kontrak preset dan penggunaan |
-| 4 | [Architecture](docs/wiki/Architecture.md) | Batas core, UI, locale-switcher, SEO |
-| 5 | [Feature Management](docs/wiki/Feature-Management.md) | Install, remove, dry-run, keamanan |
-| 6 | [UI](docs/wiki/UI.md) | Aplikasi React/Ant Design bawaan dan build |
-| 7 | [Internationalization](docs/wiki/Internationalization.md) | Backend locale dan strategi UI |
-| 8 | [SEO](docs/wiki/SEO.md) | Shell publik, metadata, terjemahan halaman |
-| 9 | [Language Ports](docs/wiki/Language-Ports.md) | Kontrak lintas bahasa dan roadmap |
-| 10 | [Contributing](docs/wiki/Contributing.md) | Alur pengembangan dan tes |
+| 1 | [Home](wiki/Home.md) | Ringkasan dan tautan |
+| 2 | [Getting Started](wiki/Getting-Started.md) | Kebutuhan, instalasi, menjalankan pertama kali |
+| 3 | [Presets](wiki/Presets.md) | Kontrak preset dan penggunaan |
+| 4 | [Architecture](wiki/Architecture.md) | Batas core, UI, locale-switcher, SEO |
+| 5 | [Feature Management](wiki/Feature-Management.md) | Install, remove, dry-run, keamanan |
+| 6 | [UI](wiki/UI.md) | Aplikasi React/Ant Design bawaan dan build |
+| 7 | [Internationalization](wiki/Internationalization.md) | Backend locale dan strategi UI |
+| 8 | [SEO](wiki/SEO.md) | Shell publik, metadata, terjemahan halaman |
+| 9 | [Language Ports](wiki/Language-Ports.md) | Kontrak lintas bahasa dan roadmap |
+| 10 | [Contributing](wiki/Contributing.md) | Alur pengembangan dan tes |
 
-Untuk mempublikasikan pembaruan ke GitHub wiki, salin isi `docs/wiki` ke clone dari
+Untuk mempublikasikan pembaruan ke GitHub wiki, salin isi `wiki` ke clone dari
 `https://github.com/M-Husein/rest-api-laravel-2.wiki.git` lalu push.
 
 ## Keamanan

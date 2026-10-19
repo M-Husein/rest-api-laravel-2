@@ -49,7 +49,7 @@ composer validate --no-check-publish
 ## Documentation
 
 - `README.md` (English) and `README-id_ID.md` (Indonesian) are the entry points.
-- The wiki source lives in `docs/wiki` and is mirrored to the GitHub wiki.
+- The wiki source lives in `wiki` and is mirrored to the GitHub wiki.
 
 ## Security
 
