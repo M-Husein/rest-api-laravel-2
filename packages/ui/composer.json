@@ -1,0 +1,28 @@
+{
+  "name": "programmeria/laravel-ui",
+  "version": "0.1.0",
+  "description": "Bundled React + Ant Design application shell (admin dashboard, authentication, account settings) for the starterkit.",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": "^8.3",
+    "laravel/framework": "^13.0"
+  },
+  "suggest": {
+    "dedoc/scramble": "Keeps the SPA shell routes out of the generated API documentation."
+  },
+  "autoload": {
+    "psr-4": {
+      "Programmeria\\Ui\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Programmeria\\Ui\\UiServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}

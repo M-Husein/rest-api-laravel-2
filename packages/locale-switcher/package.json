@@ -1,0 +1,10 @@
+{
+  "name": "@programmeria/locale-switcher",
+  "version": "0.1.0",
+  "description": "Optional multi-locale switcher (UI + locale strategies) for the starterkit.",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./resources/ts/index.ts"
+  }
+}

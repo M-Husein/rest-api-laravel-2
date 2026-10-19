@@ -1,0 +1,29 @@
+{
+  "name": "programmeria/laravel-seo",
+  "version": "0.1.0",
+  "description": "First-load SEO shell (meta tags, Open Graph, JSON-LD) and localized page translations for the starterkit.",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": "^8.3",
+    "laravel/framework": "^13.0",
+    "programmeria/laravel-ui": "0.1.*"
+  },
+  "suggest": {
+    "dedoc/scramble": "Keeps the SPA shell routes out of the generated API documentation."
+  },
+  "autoload": {
+    "psr-4": {
+      "Programmeria\\Seo\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Programmeria\\Seo\\SeoServiceProvider"
+      ]
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}

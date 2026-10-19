@@ -1,0 +1,7 @@
+{
+  "label": "Locale switcher",
+  "description": "Optional multi-locale switcher: language menu, URL/storage/query/user strategies, and per-user language preference.",
+  "presets": ["multilingual", "multilingual-ui", "site"],
+  "requires": [],
+  "conflicts": []
+}

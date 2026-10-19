@@ -5,6 +5,15 @@
   "description": "The skeleton application for the Laravel framework.",
   "keywords": ["laravel", "framework"],
   "license": "MIT",
+  "repositories": [
+    {
+      "type": "path",
+      "url": "packages/*",
+      "options": {
+        "symlink": true
+      }
+    }
+  ],
   "require": {
     "php": "^8.3",
     "dedoc/scramble": "^0.13.48",
@@ -13,6 +22,9 @@
     "laravel/socialite": "^5.27",
     "laravel/tinker": "^3.0",
     "niels-numbers/laravel-localizer": "^1.4",
+    "programmeria/laravel-locale-switcher": "0.1.*",
+    "programmeria/laravel-seo": "0.1.*",
+    "programmeria/laravel-ui": "0.1.*",
     "rzl-zone/blade-minify": "^0.0.5",
     "spatie/laravel-permission": "^8.0",
     "spatie/laravel-translation-loader": "^2.8"
@@ -58,6 +70,9 @@
       "@php artisan config:clear --ansi",
       "@php artisan test"
     ],
+    "starter:install": [
+      "@php artisan starter:install"
+    ],
     "post-autoload-dump": [
       "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
       "@php artisan package:discover --ansi"
@@ -71,10 +86,8 @@
     "post-create-project-cmd": [
       "@php artisan key:generate --ansi",
       "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-      "@php artisan migrate --graceful --ansi"
-    ],
-    "pre-package-uninstall": [
-      "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
+      "@php artisan migrate --graceful --ansi",
+      "@php -r \"echo PHP_EOL . 'Next step: php artisan starter:install' . PHP_EOL;\""
     ]
   },
   "extra": {

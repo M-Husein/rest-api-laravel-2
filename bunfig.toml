@@ -6,5 +6,10 @@
 # which is the equivalent of npm's legacy-peer-deps=true.
 # No extra flag is needed.
 
+# Hoist every dependency to the root node_modules so the root scripts
+# (tsc, vite) and the shared tsconfig resolve packages regardless of which
+# workspace declares them. The frontend dependencies live in packages/ui.
+linker = "hoisted"
+
 # Uncomment to get a human-readable text lockfile alongside bun.lock:
 # saveTextLockfile = true

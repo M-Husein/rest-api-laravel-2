@@ -1,3 +1,4 @@
+import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from "vite";
 // import react from "@vitejs/plugin-react";
 import react from '@vitejs/plugin-react-swc';
@@ -8,12 +9,16 @@ import laravel from 'laravel-vite-plugin';
 // import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
+	// The frontend dependencies live in packages/ui (Bun workspace), so Vite is
+	// invoked from there with this root config. Pin the project root explicitly
+	// so the Laravel plugin keeps emitting to <root>/public/build.
+	root: fileURLToPath(new URL('.', import.meta.url)),
 	plugins: [
 		laravel({
 			input: [
-        'resources/css/app.scss', 
-        'resources/ts/main.tsx',
-        'resources/ts/admin.tsx'
+        'packages/ui/resources/css/app.scss', 
+        'packages/ui/resources/ts/main.tsx',
+        'packages/ui/resources/ts/admin.tsx'
       ],
 			refresh: true,
       // buildDirectory: 'build', // outputs to public/build
@@ -27,9 +32,17 @@ export default defineConfig({
 		// tailwindcss(),
 	],
   resolve: {
-    alias: {
-      '@': '/resources/ts',
-    },
+    alias: [
+      { find: '@', replacement: '/packages/ui/resources/ts' },
+      {
+        // Feature packages (workspace: packages/*/resources/ts). Source .ts is
+        // consumed directly by the bundler; entry point is resources/ts/index.ts.
+        find: /^@programmeria\/([^/]+)$/,
+        replacement: fileURLToPath(
+          new URL('./packages/$1/resources/ts/index.ts', import.meta.url)
+        ),
+      },
+    ],
   },
   server: {
     // port: 5175,

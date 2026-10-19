@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Spatie\Permission\Middleware\{RoleMiddleware,PermissionMiddleware,RoleOrPermissionMiddleware};
 use NielsNumbers\LaravelLocalizer\Middleware\{SetLocale,RedirectLocale};
-use App\Http\Middleware\{SecurityHeaders,SecureApiHeaders,SetLang};
+use App\Http\Middleware\{SecurityHeaders,SecureApiHeaders};
 
 return Application::configure(basePath:dirname(__DIR__))
   ->withRouting(
@@ -20,11 +20,21 @@ return Application::configure(basePath:dirname(__DIR__))
     commands:__DIR__.'/../routes/console.php',
     health:'/up'
   )
+  ->withCommands()
   ->withMiddleware(function(Middleware $middleware){
     $middleware->statefulApi();// Enable stateful API for Sanctum SPA cookie auth
     $middleware->preventRequestForgery(except: ['api/*']);// Exclude API routes from CSRF verification
-    $middleware->redirectUsersTo('/');// Redirect authenticated users away from guest routes
-    $middleware->redirectGuestsTo('/login');// Redirect unauthenticated users away from auth routes
+
+    // The UI package owns the web auth shell. Without it (api/multilingual
+    // presets) there are no guest/auth web routes to redirect to.
+    $hasUi = class_exists(\Programmeria\Ui\UiServiceProvider::class);
+    $hasSeo = class_exists(\Programmeria\Seo\SeoServiceProvider::class);
+
+    if($hasUi){
+      $middleware->redirectUsersTo($hasSeo ? '/' : '/app');// After login: public home, or the admin shell when there is no site
+      $middleware->redirectGuestsTo('/login');
+    }
+
     $middleware->web(remove: [SubstituteBindings::class]);
     $middleware->web(append: [
       SecurityHeaders::class,
@@ -33,7 +43,7 @@ return Application::configure(basePath:dirname(__DIR__))
       SubstituteBindings::class,
       \RzlZone\BladeMinify\Middleware\RzlBladeOutputMinifier::class
     ]);
-    $middleware->api(append: [SecureApiHeaders::class,SetLang::class]);
+    $middleware->api(append: [SecureApiHeaders::class]);
     $middleware->alias([
       'role' => RoleMiddleware::class,
       'permission' => PermissionMiddleware::class,

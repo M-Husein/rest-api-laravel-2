@@ -1,0 +1,10 @@
+{
+  "defaultPreset": "site",
+  "presets": {
+    "api": [],
+    "api-ui": ["ui"],
+    "multilingual": ["locale-switcher"],
+    "multilingual-ui": ["ui", "locale-switcher"],
+    "site": ["ui", "locale-switcher", "seo"]
+  }
+}

@@ -1,0 +1,15 @@
+import React from "react";
+import { createRoot } from "react-dom/client";
+import './features.generated';
+import './i18n';
+import { bootstrap } from './app/bootstrap';
+import { AdminApp } from './app/AdminApp';
+
+bootstrap();
+
+createRoot(document.getElementById("app") as HTMLElement)
+  .render(
+    <React.Suspense fallback="">
+      <AdminApp />
+    </React.Suspense>
+  );
