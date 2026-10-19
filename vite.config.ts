@@ -33,6 +33,12 @@ export default defineConfig({
 	],
   resolve: {
     alias: [
+      {
+        find: '@programmeria/ui/feature',
+        replacement: fileURLToPath(
+          new URL('./packages/ui/resources/ts/core/feature/index.ts', import.meta.url)
+        ),
+      },
       { find: '@', replacement: '/packages/ui/resources/ts' },
       {
         // Feature packages (workspace: packages/*/resources/ts). Source .ts is

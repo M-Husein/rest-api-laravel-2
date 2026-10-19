@@ -5,6 +5,9 @@
   "description": "Bundled React + Ant Design application shell (admin dashboard, authentication, account settings).",
   "private": true,
   "type": "module",
+  "exports": {
+    "./feature": "./resources/ts/core/feature/index.ts"
+  },
   "dependencies": {
     "@ant-design/icons": "^6.1.1",
     "@hookform/resolvers": "^5.9.2",

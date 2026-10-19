@@ -108,6 +108,7 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "paths": {
+      "@programmeria/ui/feature": ["./packages/ui/resources/ts/core/feature/index.ts"],
       "@/*": ["./packages/ui/resources/ts/*"],
       "@programmeria/*": ["./packages/*/resources/ts/index.ts"]
       // "ziggy-js": ["./vendor/tightenco/ziggy"]

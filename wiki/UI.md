@@ -33,6 +33,9 @@ Node.js or Bun installation is needed.
   keeps only workspace definitions and scripts.
 - Vite resolves `@programmeria/<feature>` to `packages/<feature>/resources/ts/index.ts`, so
   feature TypeScript is consumed as source.
+- Feature packages talk to the UI runtime through the public contract
+  `@programmeria/ui/feature` (`featureApi`). The `@/` alias is UI-internal and blocked for
+  other packages by ESLint.
 - The feature registry (`features.generated.ts`) is generated from `features.json`.
 
 ## Routes
@@ -63,5 +66,5 @@ To disable registration:
 
 ## Known limitations
 
-- Frontend packages still import some application internals (for example `@/utils/user` and
-  a dynamic `@/providers/dataProvider`). Decoupling is a planned follow-up.
+- Feature TypeScript targets the React UI runtime. Presets without the UI (`api`,
+  `multilingual`) do not install or build any frontend code.

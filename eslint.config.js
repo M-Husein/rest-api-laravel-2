@@ -24,5 +24,23 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
     },
+  },
+  {
+    files: ["packages/**/*.{ts,tsx}"],
+    ignores: ["packages/ui/**"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@/*"],
+              message:
+                "Feature packages must use the public contract (@programmeria/ui/feature), not UI internals.",
+            },
+          ],
+        },
+      ],
+    },
   }
 );
