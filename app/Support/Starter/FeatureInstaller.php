@@ -23,6 +23,7 @@ final class FeatureInstaller
         ?callable $log = null,
     ): void {
         $plan = $this->repository->plan($desired);
+        $withUi = in_array('ui', $desired, true);
 
         foreach ($plan['install'] as $feature) {
             $this->log($log, "Installing {$feature->composerName} ({$feature->constraint()}) ...");
@@ -37,21 +38,27 @@ final class FeatureInstaller
         $this->repository->writeSelected($desired);
         $this->log($log, 'Updated features.json (' . (implode(', ', $desired) ?: 'none') . ').');
 
-        $this->log($log, 'Regenerating resources/ts/features.generated.ts ...');
-        $this->regenerate($log);
+        if ($withUi) {
+            $this->log($log, 'Regenerating packages/ui/resources/ts/features.generated.ts ...');
+            $this->regenerate($log);
+        } else {
+            $this->log($log, 'UI not selected, skipping frontend codegen.');
+        }
 
         if ($migrate) {
             $this->log($log, 'Running migrations ...');
             $this->runCommand([PHP_BINARY, $this->repository->basePath('artisan'), 'migrate', '--force'], $log);
         }
 
-        if ($build) {
+        if ($build && $withUi) {
             if (! $this->hasBinary('bun')) {
                 $this->log($log, 'Bun not found, skipping frontend install/build.');
             } else {
                 $this->runShell('bun install', $log);
                 $this->runShell('bun run build', $log);
             }
+        } elseif ($build) {
+            $this->log($log, 'UI not selected, skipping frontend install/build.');
         }
     }
 

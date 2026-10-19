@@ -16,12 +16,12 @@ class StarterInstallCommandTest extends TestCase
             ->expectsOutputToContain('locale-switcher');
     }
 
-    public function test_install_dry_run_plans_removal_for_minimal_preset(): void
+    public function test_install_dry_run_plans_removal_for_api_preset(): void
     {
         $before = file_get_contents(base_path('features.json'));
 
         $this->artisan('starter:install', [
-            '--preset' => 'minimal',
+            '--preset' => 'api',
             '--dry-run' => true,
         ])
             ->assertSuccessful()
@@ -30,14 +30,42 @@ class StarterInstallCommandTest extends TestCase
         $this->assertSame($before, file_get_contents(base_path('features.json')));
     }
 
-    public function test_install_dry_run_resolves_default_preset(): void
+    public function test_install_dry_run_resolves_site_preset(): void
     {
         $this->artisan('starter:install', [
-            '--preset' => 'default',
+            '--preset' => 'site',
+            '--dry-run' => true,
+        ])
+            ->assertSuccessful()
+            ->expectsOutputToContain('Selected features: locale-switcher, seo, ui');
+    }
+
+    public function test_install_dry_run_resolves_multilingual_preset_without_ui(): void
+    {
+        $this->artisan('starter:install', [
+            '--preset' => 'multilingual',
             '--dry-run' => true,
         ])
             ->assertSuccessful()
             ->expectsOutputToContain('Selected features: locale-switcher');
+    }
+
+    public function test_install_dry_run_resolves_api_ui_preset(): void
+    {
+        $this->artisan('starter:install', [
+            '--preset' => 'api-ui',
+            '--dry-run' => true,
+        ])
+            ->assertSuccessful()
+            ->expectsOutputToContain('Selected features: ui');
+    }
+
+    public function test_seo_requires_ui(): void
+    {
+        $repository = new FeatureRepository(base_path());
+
+        $this->assertContains('ui', $repository->resolveTarget('site'));
+        $this->assertSame([], $repository->resolveTarget('api'));
     }
 
     public function test_install_fails_for_unknown_preset(): void

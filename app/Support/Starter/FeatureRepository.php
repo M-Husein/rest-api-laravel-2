@@ -49,7 +49,7 @@ final class FeatureRepository
 
     public function defaultPreset(): string
     {
-        return JsonFile::read($this->basePath('starterkit.json'))['defaultPreset'] ?? 'default';
+        return JsonFile::read($this->basePath('starterkit.json'))['defaultPreset'] ?? 'site';
     }
 
     /**

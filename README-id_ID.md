@@ -10,10 +10,9 @@ Node.js (Express/NestJS), Bun (ElysiaJS), dan Python.
 
 > **Status proyek**
 >
-> Dokumen ini menjelaskan kontrak starterkit yang dituju. Model lima preset dan pemisahan
-> paket `ui` sedang dikerjakan. Sampai refactor tersebut selesai, `starterkit.json` masih
-> menyediakan preset lama `minimal`, `default`, dan `full`. Lihat
-> [Nama preset lama](#nama-preset-lama).
+> Model lima preset dan pemisahan paket `ui` sudah diimplementasikan. `starterkit.json`
+> menyediakan `api`, `api-ui`, `multilingual`, `multilingual-ui`, dan `site` (default).
+> Paket fitur ditemukan otomatis dari `packages/*/feature.json`.
 
 ## Tujuan
 
@@ -93,8 +92,8 @@ Node.js atau Bun.
    ```bash
    php artisan starter:install --preset=site
    ```
-   Jalankan perintah tanpa `--preset` untuk pemilihan interaktif. Sampai refactor lima preset
-   dirilis, gunakan nama preset lama yang dijelaskan di bawah.
+   Jalankan perintah tanpa `--preset` untuk pemilihan interaktif. Preset default adalah
+   `site`.
 
 Saat membuat proyek dengan `composer create-project`, script post-install akan menampilkan
 perintah `starter:install` yang harus dijalankan berikutnya. Tidak ada fitur yang dipilih
@@ -228,15 +227,8 @@ Menghapus fitur tidak pernah menghapus tabel database atau data user.
 
 ### Nama preset lama
 
-Sampai refactor lima preset dirilis, nama lama tetap ada di `starterkit.json`:
-
-| Lama | Target |
-|------|--------|
-| `minimal` | `api` |
-| `default` | `site` |
-| `full` | `site` |
-
-Nama lama akan dihapus. Tidak ada alias yang direncanakan.
+Preset lama `minimal`, `default`, dan `full` sudah dihapus; tidak ada alias. Gunakan `api`
+sebagai pengganti `minimal`, dan `site` sebagai pengganti `default` atau `full`.
 
 ## Preset UI dan tanpa UI
 
