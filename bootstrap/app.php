@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Spatie\Permission\Middleware\{RoleMiddleware,PermissionMiddleware,RoleOrPermissionMiddleware};
 use NielsNumbers\LaravelLocalizer\Middleware\{SetLocale,RedirectLocale};
-use App\Http\Middleware\{SecurityHeaders,SecureApiHeaders,SetLang};
+use App\Http\Middleware\{SecurityHeaders,SecureApiHeaders};
 
 return Application::configure(basePath:dirname(__DIR__))
   ->withRouting(
@@ -20,6 +20,7 @@ return Application::configure(basePath:dirname(__DIR__))
     commands:__DIR__.'/../routes/console.php',
     health:'/up'
   )
+  ->withCommands()
   ->withMiddleware(function(Middleware $middleware){
     $middleware->statefulApi();// Enable stateful API for Sanctum SPA cookie auth
     $middleware->preventRequestForgery(except: ['api/*']);// Exclude API routes from CSRF verification
@@ -33,7 +34,7 @@ return Application::configure(basePath:dirname(__DIR__))
       SubstituteBindings::class,
       \RzlZone\BladeMinify\Middleware\RzlBladeOutputMinifier::class
     ]);
-    $middleware->api(append: [SecureApiHeaders::class,SetLang::class]);
+    $middleware->api(append: [SecureApiHeaders::class]);
     $middleware->alias([
       'role' => RoleMiddleware::class,
       'permission' => PermissionMiddleware::class,

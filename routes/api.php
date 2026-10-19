@@ -1,6 +1,5 @@
 <?php
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\SetUserLang;
 use App\Http\Controllers\Api\V1\{
   AuthController,
   AuthSpaController,
@@ -9,7 +8,6 @@ use App\Http\Controllers\Api\V1\{
   RegisterController,
   TokenController,
   TranslationController,
-  PageTranslationController,
   SocialAuthController,
   UserController,
   ArticleController,
@@ -21,8 +19,6 @@ use App\Http\Controllers\Api\V1\{
 Route::prefix('v1')->group(function(){
   Route::get('locales/{lang}/common', [TranslationController::class, 'getCommon']);
 
-  // Public endpoint for frontend to fetch page translations
-  Route::get('locales/{lang}/page/{name}', [PageTranslationController::class, 'getByPageLang']);
   Route::get('articles', [ArticleController::class, 'index']);
   Route::get('contacts', [ContactController::class, 'index']);
 
@@ -59,10 +55,9 @@ Route::prefix('v1')->group(function(){
     Route::post('reset-password', [AuthController::class, 'resetPassword'])->middleware('throttle:sensitive');
   });
 
-  Route::middleware(['auth:sanctum', SetUserLang::class])->group(function(){
+  Route::middleware('auth:sanctum')->group(function(){
     Route::get('me', [AuthController::class, 'me']);
     Route::put('me', [AuthController::class, 'updateUser']);
-    Route::put('me/language', [AuthController::class, 'updateLanguage']);
 
     // Set Password — for social-registered users with no password
     Route::post('me/password', [AuthController::class, 'setPassword']);
