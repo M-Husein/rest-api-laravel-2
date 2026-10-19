@@ -37,8 +37,38 @@ class User extends Authenticatable implements MustVerifyEmail{
     'phone_verified_at',
     'pending_email',
     // 'role',
-    'lang',
   ];
+
+  /**
+   * Additional attributes registered by optional feature packages.
+   *
+   * @var list<string>
+   */
+  protected static array $featureFillable = [];
+
+  /**
+   * Register attributes that optional features may mass assign.
+   *
+   * @param  list<string>  $attributes
+   */
+  public static function mergeFeatureFillable(array $attributes): void{
+    static::$featureFillable = array_values(array_unique([
+      ...static::$featureFillable,
+      ...$attributes
+    ]));
+  }
+
+  /**
+   * Include attributes registered by optional features.
+   *
+   * @return list<string>
+   */
+  public function getFillable(): array{
+    return array_values(array_unique([
+      ...parent::getFillable(),
+      ...static::$featureFillable
+    ]));
+  }
 
   /**
    * The attributes that should be hidden for serialization.
