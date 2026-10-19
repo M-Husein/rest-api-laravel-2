@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4dbf7e98047d1f645139647c5c97c5c",
+    "content-hash": "6f85c07253cbb7cbccd4412d284d3462",
     "packages": [
         {
             "name": "brick/math",
@@ -3429,6 +3429,77 @@
                 "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.6"
             },
             "time": "2026-09-27T20:07:45+00:00"
+        },
+        {
+            "name": "programmeria/laravel-locale-switcher",
+            "version": "0.1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/locale-switcher",
+                "reference": "2684aa0e1b0348ad417951b8e0acd6644334a3aa"
+            },
+            "require": {
+                "laravel/framework": "^13.0",
+                "php": "^8.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Programmeria\\LocaleSwitcher\\LocaleSwitcherServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Programmeria\\LocaleSwitcher\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Optional multi-locale switcher (middleware, user preference endpoint, migration) for the starterkit.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "programmeria/laravel-seo",
+            "version": "0.1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/seo",
+                "reference": "7a771a0c180910df8e368d010ff26135626b150a"
+            },
+            "require": {
+                "laravel/framework": "^13.0",
+                "php": "^8.3"
+            },
+            "suggest": {
+                "dedoc/scramble": "Keeps the SPA shell routes out of the generated API documentation."
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Programmeria\\Seo\\SeoServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Programmeria\\Seo\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "First-load SEO shell (meta tags, Open Graph, JSON-LD) and localized page translations for the starterkit.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "psr/clock",

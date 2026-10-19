@@ -1,0 +1,8 @@
+{
+  "defaultPreset": "default",
+  "presets": {
+    "minimal": [],
+    "default": ["locale-switcher", "seo"],
+    "full": ["locale-switcher", "seo"]
+  }
+}
