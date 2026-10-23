@@ -43,8 +43,7 @@ const APP=Object.freeze({
   defaultLang:"{{ config('app.fallback_locale') }}",
   locales:@json(config('localizer.locales')),
   strategy:"user",
-  csp:"{{$csp}}",
-  redirectAfterLogin:"{{ Route::has('home') ? '/' : '/app' }}"
+  csp:"{{$csp}}"
 });
 window.__APP__={
   user:@json($user,$flags),

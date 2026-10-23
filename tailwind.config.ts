@@ -30,6 +30,10 @@ export default {
       },
       fontSize: {
         '0': '0',
+        '13': '13px',
+      },
+      borderRadius: {
+        '0': '0',
       },
       colors: {
         /**

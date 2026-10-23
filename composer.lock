@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "329a44183bc7225269d2678a27c207ee",
+    "content-hash": "dd1ebd7c49766fbedd173182adbcfea5",
     "packages": [
         {
             "name": "brick/math",
@@ -3436,11 +3436,11 @@
             "dist": {
                 "type": "path",
                 "url": "packages/locale-switcher",
-                "reference": "2684aa0e1b0348ad417951b8e0acd6644334a3aa"
+                "reference": "2ea203c78b227583e1d7a071345378226e7eae07"
             },
             "require": {
                 "laravel/framework": "^13.0",
-                "php": "^8.3"
+                "php": "^8.5.12"
             },
             "type": "library",
             "extra": {
@@ -3470,11 +3470,11 @@
             "dist": {
                 "type": "path",
                 "url": "packages/seo",
-                "reference": "d2803f829f807f40c45285892040b04886e32678"
+                "reference": "87a24eb4f1d3c5f1600ccb8e7e86200d6b1a3e24"
             },
             "require": {
                 "laravel/framework": "^13.0",
-                "php": "^8.3",
+                "php": "^8.5.12",
                 "programmeria/laravel-ui": "0.1.*"
             },
             "suggest": {
@@ -3508,11 +3508,11 @@
             "dist": {
                 "type": "path",
                 "url": "packages/ui",
-                "reference": "098c7df3f65828cee477e1f1b904cb1df489e396"
+                "reference": "cfad41c01cb0c12b723ccc68267794000c1181c7"
             },
             "require": {
                 "laravel/framework": "^13.0",
-                "php": "^8.3"
+                "php": "^8.5.12"
             },
             "suggest": {
                 "dedoc/scramble": "Keeps the SPA shell routes out of the generated API documentation."
@@ -9629,7 +9629,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.3"
+        "php": "^8.5.12"
     },
     "platform-dev": {},
     "plugin-api-version": "2.9.0"

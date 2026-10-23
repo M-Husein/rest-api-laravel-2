@@ -32,6 +32,16 @@ class JsonFileTest extends TestCase
         $this->assertSame(['features' => ['ui']], JsonFile::read($this->path));
     }
 
+    public function test_write_uses_two_space_indentation(): void
+    {
+        JsonFile::write($this->path, ['features' => ['ui']]);
+
+        $this->assertSame(
+            "{\n  \"features\": [\n    \"ui\"\n  ]\n}\n",
+            file_get_contents($this->path)
+        );
+    }
+
     public function test_write_is_idempotent(): void
     {
         JsonFile::write($this->path, ['features' => ['ui']]);

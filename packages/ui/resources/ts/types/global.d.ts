@@ -8,7 +8,6 @@ interface AppConfig {
   },
   strategy: 'pathname' | 'query' | 'user' | 'storage',
   csp: string,
-  redirectAfterLogin: '/' | '/app',
   // socials: string[],
 }
 

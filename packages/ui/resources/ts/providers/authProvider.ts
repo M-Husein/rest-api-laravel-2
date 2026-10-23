@@ -47,7 +47,7 @@ export const authProvider: AuthProvider = {
       if(response?.success){
         return {
           success: true,
-          redirectTo: APP.redirectAfterLogin,
+          redirectTo: "/",
           successNotification: {
             message: response.message || featureApi.translate('notifs.checkVerificationEmail'),
             description: featureApi.translate('notifs.registerSuccess'),
@@ -115,12 +115,9 @@ export const authProvider: AuthProvider = {
           }
         })();
 
-        // window.location.replace('/');
-        // window.location.reload();
-        
         return {
           success: true,
-          redirectTo: APP.redirectAfterLogin, // "/" public site, "/app" API-only + UI
+          redirectTo: "/",
         };
       }
 

@@ -27,7 +27,7 @@ Node.js (Express/NestJS), Bun (ElysiaJS), and Python.
 
 ### Backend
 
-- **PHP** 8.3
+- **PHP** 8.5.12+
 - **Laravel Framework** 13
 - **PostgreSQL** (default database connection)
 - **Laravel Sanctum** — SPA cookie authentication and API tokens
@@ -50,7 +50,7 @@ The UI is only installed and built for UI presets. API-only presets do not requi
 
 ## Requirements
 
-- PHP >= 8.3 with the `pdo_pgsql`, `pgsql`, `openssl`, `mbstring`, `tokenizer`, `xml`,
+- PHP >= 8.5.12 with the `pdo_pgsql`, `pgsql`, `openssl`, `mbstring`, `tokenizer`, `xml`,
   `ctype`, `json`, `bcmath`, and `fileinfo` extensions
 - [Composer](https://getcomposer.org/) 2
 - PostgreSQL 16+ (running)
@@ -388,7 +388,10 @@ pages) into a clone of `https://github.com/M-Husein/rest-api-laravel-2.wiki.git`
 
 - Never commit `.env`, application keys, OAuth secrets, or database credentials.
 - Use environment variables for secrets and rotate them after any exposure.
+- PHP >= 8.5.12 is required because older PHP versions are affected by PHP2Shell
+  (`CVE-2026-109618`, `CVE-2026-109619`).
 - Report security issues privately to the maintainers instead of opening a public issue.
+- See [SECURITY.md](SECURITY.md) for supported versions and the reporting policy.
 
 ## License
 

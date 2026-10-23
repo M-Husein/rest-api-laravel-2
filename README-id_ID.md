@@ -27,7 +27,7 @@ Node.js (Express/NestJS), Bun (ElysiaJS), dan Python.
 
 ### Backend
 
-- **PHP** 8.3
+- **PHP** 8.5.12+
 - **Laravel Framework** 13
 - **PostgreSQL** (koneksi database default)
 - **Laravel Sanctum** — autentikasi cookie SPA dan token API
@@ -51,7 +51,7 @@ Node.js atau Bun.
 
 ## Kebutuhan
 
-- PHP >= 8.3 dengan ekstensi `pdo_pgsql`, `pgsql`, `openssl`, `mbstring`, `tokenizer`, `xml`,
+- PHP >= 8.5.12 dengan ekstensi `pdo_pgsql`, `pgsql`, `openssl`, `mbstring`, `tokenizer`, `xml`,
   `ctype`, `json`, `bcmath`, dan `fileinfo`
 - [Composer](https://getcomposer.org/) 2
 - PostgreSQL 16+ (berjalan)
@@ -388,7 +388,10 @@ ke clone dari `https://github.com/M-Husein/rest-api-laravel-2.wiki.git` lalu pus
 
 - Jangan pernah commit `.env`, application key, secret OAuth, atau kredensial database.
 - Gunakan environment variable untuk secret dan rotasi setelah terjadi kebocoran.
+- PHP >= 8.5.12 diperlukan karena versi PHP yang lebih lama terdampak PHP2Shell
+  (`CVE-2026-109618`, `CVE-2026-109619`).
 - Laporkan masalah keamanan secara privat ke maintainer, bukan melalui issue publik.
+- Lihat [SECURITY-id_ID.md](SECURITY-id_ID.md) untuk versi yang didukung dan kebijakan pelaporan.
 
 ## Lisensi
 

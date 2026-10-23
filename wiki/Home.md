@@ -42,7 +42,7 @@ Node.js (Express/NestJS), Bun (ElysiaJS), and Python.
 
 **Backend**
 
-- PHP 8.3, Laravel Framework 13, PostgreSQL
+- PHP 8.5.12+, Laravel Framework 13, PostgreSQL
 - Laravel Sanctum (SPA cookie auth and API tokens), Laravel Socialite
 - Spatie Laravel Permission, Spatie Laravel Translation Loader
 - NielsNumbers Laravel Localizer, dedoc/scramble, RZL Zone Blade Minify

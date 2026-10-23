@@ -4,7 +4,7 @@
 
 ## Requirements
 
-- PHP >= 8.3 with the `pdo_pgsql`, `pgsql`, `openssl`, `mbstring`, `tokenizer`, `xml`,
+- PHP >= 8.5.12 with the `pdo_pgsql`, `pgsql`, `openssl`, `mbstring`, `tokenizer`, `xml`,
   `ctype`, `json`, `bcmath`, and `fileinfo` extensions
 - [Composer](https://getcomposer.org/) 2
 - PostgreSQL 16+ (running)

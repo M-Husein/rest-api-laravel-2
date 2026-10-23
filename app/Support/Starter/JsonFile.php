@@ -29,6 +29,16 @@ final class JsonFile
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
         );
 
-        file_put_contents($path, $json . "\n");
+        if ($json === false) {
+            throw new \RuntimeException('Unable to encode JSON.');
+        }
+
+        $json = preg_replace_callback(
+            '/^(?: {4})+/m',
+            static fn (array $matches): string => str_repeat(' ', strlen($matches[0]) / 2),
+            $json
+        );
+
+        file_put_contents($path, $json."\n");
     }
 }

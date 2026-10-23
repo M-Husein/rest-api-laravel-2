@@ -4,7 +4,7 @@
 
 ## Prasyarat
 
-- PHP >= 8.3 dengan ekstensi `pdo_pgsql`, `pgsql`, `openssl`, `mbstring`, `tokenizer`, `xml`,
+- PHP >= 8.5.12 dengan ekstensi `pdo_pgsql`, `pgsql`, `openssl`, `mbstring`, `tokenizer`, `xml`,
   `ctype`, `json`, `bcmath`, dan `fileinfo`
 - [Composer](https://getcomposer.org/) 2
 - PostgreSQL 16+ (berjalan)
