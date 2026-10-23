@@ -2,6 +2,38 @@
 
 All notable changes to this project are documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+- Localize public URLs with path prefixes. `/en` redirects to the unprefixed
+  canonical URL, while non-default locales stay prefixed.
+- Read the admin locale from the authenticated user instead of `localStorage`.
+- Apply API locales in this order: `?lang`, `Accept-Language`, `users.lang`,
+  default locale. API token guards use middleware for the user fallback.
+- Preserve the query string and fragment when switching languages.
+- Emit canonical `hreflang` URLs without an `/en` prefix.
+- Send the requested language in the frontend `Accept-Language` header.
+- Revert the admin locale and show an error when saving the preference fails.
+
+### Added
+
+- Add `LocaleResolver`, `LocaleContractTest`, and `tests/frontend/locale.test.ts`.
+- Add the `test:frontend` script and run frontend tests in CI.
+- Add a manual i18n smoke-test checklist to the wiki.
+
+### Removed
+
+- Remove `LocaleStrategy.getRequestHeaders()`. The core i18n runtime owns the
+  request header and sends `i18n.language` as `Accept-Language`.
+
+### Breaking changes
+
+- Public non-default locale URLs require the `/id/...` prefix; `/en` is not
+  canonical and redirects to the unprefixed URL.
+- Admin locale no longer comes from `localStorage`; it comes from `users.lang`.
+- Locale strategies no longer provide `getRequestHeaders()`.
+
 ## [0.2.0] - 2026-10-23
 
 ### Security
