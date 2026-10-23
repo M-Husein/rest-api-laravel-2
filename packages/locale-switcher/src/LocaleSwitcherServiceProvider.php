@@ -3,22 +3,28 @@
 namespace Programmeria\LocaleSwitcher;
 
 use Illuminate\Auth\Events\Authenticated;
+use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Programmeria\LocaleSwitcher\Http\Middleware\SetLang;
+use Programmeria\LocaleSwitcher\Http\Middleware\SetUserLocale as SetUserLocaleMiddleware;
 use Programmeria\LocaleSwitcher\Listeners\SetUserLocale;
 
 class LocaleSwitcherServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-        $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
 
-        $this->app->make(Kernel::class)
-            ->appendMiddlewareToGroup('api', SetLang::class);
+        $kernel = $this->app->make(Kernel::class);
+
+        $kernel->appendMiddlewareToGroup('api', SetLang::class);
+        $kernel->appendMiddlewareToGroup('api', SetUserLocaleMiddleware::class);
+        $kernel->addToMiddlewarePriorityBefore(AuthenticatesRequests::class, SetLang::class);
+        $kernel->addToMiddlewarePriorityAfter(AuthenticatesRequests::class, SetUserLocaleMiddleware::class);
 
         Event::listen(Authenticated::class, SetUserLocale::class);
 

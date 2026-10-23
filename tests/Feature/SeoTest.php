@@ -46,4 +46,14 @@ class SeoTest extends TestCase
         $response->assertJsonPath('data.title', 'Contact Us');
         $response->assertJsonPath('data.desc', 'Reach our team');
     }
+
+    public function test_localized_page_uses_canonical_hreflang_urls(): void
+    {
+        $response = $this->get('/id/articles');
+
+        $response->assertOk();
+        $response->assertSee('href="'.url('/articles').'" hreflang="en"', false);
+        $response->assertSee('href="'.url('/id/articles').'" hreflang="id"', false);
+        $response->assertSee('href="'.url('/articles').'" hreflang="x-default"', false);
+    }
 }
