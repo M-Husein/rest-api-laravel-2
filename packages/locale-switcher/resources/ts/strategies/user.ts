@@ -1,32 +1,35 @@
+import { message } from 'antd';
 import type { LocaleStrategy } from '../contract';
 import { featureApi } from '@programmeria/ui/feature';
+import { getStoredUserLocale } from '../url';
 
-/**
- * Persist the locale on the server without blocking the UI switch.
- * The HTTP client is provided by the UI runtime through the feature contract.
- */
-const saveToServer = (locale: string) => {
-  featureApi.getHttp()
-    .put('me/language', { json: { lang: locale } })
-    .catch(() => {
-      // Silently ignore — local UI already switched
-    });
-};
+const currentUserLocale = () => getStoredUserLocale();
+
+const saveToServer = (locale: string) =>
+  featureApi.getHttp().put('me/language', { json: { lang: locale } });
 
 export const userStrategy: LocaleStrategy = {
   name: 'user',
-  getCurrent: () => featureApi.getUser()?.lang || undefined,
+  getCurrent: () => currentUserLocale(),
   apply: async (locale, ctx) => {
+    const previous = currentUserLocale() ?? null;
+
     featureApi.updateUser({ lang: locale });
-    saveToServer(locale);
     document.documentElement.lang = locale;
-    await ctx.i18n.changeLanguage(locale);
-    await ctx.loadLocale(locale);
+
+    try {
+      await ctx.i18n.changeLanguage(locale);
+      await ctx.loadLocale(locale);
+      await saveToServer(locale);
+    } catch {
+      featureApi.updateUser({ lang: previous });
+      document.documentElement.lang = previous || APP.defaultLang;
+      message.error(featureApi.translate('error.unspecific'));
+      await ctx.i18n.changeLanguage(previous || APP.defaultLang);
+      await ctx.loadLocale(previous || APP.defaultLang);
+    }
   },
   getRouterBasename: () => '',
   localizeHref: (to) => to,
-  getRequestHeaders: () => ({
-    'Accept-Language': featureApi.getUser()?.lang || APP.defaultLang,
-  }),
   clear: () => {},
 };

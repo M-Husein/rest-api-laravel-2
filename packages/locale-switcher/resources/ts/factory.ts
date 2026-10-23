@@ -1,4 +1,5 @@
 import type { LocaleStrategy, LocaleStrategyName } from './contract';
+import { isAdminPath } from './url';
 import { pathnameStrategy } from './strategies/pathname';
 import { queryStrategy } from './strategies/query';
 import { storageStrategy } from './strategies/storage';
@@ -24,5 +25,5 @@ export const adminStrategy = createLocaleStrategy('user');
 export const zoneStrategy = (): LocaleStrategy =>
   createLocaleStrategy(
     (APP.strategy as LocaleStrategyName) ||
-    (window.location.pathname.startsWith('/app') ? 'user' : 'pathname')
+    (isAdminPath(window.location.pathname) ? 'user' : 'pathname')
   );

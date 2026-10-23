@@ -68,7 +68,7 @@ export class i18nBackend implements BackendModule<i18nBackendOptions> {
       {
         retry: retryOnServerErrors,
         headers: {
-          'Accept-Language': this.initialLanguage
+          'Accept-Language': language
         }
       }
     )
