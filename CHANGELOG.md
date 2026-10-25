@@ -22,6 +22,13 @@ All notable changes to this project are documented in this file.
 - Document current repository-based installation through `git clone` and Composer VCS,
   plus possible future publication to Packagist/Composer and npm.
 
+### Fixed
+
+- Declare direct runtime dependencies for `@programmeria/ui` and peer dependencies for
+  `@programmeria/locale-switcher`.
+- Refresh the npm lockfile with cross-platform optional bindings and align pnpm's
+  `react-hook-form` resolution so Bun, npm, and pnpm builds match.
+
 ## [0.3.0] - 2026-10-25
 
 ### Changed
