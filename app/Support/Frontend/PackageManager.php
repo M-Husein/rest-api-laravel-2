@@ -54,16 +54,12 @@ final class PackageManager
             ? Closure::fromCallable($hasBinary)
             : static fn (string $binary): bool => self::binaryExists($binary, $basePath);
 
-        foreach ([$preferred, self::environmentPreference()] as $requested) {
-            if ($requested === null || trim($requested) === '') {
-                continue;
-            }
-
-            $name = strtolower(trim($requested));
+        if ($preferred !== null && trim($preferred) !== '') {
+            $name = strtolower(trim($preferred));
 
             if (! in_array($name, self::SUPPORTED, true)) {
                 throw new InvalidArgumentException(
-                    "Unsupported package manager [{$requested}]. Supported: ".implode(', ', self::SUPPORTED).'.'
+                    "Unsupported package manager [{$preferred}]. Supported: ".implode(', ', self::SUPPORTED).'.'
                 );
             }
 
@@ -129,13 +125,6 @@ final class PackageManager
             self::NPM => 'npx',
             self::PNPM => 'pnpm exec',
         };
-    }
-
-    private static function environmentPreference(): ?string
-    {
-        $value = getenv('FRONTEND_PACKAGE_MANAGER');
-
-        return is_string($value) && trim($value) !== '' ? $value : null;
     }
 
     private static function detectFromNodeModules(string $basePath): ?string

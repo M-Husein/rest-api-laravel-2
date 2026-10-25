@@ -72,8 +72,9 @@
    Jalankan perintah tanpa `--preset` untuk memilih secara interaktif. Preset default adalah
    `site`.
 
-   Preset UI mendeteksi Bun, npm, atau pnpm secara otomatis. Override dengan
-   `--package-manager=bun|npm|pnpm` atau `FRONTEND_PACKAGE_MANAGER`.
+   Preset UI mendeteksi Bun, npm, atau pnpm secara otomatis. Untuk memilih secara
+   eksplisit, gunakan `--package-manager=bun|npm|pnpm`; lihat
+   [Package manager frontend](#package-manager-frontend).
 
 Saat membuat proyek dengan `composer create-project`, skrip post-install mencetak perintah
 `starter:install` yang harus dijalankan berikutnya. **Tidak ada fitur yang dipilih secara
@@ -84,9 +85,32 @@ otomatis.**
 - Tinjau [Preset](id-Presets) untuk memastikan profil sesuai dengan proyek Anda.
 - Tinjau [Manajemen Fitur](id-Feature-Management) untuk mengubah pilihan nanti.
 - Jalankan API dengan `php artisan serve`.
-- Untuk preset UI, install dan build dengan package manager Anda:
-  `bun install && bun run build`, `npm install && npm run build`, atau
-  `pnpm install && pnpm run build`.
+- Untuk preset UI, install dan build dengan package manager Anda; lihat
+  [Package manager frontend](#package-manager-frontend).
+
+## Package manager frontend
+
+Preset UI mendukung Bun, npm, dan pnpm. Deteksi berjalan otomatis. Satu-satunya override
+eksplisit adalah `--package-manager=bun|npm|pnpm`:
+
+```bash
+php artisan starter:install --preset=site --package-manager=npm
+```
+
+Untuk perintah frontend saja:
+
+```bash
+php artisan frontend install --package-manager=npm
+php artisan frontend build --package-manager=npm
+php artisan frontend dev --package-manager=npm
+```
+
+Flag selalu dipakai jika diberikan. Jika tidak, deteksi memeriksa marker `node_modules`,
+lalu lockfile, lalu fallback ke Bun, pnpm, dan npm.
+
+`composer setup` dan `composer dev` tidak menerima flag ini; keduanya selalu memakai
+deteksi otomatis. Jalankan perintah Artisan langsung jika ingin memaksa package manager.
+Environment variable lama `FRONTEND_PACKAGE_MANAGER` tidak lagi dibaca.
 
 ## Pemecahan masalah
 

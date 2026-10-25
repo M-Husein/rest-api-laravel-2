@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented in this file.
 
+## [Unreleased]
+
+### Removed
+
+- Remove the `FRONTEND_PACKAGE_MANAGER` environment variable override. Use
+  `--package-manager=bun|npm|pnpm` to choose the frontend package manager explicitly.
+  `composer setup` and `composer dev` continue to detect it automatically.
+
 ## [0.3.1] - 2026-10-25
 
 ### Added

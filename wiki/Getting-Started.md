@@ -72,8 +72,9 @@
    Run the command without `--preset` for an interactive selection. The default preset is
    `site`.
 
-   UI presets detect Bun, npm, or pnpm automatically. Override it with
-   `--package-manager=bun|npm|pnpm` or `FRONTEND_PACKAGE_MANAGER`.
+   UI presets detect Bun, npm, or pnpm automatically. To choose explicitly, use
+   `--package-manager=bun|npm|pnpm`; see
+   [Frontend package managers](#frontend-package-managers).
 
 When creating a project with `composer create-project`, the post-install script prints the
 `starter:install` command to run next. **No feature is selected automatically.**
@@ -83,9 +84,32 @@ When creating a project with `composer create-project`, the post-install script 
 - Review [Presets](Presets) to confirm the profile matches your project.
 - Review [Feature Management](Feature-Management) to change the selection later.
 - Serve the API with `php artisan serve`.
-- For UI presets, install and build with your package manager:
-  `bun install && bun run build`, `npm install && npm run build`, or
-  `pnpm install && pnpm run build`.
+- For UI presets, install and build with your package manager; see
+  [Frontend package managers](#frontend-package-managers).
+
+## Frontend package managers
+
+UI presets support Bun, npm, and pnpm. Detection is automatic. The only explicit override
+is `--package-manager=bun|npm|pnpm`:
+
+```bash
+php artisan starter:install --preset=site --package-manager=npm
+```
+
+For frontend-only commands:
+
+```bash
+php artisan frontend install --package-manager=npm
+php artisan frontend build --package-manager=npm
+php artisan frontend dev --package-manager=npm
+```
+
+The flag is always used when provided. When omitted, detection checks `node_modules`
+markers, then lockfiles, then falls back to Bun, pnpm, and npm.
+
+`composer setup` and `composer dev` do not accept this flag; they always use automatic
+detection. Run the Artisan commands directly when you need to force a package manager.
+The old `FRONTEND_PACKAGE_MANAGER` environment variable is no longer read.
 
 ## Troubleshooting
 

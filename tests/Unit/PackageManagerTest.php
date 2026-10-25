@@ -11,25 +11,14 @@ class PackageManagerTest extends TestCase
 {
     private string $basePath;
 
-    private string|false $previousEnvironment;
-
     protected function setUp(): void
     {
-        $this->previousEnvironment = getenv('FRONTEND_PACKAGE_MANAGER');
-        putenv('FRONTEND_PACKAGE_MANAGER');
-
         $this->basePath = sys_get_temp_dir().DIRECTORY_SEPARATOR.'package-manager-'.uniqid('', true);
         mkdir($this->basePath, 0777, true);
     }
 
     protected function tearDown(): void
     {
-        if ($this->previousEnvironment === false) {
-            putenv('FRONTEND_PACKAGE_MANAGER');
-        } else {
-            putenv('FRONTEND_PACKAGE_MANAGER='.$this->previousEnvironment);
-        }
-
         $this->removeDirectory($this->basePath);
     }
 
@@ -41,14 +30,17 @@ class PackageManagerTest extends TestCase
         $this->assertSame('npm', $manager->name());
     }
 
-    public function test_environment_package_manager_is_used(): void
+    public function test_environment_package_manager_is_ignored(): void
     {
-        putenv('FRONTEND_PACKAGE_MANAGER=pnpm');
+        putenv('FRONTEND_PACKAGE_MANAGER=yarn');
 
-        $manager = PackageManager::detect($this->basePath, null, $this->checker(['pnpm']));
+        try {
+            $manager = PackageManager::detect($this->basePath, null, $this->checker([]));
+        } finally {
+            putenv('FRONTEND_PACKAGE_MANAGER');
+        }
 
-        $this->assertNotNull($manager);
-        $this->assertSame('pnpm', $manager->name());
+        $this->assertNull($manager);
     }
 
     public function test_unsupported_package_manager_is_rejected(): void

@@ -59,20 +59,25 @@ runtime frontend atau package manager.
 
 ### Package manager frontend
 
-Preset UI mendukung Bun, npm, dan pnpm. `composer setup` dan `php artisan starter:install`
-mendeteksi package manager secara otomatis. Override dengan
-`--package-manager=bun|npm|pnpm` atau environment variable `FRONTEND_PACKAGE_MANAGER`:
+Preset UI mendukung Bun, npm, dan pnpm. Deteksi berjalan otomatis, dan satu-satunya
+override eksplisit adalah `--package-manager=bun|npm|pnpm`:
 
 ```bash
-FRONTEND_PACKAGE_MANAGER=npm composer setup
+php artisan starter:install --preset=site --package-manager=npm
 ```
 
-```powershell
-$env:FRONTEND_PACKAGE_MANAGER="npm"; composer setup
+Untuk perintah frontend saja:
+
+```bash
+php artisan frontend install --package-manager=npm
+php artisan frontend build --package-manager=npm
+php artisan frontend dev --package-manager=npm
 ```
 
-Jalankan `php artisan frontend install`, `frontend build`, atau `frontend dev` secara
-langsung; tambahkan `--package-manager=bun|npm|pnpm` untuk override deteksi.
+`composer setup` dan `composer dev` tidak menerima flag ini; keduanya selalu memakai
+deteksi otomatis. Jalankan perintah Artisan langsung jika ingin memaksa package manager.
+Lihat
+[panduan package manager frontend](https://github.com/M-Husein/rest-api-laravel-2/wiki/id-Getting-Started#package-manager-frontend).
 
 Ketiga lockfile dikomit. Regenerasi setelah mengubah dependency:
 
