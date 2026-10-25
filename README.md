@@ -51,11 +51,60 @@ runtime or package manager.
 
 ## Requirements
 
-- PHP >= 8.5.12 with the `pdo_pgsql`, `pgsql`, `openssl`, `mbstring`, `tokenizer`, `xml`,
+- PHP >= 8.5.12 with the `pdo_pgsql`, `pdo_mysql`, `pdo_sqlite`, `openssl`, `mbstring`, `tokenizer`, `xml`,
   `ctype`, `json`, `bcmath`, and `fileinfo` extensions
 - [Composer](https://getcomposer.org/) 2
-- PostgreSQL 16+ (running)
+- PostgreSQL 16+ (running) is the default and recommended database.
+- MySQL, MariaDB, and SQLite are also available technically but are not official documented installation paths.
 - For UI presets: [Bun](https://bun.sh/) 1.4+, or Node.js 22+ with npm 10+ or pnpm 9.15+
+
+### Database options
+
+PostgreSQL 16+ is recommended:
+
+```dotenv
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=rest_api_laravel_2
+DB_USERNAME=postgres
+DB_PASSWORD=
+```
+
+MySQL:
+
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=rest_api_laravel_2
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+MariaDB:
+
+```dotenv
+DB_CONNECTION=mariadb
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=rest_api_laravel_2
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+SQLite:
+
+```dotenv
+DB_CONNECTION=sqlite
+DB_DATABASE=database/database.sqlite
+```
+
+Create `database/database.sqlite` before running migrations if you use SQLite. Adjust `.env`, then run `php artisan migrate --seed`.
+
+Automated tests use SQLite in-memory, not production verification for MySQL/MariaDB/SQLite.
+
+Never commit `.env`, application keys, OAuth secrets, or database credentials.
 
 ### Frontend package managers
 

@@ -51,11 +51,60 @@ runtime frontend atau package manager.
 
 ## Kebutuhan
 
-- PHP >= 8.5.12 dengan ekstensi `pdo_pgsql`, `pgsql`, `openssl`, `mbstring`, `tokenizer`, `xml`,
+- PHP >= 8.5.12 dengan ekstensi `pdo_pgsql`, `pdo_mysql`, `pdo_sqlite`, `openssl`, `mbstring`, `tokenizer`, `xml`,
   `ctype`, `json`, `bcmath`, dan `fileinfo`
 - [Composer](https://getcomposer.org/) 2
-- PostgreSQL 16+ (berjalan)
+- PostgreSQL 16+ (berjalan) adalah default dan database yang direkomendasikan.
+- MySQL, MariaDB, dan SQLite juga tersedia secara teknis tetapi bukan jalur instalasi resmi yang didokumentasikan.
 - Untuk preset UI: [Bun](https://bun.sh/) 1.4+, atau Node.js 22+ dengan npm 10+ atau pnpm 9.15+
+
+### Opsi database
+
+PostgreSQL 16+ direkomendasikan:
+
+```dotenv
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=rest_api_laravel_2
+DB_USERNAME=postgres
+DB_PASSWORD=
+```
+
+MySQL:
+
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=rest_api_laravel_2
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+MariaDB:
+
+```dotenv
+DB_CONNECTION=mariadb
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=rest_api_laravel_2
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+SQLite:
+
+```dotenv
+DB_CONNECTION=sqlite
+DB_DATABASE=database/database.sqlite
+```
+
+Buat `database/database.sqlite` kosong sebelum menjalankan migrasi jika menggunakan SQLite. Sesuaikan `.env`, lalu jalankan `php artisan migrate --seed`.
+
+Pengujian otomatis menggunakan SQLite in-memory, bukan verifikasi produksi untuk MySQL/MariaDB/SQLite.
+
+Jangan pernah commit `.env`, application key, secret OAuth, atau kredensial database.
 
 ### Package manager frontend
 
