@@ -52,30 +52,76 @@ jobs:
         run: php artisan test
 
   frontend:
-    name: Frontend (Bun)
+    name: Frontend (${{ matrix.package-manager }})
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        package-manager: [bun, npm, pnpm]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        if: matrix.package-manager == 'pnpm'
+        uses: pnpm/action-setup@v4
+        with:
+          version: "9.15.9"
+
+      - name: Setup Node
+        if: matrix.package-manager != 'bun'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.20.0"
+          cache: ${{ matrix.package-manager }}
+
       - name: Setup Bun
+        if: matrix.package-manager == 'bun'
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: "1.4.0"
 
       - name: Cache Bun
+        if: matrix.package-manager == 'bun'
         uses: actions/cache@v4
         with:
           path: ~/.bun/install/cache
           key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
           restore-keys: bun-${{ runner.os }}-
 
-      - name: Install frontend dependencies
+      - name: Install frontend dependencies (Bun)
+        if: matrix.package-manager == 'bun'
         run: bun install --frozen-lockfile
 
-      - name: Typecheck and build
+      - name: Install frontend dependencies (npm)
+        if: matrix.package-manager == 'npm'
+        run: npm ci
+
+      - name: Install frontend dependencies (pnpm)
+        if: matrix.package-manager == 'pnpm'
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck and build (Bun)
+        if: matrix.package-manager == 'bun'
         run: bun run build
 
-      - name: Frontend tests
+      - name: Typecheck and build (npm)
+        if: matrix.package-manager == 'npm'
+        run: npm run build
+
+      - name: Typecheck and build (pnpm)
+        if: matrix.package-manager == 'pnpm'
+        run: pnpm run build
+
+      - name: Frontend tests (Bun)
+        if: matrix.package-manager == 'bun'
         run: bun run test:frontend
+
+      - name: Frontend tests (npm)
+        if: matrix.package-manager == 'npm'
+        run: npm run test:frontend
+
+      - name: Frontend tests (pnpm)
+        if: matrix.package-manager == 'pnpm'
+        run: pnpm run test:frontend

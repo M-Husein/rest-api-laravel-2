@@ -58,7 +58,8 @@ untuk menghindari prompt konfirmasi.
 - `FeatureRepository` menemukan paket dari `packages/*/feature.json` dan menyelesaikan
   kumpulan yang diinginkan dari preset ditambah override.
 - `FeatureInstaller` menjalankan `composer require` / `composer remove`, menulis ulang
-  `features.json`, meregenerasi registry frontend, migrasi, dan build.
+  `features.json`, meregenerasi registry frontend, migrasi, dan build dengan package manager
+  yang terdeteksi.
 - Requirement Composer menggunakan path repository dan constraint `0.1.*`.
 
 ## Preset UI dan tanpa UI
@@ -66,13 +67,14 @@ untuk menghindari prompt konfirmasi.
 **Preset tanpa UI (`api`, `multilingual`)**
 
 - Tidak ada route `/app`, `/login`, `/settings`, atau route HTML publik.
-- Tidak ada `bun install` dan tidak ada build aset.
+- Tidak ada install frontend dan tidak ada build aset.
 
 **Preset UI (`api-ui`, `multilingual-ui`, `site`)**
 
 - Shell Blade, source React/Ant Design, route, dan tooling build disediakan oleh paket
   `ui`.
-- `bun install` dan `bun run build` diperlukan sebelum menyajikan UI di produksi.
+- Install dan build dengan Bun, npm, atau pnpm sebelum menyajikan UI di produksi.
+- Override deteksi otomatis dengan `--package-manager=bun|npm|pnpm`.
 
-> Selalu jalankan `bun install`, `bun run dev`, dan `bun run build` **dari root repositori**,
-> jangan pernah dari dalam `packages/ui`.
+> Selalu jalankan perintah install, dev, dan build **dari root repositori**, jangan pernah
+> dari dalam `packages/ui`.

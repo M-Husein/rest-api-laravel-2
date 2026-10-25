@@ -15,10 +15,8 @@
 node_modules/
 packages/*/node_modules/
 *.tsbuildinfo
-/package-lock.json
 /package-lock.json_backup
 /yarn.lock
-/pnpm-lock.yaml
 /public/build
 /public/hot
 /public/storage

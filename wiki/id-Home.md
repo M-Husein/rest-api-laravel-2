@@ -14,6 +14,11 @@ direncanakan untuk Go, Rust, Node.js (Express/NestJS), Bun (ElysiaJS), dan Pytho
 > Model lima preset dan pemisahan paket `ui` sudah diimplementasikan. `starterkit.json`
 > menyediakan `api`, `api-ui`, `multilingual`, `multilingual-ui`, dan `site` (default).
 > Paket fitur ditemukan dari `packages/*/feature.json`.
+>
+> **Publikasi**
+>
+> Proyek ini saat ini didistribusikan dari GitHub. Proyek ini kemungkinan akan
+> dipublikasikan ke Packagist (Composer) dan/atau npm di masa mendatang.
 
 ## Peta dokumentasi
 
@@ -51,10 +56,10 @@ direncanakan untuk Go, Rust, Node.js (Express/NestJS), Bun (ElysiaJS), dan Pytho
 
 - Refine (Ant Design, React Router, REST data provider)
 - React 19, TypeScript, Vite, Ant Design, i18next, Zod
-- Manajer paket: Bun (source UI berupa npm workspace)
+- Manajer paket: Bun, npm, atau pnpm (source UI berupa workspace)
 
-UI hanya dipasang dan di-build untuk preset UI. Preset API saja tidak memerlukan Node.js
-atau Bun.
+UI hanya dipasang dan di-build untuk preset UI. Preset API saja tidak memerlukan runtime
+frontend atau package manager.
 
 ## Dukungan
 

@@ -44,9 +44,10 @@ Node.js (Express/NestJS), Bun (ElysiaJS), and Python.
 - **Refine** (Ant Design, React Router, REST data provider)
 - **React** 19, **TypeScript**, **Vite**
 - **Ant Design** UI, **i18next**, **Zod**
-- Package manager: **Bun** (the UI source is an npm workspace)
+- Package manager: **Bun**, **npm**, or **pnpm** (the UI source is a workspace)
 
-The UI is only installed and built for UI presets. API-only presets do not require Node.js or Bun.
+The UI is only installed and built for UI presets. API-only presets do not require a frontend
+runtime or package manager.
 
 ## Requirements
 
@@ -54,15 +55,54 @@ The UI is only installed and built for UI presets. API-only presets do not requi
   `ctype`, `json`, `bcmath`, and `fileinfo` extensions
 - [Composer](https://getcomposer.org/) 2
 - PostgreSQL 16+ (running)
-- [Bun](https://bun.sh/) or Node.js + npm — only for presets that include the UI
+- For UI presets: [Bun](https://bun.sh/) 1.4+, or Node.js 22+ with npm 10+ or pnpm 9.15+
+
+### Frontend package managers
+
+UI presets support Bun, npm, and pnpm. `composer setup` and `php artisan starter:install`
+detect the package manager automatically. Override the detection with
+`--package-manager=bun|npm|pnpm` or the `FRONTEND_PACKAGE_MANAGER` environment variable:
+
+```bash
+FRONTEND_PACKAGE_MANAGER=npm composer setup
+```
+
+```powershell
+$env:FRONTEND_PACKAGE_MANAGER="npm"; composer setup
+```
+
+Run `php artisan frontend install`, `frontend build`, or `frontend dev` directly; add
+`--package-manager=bun|npm|pnpm` to override detection.
+
+All three lockfiles are committed. Regenerate them after changing dependencies:
+
+```bash
+bun install
+npm install --package-lock-only
+pnpm install --lockfile-only
+```
 
 ## Quick start
 
-1. **Create the project** (or clone this repository):
+> **Publication status**
+>
+> This repository is the current distribution source. The project may be published to
+> Packagist (Composer) and/or npm in the future. Until then, install it from this repository
+> using `git clone` or Composer VCS below.
+
+1. **Get the project** (choose one):
    ```bash
-   composer create-project programmeria/rest-api-laravel-2 my-app
+   git clone https://github.com/M-Husein/rest-api-laravel-2.git my-app
    cd my-app
    ```
+   or install it through Composer using the VCS repository:
+   ```bash
+   composer create-project programmeria/rest-api-laravel-2 my-app --repository='{"type":"vcs","url":"https://github.com/M-Husein/rest-api-laravel-2.git"}'
+   cd my-app
+   ```
+
+   On Windows PowerShell, escape the JSON quotes in `--repository`:
+   `--repository='{\"type\":\"vcs\",\"url\":\"https://github.com/M-Husein/rest-api-laravel-2.git\"}'`.
 
 2. **Create the environment file and configure it**:
    ```bash
@@ -164,8 +204,8 @@ settings. Private/admin routes remain protected by authentication and roles.
 | No | Layer | Package | Type | Responsibility |
 |----|-------|---------|------|----------------|
 | 1 | Core | application code | Laravel app | API, auth/admin domain, roles, users, sessions, localizer backend |
-| 2 | UI | `programmeria/laravel-ui` / `@programmeria/ui` | Composer + npm workspace | Blade shells, admin/auth routes, React/Ant Design source, Vite build |
-| 3 | Internationalization | `programmeria/laravel-locale-switcher` | Composer + npm workspace | Locale backend, user preference, language menu and frontend strategies |
+| 2 | UI | `programmeria/laravel-ui` / `@programmeria/ui` | Composer + workspace | Blade shells, admin/auth routes, React/Ant Design source, Vite build |
+| 3 | Internationalization | `programmeria/laravel-locale-switcher` | Composer + workspace | Locale backend, user preference, language menu and frontend strategies |
 | 4 | SEO | `programmeria/laravel-seo` | Composer package | Public SPA shell, meta/Open Graph/JSON-LD, page translations |
 
 ### Feature package format
@@ -173,14 +213,14 @@ settings. Private/admin routes remain protected by authentication and roles.
 Each feature can expose:
 
 - `composer.json` — service provider, routes, migrations, views, and PHP dependencies.
-- `package.json` — npm workspace metadata and frontend dependencies when applicable.
+- `package.json` — workspace metadata and frontend dependencies when applicable.
 - `feature.json` — label, description, preset membership, requirements, conflicts, and a
   frontend flag.
 
-Composer decides whether a feature is installed. The npm workspace only provides the
-frontend source that Vite consumes. All frontend dependencies live in
-`packages/ui/package.json`; the root `package.json` keeps only workspace definitions and
-scripts.
+Composer decides whether a feature is installed. The workspace only provides the frontend
+source that Vite consumes. Frontend runtime dependencies live in
+`packages/ui/package.json`; build/test tooling and workspace scripts live in the root
+`package.json`.
 
 ## Feature management
 
@@ -194,6 +234,7 @@ Apply a preset:
 
 ```bash
 php artisan starter:install --preset=site
+php artisan starter:install --preset=site --package-manager=npm
 ```
 
 Override the selection:
@@ -221,7 +262,8 @@ The command:
 - rewrites `features.json`;
 - regenerates the frontend feature registry when the UI is installed;
 - runs migrations;
-- installs frontend dependencies and builds assets only when the UI is installed.
+- installs frontend dependencies and builds assets with the detected package manager only
+  when the UI is installed.
 
 Removing a feature never drops database tables or user data.
 
@@ -235,14 +277,16 @@ Use `api` instead of `minimal`, and `site` instead of `default` or `full`.
 **No-UI presets (`api`, `multilingual`)**
 
 - No `/app`, `/login`, `/settings`, or public HTML routes.
-- No `bun install` and no asset build.
+- No frontend install and no asset build.
 - The backend is a full SPA/API backend; the frontend is your responsibility.
 
 **UI presets (`api-ui`, `multilingual-ui`, `site`)**
 
 - Blade shells, React/Ant Design source, routes, and build tooling are provided by the
   `ui` package.
-- `bun install` and `bun run build` are required before serving the UI in production.
+- Install and build with Bun, npm, or pnpm before serving the UI in production:
+  `bun install && bun run build`, `npm install && npm run build`, or
+  `pnpm install && pnpm run build`.
 
 ## Authentication and registration
 
@@ -329,8 +373,9 @@ Main endpoint groups:
 ```bash
 composer test
 php artisan test
-bunx tsc --noEmit
-bun run build
+bun run typecheck        # or: npm run typecheck / pnpm run typecheck
+bun run build            # or: npm run build / pnpm run build
+bun run test:frontend    # or: npm run test:frontend / pnpm run test:frontend
 composer validate --no-check-publish
 ```
 
