@@ -10,6 +10,36 @@
 - PostgreSQL 16+ (berjalan)
 - Untuk preset UI: [Bun](https://bun.sh/) 1.4+, atau Node.js 22+ dengan npm 10+ atau pnpm 9.15+
 
+## Pilihan database
+
+PostgreSQL 16+ adalah default dan database yang direkomendasikan untuk pengembangan proyek ini.
+
+1. Instal PostgreSQL 16+ dan jalankan servernya.
+2. Buat database yang sesuai dengan `DB_DATABASE` di `.env` (default `rest_api_laravel_2`).
+3. Konfiguri `.env`:
+
+   ```dotenv
+   DB_CONNECTION=pgsql
+   DB_HOST=127.0.0.1
+   DB_PORT=5432
+   DB_DATABASE=rest_api_laravel_2
+   DB_USERNAME=postgres
+   DB_PASSWORD=
+   ```
+
+4. Jalankan `php artisan migrate --seed` setelah database siap.
+
+MySQL, MariaDB, dan SQLite juga tersedia dalam `config/database.php`, tetapi bukan jalur instalasi resmi yang didokumentasikan dan diverifikasi di sini. Untuk menggunakannya:
+
+- Ubah `DB_CONNECTION` di `.env` menjadi `mysql`, `mariadb`, atau `sqlite`.
+- Instal driver PDO yang sesuai dan siapkan database atau file SQLite.
+- Untuk SQLite, buat `database/database.sqlite` kosong sebelum menjalankan migrasi.
+- Jalankan `php artisan migrate --seed` setelah menyesuaikan `.env`.
+
+Pengujian otomatis menggunakan SQLite in-memory, bukan verifikasi produksi untuk MySQL/MariaDB/SQLite.
+
+Jangan pernah commit `.env`, application key, secret OAuth, atau kredensial database.
+
 > **Status publikasi**
 >
 > Repositori ini adalah sumber distribusi saat ini. Proyek ini kemungkinan akan
