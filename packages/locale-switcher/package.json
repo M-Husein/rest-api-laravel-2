@@ -6,5 +6,13 @@
   "type": "module",
   "exports": {
     ".": "./resources/ts/index.ts"
+  },
+  "peerDependencies": {
+    "@refinedev/core": "^5.0.8",
+    "antd": "^6.6.6",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-i18next": "^17.0.20",
+    "react-router": "7.18.4"
   }
 }
