@@ -7,7 +7,7 @@ $locales = [
 return [
   'supported_locales' => array_keys($locales),
   'hide_default_locale' => true,
-  'redirect_enabled' => false,
+  'redirect_enabled' => true,
   'persist_locale' => [
     'session' => false,
     'cookie' => false

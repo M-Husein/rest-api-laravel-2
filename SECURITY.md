@@ -6,8 +6,8 @@
 
 | Version | Supported |
 |---------|-----------|
-| 0.2.x   | Yes       |
-| < 0.2.0 | No        |
+| 0.3.x   | Yes       |
+| < 0.3.0 | No        |
 
 This project requires **PHP >= 8.5.12**. Older PHP versions are affected by PHP2Shell
 (`CVE-2026-109618`, `CVE-2026-109619`) and are not supported.

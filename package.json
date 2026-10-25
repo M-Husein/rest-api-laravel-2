@@ -16,6 +16,7 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "test:frontend": "bun test tests/frontend",
     "generate:features": "node scripts/generate-features.mjs"
   },
   "trustedDependencies": [

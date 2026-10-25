@@ -11,8 +11,5 @@ export const storageStrategy: LocaleStrategy = {
   },
   getRouterBasename: () => '',
   localizeHref: (to) => to,
-  getRequestHeaders: () => ({
-    'Accept-Language': localStorage.getItem('i18nextLng') || APP.defaultLang,
-  }),
   clear: () => localStorage.removeItem('i18nextLng'),
 };

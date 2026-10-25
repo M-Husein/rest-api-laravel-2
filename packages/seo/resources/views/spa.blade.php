@@ -49,7 +49,7 @@ if(!app()->isProduction()) $flags |= JSON_PRETTY_PRINT;
 @if(!$noSeo)
   <link rel="alternate" href="{{ Route::localizedUrl($defaultLang) }}" hreflang="x-default"/>
 @foreach(config('localizer.supported_locales') as $lng)
-  <link rel="alternate" href="{{ Route::localizedSwitcherUrl($lng) }}" hreflang="{{ $lng }}"/>
+  <link rel="alternate" href="{{ Route::localizedUrl($lng) }}" hreflang="{{ $lng }}"/>
 @endforeach
 @endif
 {{-- JSON-LD Structured Data — for SEO bots & LLM crawlers --}}

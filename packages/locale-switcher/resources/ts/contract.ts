@@ -13,6 +13,5 @@ export interface LocaleStrategy {
   apply(locale: string, ctx: LocaleApplyContext): void | Promise<void>;
   getRouterBasename(): string;
   localizeHref<T extends To>(to: T, lang: string): T;
-  getRequestHeaders(): Record<string, string>;
   clear(): void;
 }

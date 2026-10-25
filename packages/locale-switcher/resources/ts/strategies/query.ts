@@ -20,8 +20,5 @@ export const queryStrategy: LocaleStrategy = {
   },
   getRouterBasename: () => '',
   localizeHref: (to, lang) => setLangToUrl(to, lang) as typeof to,
-  getRequestHeaders: () => ({
-    'Accept-Language': getQueryLang() || APP.defaultLang,
-  }),
   clear: () => {},
 };
