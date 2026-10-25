@@ -58,7 +58,7 @@ confirmation prompt.
 - `FeatureRepository` discovers packages from `packages/*/feature.json` and resolves the
   desired set from a preset plus overrides.
 - `FeatureInstaller` runs `composer require` / `composer remove`, rewrites `features.json`,
-  regenerates the frontend registry, migrates, and builds.
+  regenerates the frontend registry, migrates, and builds with the detected package manager.
 - Composer requirements use the path repository and the `0.1.*` constraint.
 
 ## UI and no-UI presets
@@ -66,13 +66,14 @@ confirmation prompt.
 **No-UI presets (`api`, `multilingual`)**
 
 - No `/app`, `/login`, `/settings`, or public HTML routes.
-- No `bun install` and no asset build.
+- No frontend install and no asset build.
 
 **UI presets (`api-ui`, `multilingual-ui`, `site`)**
 
 - Blade shells, React/Ant Design source, routes, and build tooling are provided by the
   `ui` package.
-- `bun install` and `bun run build` are required before serving the UI in production.
+- Install and build with Bun, npm, or pnpm before serving the UI in production.
+- Override automatic detection with `--package-manager=bun|npm|pnpm`.
 
-> Always run `bun install`, `bun run dev`, and `bun run build` **from the repository root**,
-> never from inside `packages/ui`.
+> Always run install, dev, and build commands **from the repository root**, never from
+> inside `packages/ui`.

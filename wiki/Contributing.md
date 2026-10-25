@@ -13,10 +13,13 @@
 2. Create `.env`, generate the key, and configure PostgreSQL. See
    [Getting Started](Getting-Started).
 
-3. Install frontend dependencies (UI work only) — always from the repository root:
+3. Install frontend dependencies (UI work only) — always from the repository root, using
+   Bun, npm, or pnpm:
 
    ```bash
    bun install
+   # or: npm install
+   # or: pnpm install
    ```
 
 ## Tests and quality checks
@@ -24,8 +27,9 @@
 ```bash
 composer test
 php artisan test
-bunx tsc --noEmit
-bun run build
+bun run typecheck        # or: npm run typecheck / pnpm run typecheck
+bun run build            # or: npm run build / pnpm run build
+bun run test:frontend    # or: npm run test:frontend / pnpm run test:frontend
 composer validate --no-check-publish
 ```
 
@@ -39,14 +43,18 @@ composer validate --no-check-publish
 - Keep commits focused and use conventional commit messages (`feat:`, `fix:`, `chore:`,
   `refactor:`, `docs:`).
 - Open a pull request and describe the change, the affected presets, and how you verified it.
-- The repository currently has no CI; run the checks above locally before opening a PR.
+- CI runs the PHP suite and frontend checks with Bun, npm, and pnpm. Run the checks above
+  locally before opening a PR.
 
 ## Conventions
 
 - Code and identifiers are in English.
 - Preset and feature names are language-independent (see [Presets](Presets)).
 - Do not add comments unless they carry real context.
-- Keep frontend dependencies inside `packages/ui/package.json`.
+- Keep frontend runtime dependencies in `packages/ui/package.json`; keep build/test tooling
+  and workspace scripts in the root `package.json`.
+- Commit `bun.lock`, `package-lock.json`, and `pnpm-lock.yaml` together when dependencies
+  change.
 
 ## Documentation
 

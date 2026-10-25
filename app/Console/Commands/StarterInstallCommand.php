@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Support\Frontend\PackageManager;
 use App\Support\Starter\FeatureInstaller;
 use App\Support\Starter\FeatureRepository;
 use Illuminate\Console\Command;
@@ -16,7 +17,8 @@ class StarterInstallCommand extends Command
         {--without=* : Features to exclude}
         {--dry-run : Show the plan without applying changes}
         {--no-migrate : Skip database migrations}
-        {--no-build : Skip frontend install and build}';
+        {--no-build : Skip frontend install and build}
+        {--package-manager= : Frontend package manager to use (bun, npm, or pnpm)}';
 
     protected $description = 'Install or remove starterkit feature packages';
 
@@ -28,6 +30,24 @@ class StarterInstallCommand extends Command
         $preset = $this->option('preset');
         $with = $this->option('with') ?? [];
         $without = $this->option('without') ?? [];
+        $packageManager = $this->option('package-manager');
+        $packageManager = is_string($packageManager) && trim($packageManager) !== ''
+            ? trim($packageManager)
+            : null;
+
+        if ($packageManager !== null) {
+            $packageManager = strtolower($packageManager);
+
+            if (! in_array($packageManager, PackageManager::supported(), true)) {
+                $this->components->error(
+                    "Unsupported package manager [{$packageManager}]. Supported: "
+                    .implode(', ', PackageManager::supported())
+                    .'.'
+                );
+
+                return self::FAILURE;
+            }
+        }
 
         if ($preset === null && $with === [] && $without === []) {
             if (! $this->input->isInteractive()) {
@@ -61,7 +81,7 @@ class StarterInstallCommand extends Command
 
         $plan = $repository->plan($desired);
 
-        $this->renderPlan($desired, $plan, $preset);
+        $this->renderPlan($desired, $plan, $preset, $packageManager);
 
         if ($this->option('dry-run')) {
             $this->components->info('Dry run: no changes were made.');
@@ -78,7 +98,8 @@ class StarterInstallCommand extends Command
                 $desired,
                 ! $this->option('no-migrate'),
                 ! $this->option('no-build'),
-                fn (string $line) => $this->line($line)
+                fn (string $line) => $this->line($line),
+                $packageManager,
             );
         } catch (Throwable $e) {
             $this->components->error($e->getMessage());
@@ -91,9 +112,14 @@ class StarterInstallCommand extends Command
         return self::SUCCESS;
     }
 
-    private function renderPlan(array $desired, array $plan, ?string $preset): void
-    {
+    private function renderPlan(
+        array $desired,
+        array $plan,
+        ?string $preset,
+        ?string $packageManager,
+    ): void {
         $this->components->twoColumnDetail('Preset', $preset ?? '(current selection)');
+        $this->components->twoColumnDetail('Package manager', $packageManager ?? 'auto');
 
         $rows = [];
 
@@ -110,6 +136,6 @@ class StarterInstallCommand extends Command
         }
 
         $this->table(['Action', 'Package', 'Version'], $rows);
-        $this->line('Selected features: ' . (implode(', ', $desired) ?: 'none'));
+        $this->line('Selected features: '.(implode(', ', $desired) ?: 'none'));
     }
 }

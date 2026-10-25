@@ -2,15 +2,14 @@
 
 namespace App\Support\Starter;
 
+use App\Support\Frontend\PackageManager;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 use Throwable;
 
 final class FeatureInstaller
 {
-    public function __construct(private readonly FeatureRepository $repository)
-    {
-    }
+    public function __construct(private readonly FeatureRepository $repository) {}
 
     /**
      * Apply the desired feature set: sync Composer requirements, rewrite the
@@ -21,13 +20,14 @@ final class FeatureInstaller
         bool $migrate = true,
         bool $build = true,
         ?callable $log = null,
+        ?string $packageManager = null,
     ): void {
         $plan = $this->repository->plan($desired);
         $withUi = in_array('ui', $desired, true);
 
         foreach ($plan['install'] as $feature) {
             $this->log($log, "Installing {$feature->composerName} ({$feature->constraint()}) ...");
-            $this->composer(['require', $feature->composerName . ':' . $feature->constraint()], $log);
+            $this->composer(['require', $feature->composerName.':'.$feature->constraint()], $log);
         }
 
         foreach ($plan['remove'] as $feature) {
@@ -36,7 +36,7 @@ final class FeatureInstaller
         }
 
         $this->repository->writeSelected($desired);
-        $this->log($log, 'Updated features.json (' . (implode(', ', $desired) ?: 'none') . ').');
+        $this->log($log, 'Updated features.json ('.(implode(', ', $desired) ?: 'none').').');
 
         if ($withUi) {
             $this->log($log, 'Regenerating packages/ui/resources/ts/features.generated.ts ...');
@@ -51,11 +51,14 @@ final class FeatureInstaller
         }
 
         if ($build && $withUi) {
-            if (! $this->hasBinary('bun')) {
-                $this->log($log, 'Bun not found, skipping frontend install/build.');
+            $manager = PackageManager::detect($this->repository->basePath(), $packageManager);
+
+            if ($manager === null) {
+                $this->log($log, 'No supported package manager found (bun, npm, pnpm), skipping frontend install/build.');
             } else {
-                $this->runShell('bun install', $log);
-                $this->runShell('bun run build', $log);
+                $this->log($log, "Using {$manager->name()} for frontend install/build.");
+                $this->runShell($manager->installCommand(), $log);
+                $this->runShell($manager->buildCommand(), $log);
             }
         } elseif ($build) {
             $this->log($log, 'UI not selected, skipping frontend install/build.');
@@ -66,7 +69,7 @@ final class FeatureInstaller
     {
         $parts = array_map(fn (string $part) => escapeshellarg($part), $arguments);
 
-        $this->runShell('composer ' . implode(' ', $parts), $log);
+        $this->runShell('composer '.implode(' ', $parts), $log);
     }
 
     private function regenerate(?callable $log): void
@@ -78,7 +81,7 @@ final class FeatureInstaller
         }
 
         if ($this->hasBinary('bun')) {
-            $this->runShell('bun run generate:features', $log);
+            $this->runShell('bun scripts/generate-features.mjs', $log);
 
             return;
         }
@@ -129,7 +132,7 @@ final class FeatureInstaller
     {
         try {
             $process = Process::fromShellCommandline(
-                $binary . ' --version',
+                $binary.' --version',
                 $this->repository->basePath(),
                 null,
                 null,

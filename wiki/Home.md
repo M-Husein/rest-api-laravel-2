@@ -14,6 +14,11 @@ Node.js (Express/NestJS), Bun (ElysiaJS), and Python.
 > The five-preset model and the `ui` package split are implemented. `starterkit.json`
 > exposes `api`, `api-ui`, `multilingual`, `multilingual-ui`, and `site` (default).
 > Feature packages are discovered from `packages/*/feature.json`.
+>
+> **Publication**
+>
+> The project is currently distributed from GitHub. It may be published to Packagist
+> (Composer) and/or npm in the future.
 
 ## Documentation map
 
@@ -51,10 +56,10 @@ Node.js (Express/NestJS), Bun (ElysiaJS), and Python.
 
 - Refine (Ant Design, React Router, REST data provider)
 - React 19, TypeScript, Vite, Ant Design, i18next, Zod
-- Package manager: Bun (the UI source is an npm workspace)
+- Package manager: Bun, npm, or pnpm (the UI source is a workspace)
 
-The UI is only installed and built for UI presets. API-only presets do not require Node.js
-or Bun.
+The UI is only installed and built for UI presets. API-only presets do not require a frontend
+runtime or package manager.
 
 ## Support
 

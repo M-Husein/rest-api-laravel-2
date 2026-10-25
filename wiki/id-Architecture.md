@@ -7,8 +7,8 @@
 | No | Lapisan | Paket | Tipe | Tanggung jawab |
 |----|---------|-------|------|----------------|
 | 1 | Core | kode aplikasi | Aplikasi Laravel | API, domain auth/admin, role, pengguna, sesi, backend localizer |
-| 2 | UI | `programmeria/laravel-ui` / `@programmeria/ui` | Composer + npm workspace | Shell Blade, route admin/auth, source React/Ant Design, build Vite |
-| 3 | Internasionalisasi | `programmeria/laravel-locale-switcher` | Composer + npm workspace | Backend locale, preferensi pengguna, menu bahasa, dan strategi frontend |
+| 2 | UI | `programmeria/laravel-ui` / `@programmeria/ui` | Composer + workspace | Shell Blade, route admin/auth, source React/Ant Design, build Vite |
+| 3 | Internasionalisasi | `programmeria/laravel-locale-switcher` | Composer + workspace | Backend locale, preferensi pengguna, menu bahasa, dan strategi frontend |
 | 4 | SEO | `programmeria/laravel-seo` | Paket Composer | Shell SPA publik, meta/Open Graph/JSON-LD, terjemahan halaman |
 
 ## Tata letak repositori
@@ -18,6 +18,7 @@ packages/
   ui/               programmeria/laravel-ui + @programmeria/ui
   locale-switcher/  programmeria/laravel-locale-switcher
   seo/              programmeria/laravel-seo
+app/Support/Frontend/  deteksi package manager dan command
 app/Support/Starter/  installer, repository, manifest, JSON IO
 starterkit.json       pemetaan preset ke fitur
 features.json         fitur terpilih (sumber kebenaran untuk codegen)
@@ -29,7 +30,7 @@ scripts/generate-features.mjs  codegen registry frontend
 Setiap fitur dapat menyediakan:
 
 - `composer.json` — service provider, route, migrasi, view, dan dependensi PHP.
-- `package.json` — metadata npm workspace dan dependensi frontend bila berlaku.
+- `package.json` — metadata workspace dan dependensi frontend bila berlaku.
 - `feature.json` — label, deskripsi, keanggotaan preset, requirement, conflict, dan flag
   `frontend`.
 
@@ -43,17 +44,20 @@ Field `feature.json`:
 | `conflicts` | Fitur yang tidak boleh dipasang bersamaan |
 | `frontend` | Apakah paket menyumbang modul yang diimpor oleh registry fitur hasil generate |
 
-Composer menentukan apakah suatu fitur dipasang. npm workspace hanya menyediakan source
-frontend yang dikonsumsi Vite. Semua dependensi frontend berada di
-`packages/ui/package.json`; `package.json` root hanya menyimpan definisi workspace dan
-skrip.
+Composer menentukan apakah suatu fitur dipasang. Workspace hanya menyediakan source frontend
+yang dikonsumsi Vite. Dependensi runtime frontend berada di `packages/ui/package.json`;
+tooling build/test dan skrip workspace berada di `package.json` root.
 
-## Wiring Composer dan npm
+## Wiring Composer dan workspace
 
 - Composer menggunakan **path repository** (`packages/*`) dengan symlink, sehingga paket
   lokal dipasang langsung dari repositori.
-- Bun menggunakan **workspaces**; alias Vite `/^@programmeria\/([^/]+)$/` diarahkan ke
+- Bun dan npm membaca field `workspaces` di `package.json`; pnpm membaca
+  `pnpm-workspace.yaml`. Alias Vite `/^@programmeria\/([^/]+)$/` diarahkan ke
   `packages/$1/resources/ts/index.ts`, sehingga TypeScript dikonsumsi sebagai source.
+- `app/Support/Frontend/PackageManager.php` mendeteksi Bun, npm, atau pnpm dan menyediakan
+  command install, dev, build, serta test untuk installer dan command Artisan.
+- `bun.lock`, `package-lock.json`, dan `pnpm-lock.yaml` semuanya dikomit.
 - Constraint fitur berbentuk wildcard (`0.1.*`) agar aman diteruskan melalui `cmd.exe` di
   Windows.
 

@@ -2,6 +2,26 @@
 
 All notable changes to this project are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Support Bun, npm, and pnpm for UI installs, development, builds, and tests.
+- Add `app/Support/Frontend/PackageManager.php` and the `frontend` Artisan command.
+- Add `--package-manager` and `FRONTEND_PACKAGE_MANAGER` overrides to the installer and
+  Composer scripts.
+- Add Vitest frontend tests, `bun run typecheck`, `pnpm-workspace.yaml`, and npm/pnpm
+  lockfiles.
+- Run frontend checks with Bun, npm, and pnpm in CI.
+
+### Changed
+
+- Make `composer setup` and `composer dev` package-manager agnostic.
+- Move frontend build/test tooling to the root `package.json`; keep runtime dependencies in
+  `packages/ui/package.json`.
+- Document current repository-based installation through `git clone` and Composer VCS,
+  plus possible future publication to Packagist/Composer and npm.
+
 ## [0.3.0] - 2026-10-25
 
 ### Changed

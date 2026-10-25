@@ -44,10 +44,10 @@ Node.js (Express/NestJS), Bun (ElysiaJS), dan Python.
 - **Refine** (Ant Design, React Router, REST data provider)
 - **React** 19, **TypeScript**, **Vite**
 - **Ant Design** UI, **i18next**, **Zod**
-- Package manager: **Bun** (source UI berupa npm workspace)
+- Package manager: **Bun**, **npm**, atau **pnpm** (source UI berupa workspace)
 
 UI hanya dipasang dan di-build untuk preset yang memiliki UI. Preset API-only tidak memerlukan
-Node.js atau Bun.
+runtime frontend atau package manager.
 
 ## Kebutuhan
 
@@ -55,15 +55,54 @@ Node.js atau Bun.
   `ctype`, `json`, `bcmath`, dan `fileinfo`
 - [Composer](https://getcomposer.org/) 2
 - PostgreSQL 16+ (berjalan)
-- [Bun](https://bun.sh/) atau Node.js + npm — hanya untuk preset yang menyertakan UI
+- Untuk preset UI: [Bun](https://bun.sh/) 1.4+, atau Node.js 22+ dengan npm 10+ atau pnpm 9.15+
+
+### Package manager frontend
+
+Preset UI mendukung Bun, npm, dan pnpm. `composer setup` dan `php artisan starter:install`
+mendeteksi package manager secara otomatis. Override dengan
+`--package-manager=bun|npm|pnpm` atau environment variable `FRONTEND_PACKAGE_MANAGER`:
+
+```bash
+FRONTEND_PACKAGE_MANAGER=npm composer setup
+```
+
+```powershell
+$env:FRONTEND_PACKAGE_MANAGER="npm"; composer setup
+```
+
+Jalankan `php artisan frontend install`, `frontend build`, atau `frontend dev` secara
+langsung; tambahkan `--package-manager=bun|npm|pnpm` untuk override deteksi.
+
+Ketiga lockfile dikomit. Regenerasi setelah mengubah dependency:
+
+```bash
+bun install
+npm install --package-lock-only
+pnpm install --lockfile-only
+```
 
 ## Mulai cepat
 
-1. **Buat proyek** (atau clone repository ini):
+> **Status publikasi**
+>
+> Repositori ini adalah sumber distribusi saat ini. Proyek ini kemungkinan akan
+> dipublikasikan ke Packagist (Composer) dan/atau npm di masa mendatang. Sampai saat itu,
+> install dari repositori ini menggunakan `git clone` atau Composer VCS di bawah.
+
+1. **Dapatkan proyek** (pilih salah satu):
    ```bash
-   composer create-project programmeria/rest-api-laravel-2 my-app
+   git clone https://github.com/M-Husein/rest-api-laravel-2.git my-app
    cd my-app
    ```
+   atau install melalui Composer menggunakan repository VCS:
+   ```bash
+   composer create-project programmeria/rest-api-laravel-2 my-app --repository='{"type":"vcs","url":"https://github.com/M-Husein/rest-api-laravel-2.git"}'
+   cd my-app
+   ```
+
+   Di Windows PowerShell, escape tanda kutip JSON pada `--repository`:
+   `--repository='{\"type\":\"vcs\",\"url\":\"https://github.com/M-Husein/rest-api-laravel-2.git\"}'`.
 
 2. **Buat file environment dan konfigurasi**:
    ```bash
@@ -166,8 +205,8 @@ privat/admin tetap dilindungi autentikasi dan role.
 | No | Lapisan | Paket | Jenis | Tanggung jawab |
 |----|---------|-------|-------|----------------|
 | 1 | Core | kode aplikasi | Laravel app | API, domain auth/admin, role, user, session, backend localizer |
-| 2 | UI | `programmeria/laravel-ui` / `@programmeria/ui` | Composer + npm workspace | Blade shell, route admin/auth, source React/Ant Design, build Vite |
-| 3 | Internasionalisasi | `programmeria/laravel-locale-switcher` | Composer + npm workspace | Backend locale, preferensi user, menu bahasa dan strategi frontend |
+| 2 | UI | `programmeria/laravel-ui` / `@programmeria/ui` | Composer + workspace | Blade shell, route admin/auth, source React/Ant Design, build Vite |
+| 3 | Internasionalisasi | `programmeria/laravel-locale-switcher` | Composer + workspace | Backend locale, preferensi user, menu bahasa dan strategi frontend |
 | 4 | SEO | `programmeria/laravel-seo` | Composer package | Shell SPA publik, meta/Open Graph/JSON-LD, terjemahan halaman |
 
 ### Format paket fitur
@@ -175,12 +214,12 @@ privat/admin tetap dilindungi autentikasi dan role.
 Setiap fitur dapat menyediakan:
 
 - `composer.json` — service provider, route, migrasi, view, dan dependensi PHP.
-- `package.json` — metadata npm workspace dan dependensi frontend bila ada.
+- `package.json` — metadata workspace dan dependensi frontend bila ada.
 - `feature.json` — label, deskripsi, keanggotaan preset, requirement, conflict, dan flag frontend.
 
-Composer menentukan apakah suatu fitur terpasang. npm workspace hanya menyediakan source
-frontend yang dikonsumsi Vite. Semua dependensi frontend berada di `packages/ui/package.json`;
-`package.json` root hanya menyimpan definisi workspace dan script.
+Composer menentukan apakah suatu fitur terpasang. Workspace hanya menyediakan source frontend
+yang dikonsumsi Vite. Dependensi runtime frontend berada di `packages/ui/package.json`;
+tooling build/test dan script workspace berada di `package.json` root.
 
 ## Manajemen fitur
 
@@ -194,6 +233,7 @@ Terapkan preset:
 
 ```bash
 php artisan starter:install --preset=site
+php artisan starter:install --preset=site --package-manager=npm
 ```
 
 Override pilihan:
@@ -221,7 +261,8 @@ Perintah ini:
 - menulis ulang `features.json`;
 - meregenerasi registry fitur frontend saat UI terpasang;
 - menjalankan migrasi;
-- memasang dependensi frontend dan build asset hanya saat UI terpasang.
+- memasang dependensi frontend dan build asset dengan package manager terdeteksi hanya saat
+  UI terpasang.
 
 Menghapus fitur tidak pernah menghapus tabel database atau data user.
 
@@ -235,13 +276,15 @@ sebagai pengganti `minimal`, dan `site` sebagai pengganti `default` atau `full`.
 **Preset tanpa UI (`api`, `multilingual`)**
 
 - Tidak ada `/app`, `/login`, `/settings`, atau route HTML publik.
-- Tidak ada `bun install` dan tidak ada build asset.
+- Tidak ada install frontend dan tidak ada build asset.
 - Backend adalah backend SPA/API lengkap; frontend menjadi tanggung jawab Anda.
 
 **Preset UI (`api-ui`, `multilingual-ui`, `site`)**
 
 - Blade shell, source React/Ant Design, route, dan build tooling disediakan oleh paket `ui`.
-- `bun install` dan `bun run build` diperlukan sebelum menyajikan UI di produksi.
+- Install dan build dengan Bun, npm, atau pnpm sebelum menyajikan UI di produksi:
+  `bun install && bun run build`, `npm install && npm run build`, atau
+  `pnpm install && pnpm run build`.
 
 ## Autentikasi dan registrasi
 
@@ -328,8 +371,9 @@ Grup endpoint utama:
 ```bash
 composer test
 php artisan test
-bunx tsc --noEmit
-bun run build
+bun run typecheck        # atau: npm run typecheck / pnpm run typecheck
+bun run build            # atau: npm run build / pnpm run build
+bun run test:frontend    # atau: npm run test:frontend / pnpm run test:frontend
 composer validate --no-check-publish
 ```
 

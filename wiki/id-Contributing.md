@@ -13,10 +13,13 @@
 2. Buat `.env`, generate key, dan konfigurasikan PostgreSQL. Lihat
    [Memulai](id-Getting-Started).
 
-3. Pasang dependensi frontend (hanya untuk pekerjaan UI) — selalu dari root repositori:
+3. Pasang dependensi frontend (hanya untuk pekerjaan UI) — selalu dari root repositori,
+   menggunakan Bun, npm, atau pnpm:
 
    ```bash
    bun install
+   # atau: npm install
+   # atau: pnpm install
    ```
 
 ## Pengujian dan pemeriksaan kualitas
@@ -24,8 +27,9 @@
 ```bash
 composer test
 php artisan test
-bunx tsc --noEmit
-bun run build
+bun run typecheck        # atau: npm run typecheck / pnpm run typecheck
+bun run build            # atau: npm run build / pnpm run build
+bun run test:frontend    # atau: npm run test:frontend / pnpm run test:frontend
 composer validate --no-check-publish
 ```
 
@@ -39,15 +43,18 @@ composer validate --no-check-publish
 - Jaga commit tetap fokus dan gunakan pesan conventional commit (`feat:`, `fix:`, `chore:`,
   `refactor:`, `docs:`).
 - Buka pull request dan jelaskan perubahan, preset yang terpengaruh, dan cara verifikasinya.
-- Repositori saat ini belum memiliki CI; jalankan pemeriksaan di atas secara lokal sebelum
-  membuka PR.
+- CI menjalankan suite PHP dan pemeriksaan frontend dengan Bun, npm, dan pnpm. Jalankan
+  pemeriksaan di atas secara lokal sebelum membuka PR.
 
 ## Konvensi
 
 - Kode dan identifier menggunakan bahasa Inggris.
 - Nama preset dan fitur tidak terikat bahasa (lihat [Preset](id-Presets)).
 - Jangan menambahkan komentar kecuali membawa konteks yang benar-benar diperlukan.
-- Letakkan dependensi frontend di dalam `packages/ui/package.json`.
+- Letakkan dependensi runtime frontend di `packages/ui/package.json`; letakkan tooling
+  build/test dan skrip workspace di `package.json` root.
+- Commit `bun.lock`, `package-lock.json`, dan `pnpm-lock.yaml` bersamaan saat dependensi
+  berubah.
 
 ## Dokumentasi
 

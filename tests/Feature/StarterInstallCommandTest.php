@@ -78,9 +78,31 @@ class StarterInstallCommandTest extends TestCase
             ->expectsOutputToContain('Unknown preset');
     }
 
+    public function test_install_dry_run_accepts_package_manager_option(): void
+    {
+        $this->artisan('starter:install', [
+            '--preset' => 'site',
+            '--dry-run' => true,
+            '--package-manager' => 'npm',
+        ])
+            ->assertSuccessful()
+            ->expectsOutputToContain('Package manager');
+    }
+
+    public function test_install_fails_for_unknown_package_manager(): void
+    {
+        $this->artisan('starter:install', [
+            '--preset' => 'site',
+            '--dry-run' => true,
+            '--package-manager' => 'yarn',
+        ])
+            ->assertFailed()
+            ->expectsOutputToContain('Unsupported package manager');
+    }
+
     public function test_repository_resolves_requirements_and_conflicts(): void
     {
-        $base = storage_path('framework/testing/starter-repo-' . uniqid());
+        $base = storage_path('framework/testing/starter-repo-'.uniqid());
 
         try {
             $this->makePackage($base, 'alpha', ['requires' => ['beta']], ['default']);
@@ -88,7 +110,7 @@ class StarterInstallCommandTest extends TestCase
             $this->makePackage($base, 'gamma', ['conflicts' => ['delta']], ['conflict']);
             $this->makePackage($base, 'delta', ['conflicts' => ['gamma']], ['conflict']);
 
-            file_put_contents($base . '/starterkit.json', json_encode([
+            file_put_contents($base.'/starterkit.json', json_encode([
                 'defaultPreset' => 'default',
                 'presets' => [
                     'default' => ['alpha'],
@@ -109,20 +131,20 @@ class StarterInstallCommandTest extends TestCase
 
     private function makePackage(string $base, string $name, array $feature = [], array $presets = []): void
     {
-        $path = $base . '/packages/' . $name;
+        $path = $base.'/packages/'.$name;
         File::ensureDirectoryExists($path);
 
-        file_put_contents($path . '/composer.json', json_encode([
-            'name' => 'programmeria/laravel-' . $name,
+        file_put_contents($path.'/composer.json', json_encode([
+            'name' => 'programmeria/laravel-'.$name,
             'version' => '0.1.0',
         ], JSON_PRETTY_PRINT));
 
-        file_put_contents($path . '/package.json', json_encode([
-            'name' => '@programmeria/' . $name,
+        file_put_contents($path.'/package.json', json_encode([
+            'name' => '@programmeria/'.$name,
             'version' => '0.1.0',
         ], JSON_PRETTY_PRINT));
 
-        file_put_contents($path . '/feature.json', json_encode(array_merge([
+        file_put_contents($path.'/feature.json', json_encode(array_merge([
             'presets' => $presets,
             'requires' => [],
             'conflicts' => [],

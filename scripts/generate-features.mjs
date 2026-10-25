@@ -34,7 +34,7 @@ const entries = features.map((name) => `  ${toIdentifier(name)},`).join('\n');
 
 const content = `// AUTO-GENERATED FILE - DO NOT EDIT MANUALLY.
 // Source of truth: features.json
-// Regenerate with: bun run generate:features
+// Regenerate with: <package-manager> run generate:features
 import type { FeatureDescriptor } from '@/core/feature';
 ${imports ? imports + '\n' : ''}
 export const FEATURES: FeatureDescriptor[] = [

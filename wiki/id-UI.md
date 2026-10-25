@@ -12,28 +12,38 @@ UI bawaan disediakan oleh paket fitur `ui`
   `packages/ui/resources/ts`.
 - Route admin/auth (`/login`, `/register`, `/settings`, `/app`) dan route publik untuk
   preset UI.
-- Konfigurasi build Vite dan seluruh dependensi frontend.
+- Konfigurasi build Vite dan tooling build/test frontend.
 
 ## Memasang dan build
 
-UI diperlukan oleh preset `api-ui`, `multilingual-ui`, dan `site`. Untuk preset tersebut:
+UI diperlukan oleh preset `api-ui`, `multilingual-ui`, dan `site`. Untuk preset tersebut,
+jalankan kedua perintah **dari root repositori**:
 
 ```bash
-bun install
-bun run build
+bun install && bun run build
+# atau
+npm install && npm run build
+# atau
+pnpm install && pnpm run build
 ```
 
-Jalankan kedua perintah **dari root repositori**. Jangan pernah menjalankannya di dalam
-`packages/ui`.
+Override deteksi otomatis dengan `--package-manager=bun|npm|pnpm`:
+
+```bash
+php artisan frontend build --package-manager=npm
+```
+
+Jangan pernah menjalankan perintah di dalam `packages/ui`.
 
 Preset API saja (`api`, `multilingual`) melewati instalasi, codegen, dan build sepenuhnya,
-sehingga tidak memerlukan Node.js atau Bun.
+sehingga tidak memerlukan runtime frontend atau package manager.
 
 ## Cara paket UI terhubung
 
-- Paket ini adalah paket Composer (path repository) sekaligus Bun workspace.
-- Semua dependensi frontend berada di `packages/ui/package.json`; `package.json` root hanya
-  menyimpan definisi workspace dan skrip.
+- Paket ini adalah paket Composer (path repository) sekaligus workspace. Bun dan npm membaca
+  field `workspaces` di `package.json`; pnpm membaca `pnpm-workspace.yaml`.
+- Dependensi runtime berada di `packages/ui/package.json`; tooling build dan test berada di
+  `package.json` root.
 - Vite me-resolve `@programmeria/<feature>` ke `packages/<feature>/resources/ts/index.ts`,
   sehingga TypeScript fitur dikonsumsi sebagai source.
 - Paket fitur berkomunikasi dengan runtime UI melalui kontrak publik

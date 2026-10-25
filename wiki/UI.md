@@ -12,27 +12,38 @@ The bundled UI is provided by the `ui` feature package
   `packages/ui/resources/ts`.
 - Admin/auth routes (`/login`, `/register`, `/settings`, `/app`) and public routes for the
   UI presets.
-- Vite build configuration and all frontend dependencies.
+- Vite build configuration and frontend build/test tooling.
 
 ## Installing and building
 
-The UI is required by the `api-ui`, `multilingual-ui`, and `site` presets. For these presets:
+The UI is required by the `api-ui`, `multilingual-ui`, and `site` presets. For these presets,
+run both commands **from the repository root**:
 
 ```bash
-bun install
-bun run build
+bun install && bun run build
+# or
+npm install && npm run build
+# or
+pnpm install && pnpm run build
 ```
 
-Run both commands **from the repository root**. Never run them inside `packages/ui`.
+Override automatic detection with `--package-manager=bun|npm|pnpm`:
+
+```bash
+php artisan frontend build --package-manager=npm
+```
+
+Never run the commands inside `packages/ui`.
 
 API-only presets (`api`, `multilingual`) skip install, codegen, and build entirely, so no
-Node.js or Bun installation is needed.
+frontend runtime or package manager is needed.
 
 ## How the UI package is wired
 
-- It is a Composer package (path repository) plus a Bun workspace.
-- All frontend dependencies live in `packages/ui/package.json`; the root `package.json`
-  keeps only workspace definitions and scripts.
+- It is a Composer package (path repository) plus a workspace. Bun and npm read the
+  `workspaces` field in `package.json`; pnpm reads `pnpm-workspace.yaml`.
+- Runtime dependencies live in `packages/ui/package.json`; build and test tooling lives in
+  the root `package.json`.
 - Vite resolves `@programmeria/<feature>` to `packages/<feature>/resources/ts/index.ts`, so
   feature TypeScript is consumed as source.
 - Feature packages talk to the UI runtime through the public contract
