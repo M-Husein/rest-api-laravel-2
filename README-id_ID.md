@@ -186,7 +186,8 @@ pnpm install --lockfile-only
    php artisan starter:install --preset=site
    ```
    Jalankan perintah tanpa `--preset` untuk pemilihan interaktif. Preset default adalah
-   `site`.
+   `site`. RBAC default-nya `simple`; tambahkan `--rbac=standard` atau `--rbac=advanced` bila
+   diperlukan. Lihat [Preset RBAC](#preset-rbac).
 
 Saat membuat proyek dengan `composer create-project`, script post-install akan menampilkan
 perintah `starter:install` yang harus dijalankan berikutnya. Tidak ada fitur yang dipilih
@@ -319,6 +320,25 @@ Perintah ini:
   UI terpasang.
 
 Menghapus fitur tidak pernah menghapus tabel database atau data user.
+
+### Preset RBAC
+
+RBAC bersifat opsional dan terpisah dari preset produk. Pilih dengan `--rbac`:
+
+```bash
+php artisan starter:install --preset=site --rbac=advanced
+```
+
+| Preset | Perilaku |
+|--------|----------|
+| `simple` (default) | Proteksi berbasis role `Admin`/`Member` saja. Tanpa permission granular. |
+| `standard` | Role plus permission granular. `Admin` mendapat semua permission; `Member` tidak mendapat permission. |
+| `advanced` | Permission granular, policy model, dan pemeriksaan kepemilikan. `Member` hanya dapat melihat login history miliknya sendiri. |
+| `none` | Tidak ada penegakan role atau permission. User terautentikasi lolos pemeriksaan RBAC. |
+
+Pilihan disimpan sebagai `rbac` di `features.json`. Saat preset diterapkan, role dan
+permission di-seed kecuali memakai `--no-migrate`. Mengubah preset tidak mengubah role user
+yang sudah ada, dan `none` menonaktifkan penegakan tanpa menghapus role atau permission lama.
 
 ### Nama preset lama
 

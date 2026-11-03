@@ -10,7 +10,7 @@ class DatabaseSeeder extends Seeder{
     $this->call([
       ImportDefaultTranslationsSeeder::class,
       ImportPageTranslationsSeeder::class,
-      RolesSeeder::class,
+      RbacSeeder::class,
       UserSeeder::class,
     ]);
   }

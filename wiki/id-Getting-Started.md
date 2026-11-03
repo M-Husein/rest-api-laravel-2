@@ -100,7 +100,8 @@ Jangan pernah commit `.env`, application key, secret OAuth, atau kredensial data
    ```
 
    Jalankan perintah tanpa `--preset` untuk memilih secara interaktif. Preset default adalah
-   `site`.
+   `site`. RBAC default-nya `simple`; tambahkan `--rbac=standard` atau `--rbac=advanced` bila
+   diperlukan. Lihat [Preset RBAC](id-Feature-Management#preset-rbac).
 
    Preset UI mendeteksi Bun, npm, atau pnpm secara otomatis. Untuk memilih secara
    eksplisit, gunakan `--package-manager=bun|npm|pnpm`; lihat

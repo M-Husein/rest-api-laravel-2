@@ -4,6 +4,13 @@ All notable changes to this project are documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Add optional RBAC presets (`simple`, `standard`, `advanced`, and `none`) with a `--rbac`
+  installer option, role/permission seeding, middleware, and model policies.
+- Add `RbacPreset`, `RbacInstaller`, `RbacSeeder`, `EnsureRbac`, and policies for users,
+  login histories, articles, and contacts.
+
 ### Removed
 
 - Remove the `FRONTEND_PACKAGE_MANAGER` environment variable override. Use

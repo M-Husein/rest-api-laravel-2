@@ -7,5 +7,6 @@
   "inRepo": {},
   "frontend": [
     "locale-switcher"
-  ]
+  ],
+  "rbac": "simple"
 }

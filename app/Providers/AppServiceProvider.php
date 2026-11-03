@@ -8,6 +8,8 @@ use Illuminate\Auth\Notifications\ResetPassword;
 use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\{OpenApi,SecurityScheme};
 use Illuminate\Auth\Events\PasswordReset;
+use App\Models\{Article,Contact,LoginHistory,User};
+use App\Policies\{ArticlePolicy,ContactPolicy,LoginHistoryPolicy,UserPolicy};
 use App\Listeners\{
   HandlePasswordReset,
   // HandleFailedLogin,
@@ -27,6 +29,11 @@ class AppServiceProvider extends ServiceProvider{
    * Bootstrap any application services.
    */
   public function boot(): void{
+    Gate::policy(User::class, UserPolicy::class);
+    Gate::policy(Article::class, ArticlePolicy::class);
+    Gate::policy(Contact::class, ContactPolicy::class);
+    Gate::policy(LoginHistory::class, LoginHistoryPolicy::class);
+
     /**
      * Auth — Brute force protection
      * 5 attempts per minute per IP + email combination

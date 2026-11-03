@@ -17,7 +17,7 @@ class UserSeeder extends Seeder{
       // 'lang' => config('app.locale'),
       // 'theme' => 'light',
     ])
-    ->assignRole(User::ROLE_ADMIN);
+    ->assignRoleIfEnabled(User::ROLE_ADMIN);
 
     // $member = 
     User::create([
@@ -27,6 +27,6 @@ class UserSeeder extends Seeder{
       'password' => Hash::make('password'),
       'email_verified_at' => now(),
     ])
-    ->assignRole(User::ROLE_MEMBER);
+    ->assignRoleIfEnabled(User::ROLE_MEMBER);
   }
 }

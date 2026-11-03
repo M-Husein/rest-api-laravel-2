@@ -186,7 +186,8 @@ pnpm install --lockfile-only
    php artisan starter:install --preset=site
    ```
    Run the command without `--preset` for an interactive selection. The default preset is
-   `site`.
+   `site`. RBAC defaults to `simple`; add `--rbac=standard` or `--rbac=advanced` when needed.
+   See [RBAC presets](#rbac-presets).
 
 When creating a project with `composer create-project`, the post-install script prints the
 `starter:install` command to run next. No feature is selected automatically.
@@ -320,6 +321,25 @@ The command:
   when the UI is installed.
 
 Removing a feature never drops database tables or user data.
+
+### RBAC presets
+
+RBAC is optional and independent from product presets. Select it with `--rbac`:
+
+```bash
+php artisan starter:install --preset=site --rbac=advanced
+```
+
+| Preset | Behavior |
+|--------|----------|
+| `simple` (default) | Role-only `Admin`/`Member` protection. No granular permissions. |
+| `standard` | Roles plus granular permissions. `Admin` gets all permissions; `Member` gets none. |
+| `advanced` | Granular permissions, model policies, and ownership checks. `Member` can view only their own login histories. |
+| `none` | No role or permission enforcement. Authenticated users pass RBAC checks. |
+
+The selection is stored as `rbac` in `features.json`. Applying a preset seeds roles and
+permissions unless `--no-migrate` is used. Changing the preset does not reassign existing
+users, and `none` disables enforcement without deleting existing roles or permissions.
 
 ### Legacy preset names
 

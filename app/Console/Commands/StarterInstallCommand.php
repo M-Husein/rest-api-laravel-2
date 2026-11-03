@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Support\Frontend\PackageManager;
+use App\Support\Rbac\RbacInstaller;
+use App\Support\Rbac\RbacPreset;
 use App\Support\Starter\FeatureInstaller;
 use App\Support\Starter\FeatureRepository;
 use Illuminate\Console\Command;
@@ -18,7 +20,8 @@ class StarterInstallCommand extends Command
         {--dry-run : Show the plan without applying changes}
         {--no-migrate : Skip database migrations}
         {--no-build : Skip frontend install and build}
-        {--package-manager= : Frontend package manager to use (bun, npm, or pnpm)}';
+        {--package-manager= : Frontend package manager to use (bun, npm, or pnpm)}
+        {--rbac= : RBAC preset to apply (simple, standard, advanced, or none)}';
 
     protected $description = 'Install or remove starterkit feature packages';
 
@@ -35,6 +38,21 @@ class StarterInstallCommand extends Command
             ? trim($packageManager)
             : null;
 
+        $rbac = $this->option('rbac');
+        $rbac = is_string($rbac) && trim($rbac) !== ''
+            ? strtolower(trim($rbac))
+            : null;
+
+        if ($rbac !== null && ! RbacPreset::exists($rbac)) {
+            $this->components->error(
+                "Unsupported RBAC preset [{$rbac}]. Supported: "
+                .implode(', ', array_keys(RbacPreset::all()))
+                .'.'
+            );
+
+            return self::FAILURE;
+        }
+
         if ($packageManager !== null) {
             $packageManager = strtolower($packageManager);
 
@@ -49,9 +67,9 @@ class StarterInstallCommand extends Command
             }
         }
 
-        if ($preset === null && $with === [] && $without === []) {
+        if ($preset === null && $with === [] && $without === [] && $rbac === null) {
             if (! $this->input->isInteractive()) {
-                $this->components->info('Nothing to do. Pass --preset, --with, or --without.');
+                $this->components->info('Nothing to do. Pass --preset, --with, --without, or --rbac.');
 
                 return self::SUCCESS;
             }
@@ -80,8 +98,9 @@ class StarterInstallCommand extends Command
         }
 
         $plan = $repository->plan($desired);
+        $featureSelectionRequested = $preset !== null || $with !== [] || $without !== [];
 
-        $this->renderPlan($desired, $plan, $preset, $packageManager);
+        $this->renderPlan($desired, $plan, $preset, $packageManager, $rbac);
 
         if ($this->option('dry-run')) {
             $this->components->info('Dry run: no changes were made.');
@@ -94,13 +113,25 @@ class StarterInstallCommand extends Command
         }
 
         try {
-            $installer->apply(
-                $desired,
-                ! $this->option('no-migrate'),
-                ! $this->option('no-build'),
-                fn (string $line) => $this->line($line),
-                $packageManager,
-            );
+            if ($featureSelectionRequested) {
+                $installer->apply(
+                    $desired,
+                    ! $this->option('no-migrate'),
+                    ! $this->option('no-build'),
+                    fn (string $line) => $this->line($line),
+                    $packageManager,
+                );
+            } else {
+                $this->line('No feature changes requested; skipping feature installation.');
+            }
+
+            if ($rbac !== null) {
+                (new RbacInstaller)->apply(
+                    $rbac,
+                    ! $this->option('no-migrate'),
+                    fn (string $line) => $this->line($line),
+                );
+            }
         } catch (Throwable $e) {
             $this->components->error($e->getMessage());
 
@@ -117,9 +148,11 @@ class StarterInstallCommand extends Command
         array $plan,
         ?string $preset,
         ?string $packageManager,
+        ?string $rbac,
     ): void {
         $this->components->twoColumnDetail('Preset', $preset ?? '(current selection)');
         $this->components->twoColumnDetail('Package manager', $packageManager ?? 'auto');
+        $this->components->twoColumnDetail('RBAC', $rbac ?? '(current selection)');
 
         $rows = [];
 

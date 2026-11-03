@@ -35,6 +35,12 @@ Lewati langkah lanjutan:
 php artisan starter:install --preset=api-ui --no-migrate --no-build
 ```
 
+Pilih preset RBAC:
+
+```bash
+php artisan starter:install --preset=site --rbac=advanced
+```
+
 Saat menjalankan secara non-interaktif (misalnya dalam skrip), tambahkan `--no-interaction`
 untuk menghindari prompt konfirmasi.
 
@@ -52,6 +58,21 @@ untuk menghindari prompt konfirmasi.
 - `--dry-run` mencetak rencana tanpa mengubah apa pun.
 - Aturan requirement dan conflict divalidasi sebelum perubahan diterapkan.
 - Preset atau fitur yang tidak dikenal langsung gagal dengan daftar opsi yang tersedia.
+
+## Preset RBAC
+
+RBAC bersifat opsional dan terpisah dari preset produk. Default-nya adalah `simple`.
+
+| Preset | Perilaku |
+|--------|----------|
+| `simple` | Proteksi berbasis role `Admin`/`Member` saja. Tanpa permission granular. |
+| `standard` | Role plus permission granular. `Admin` mendapat semua permission; `Member` tidak mendapat permission. |
+| `advanced` | Permission granular, policy model, dan pemeriksaan kepemilikan. `Member` hanya dapat melihat login history miliknya sendiri. |
+| `none` | Tidak ada penegakan role atau permission. User terautentikasi lolos pemeriksaan RBAC. |
+
+Pilihan disimpan sebagai `rbac` di `features.json`. Saat preset diterapkan, role dan
+permission di-seed kecuali memakai `--no-migrate`. Mengubah preset tidak mengubah role user
+yang sudah ada, dan `none` menonaktifkan penegakan tanpa menghapus role atau permission lama.
 
 ## Cara kerjanya
 

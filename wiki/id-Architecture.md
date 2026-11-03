@@ -20,8 +20,10 @@ packages/
   seo/              programmeria/laravel-seo
 app/Support/Frontend/  deteksi package manager dan command
 app/Support/Starter/  installer, repository, manifest, JSON IO
+app/Support/Rbac/     preset RBAC dan installer
+config/rbac.php       definisi preset RBAC dan matriks permission
 starterkit.json       pemetaan preset ke fitur
-features.json         fitur terpilih (sumber kebenaran untuk codegen)
+features.json         fitur terpilih dan preset RBAC
 scripts/generate-features.mjs  codegen registry frontend
 ```
 
