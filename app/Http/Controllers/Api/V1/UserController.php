@@ -191,6 +191,12 @@ class UserController extends Controller{
       'ids.*' => ['integer']
     ]);
 
+    abort_if(
+      in_array($request->user()->id, $ids['ids'], true),
+      403,
+      'You cannot delete your own account.'
+    );
+
     User::whereIn('id', $ids['ids'])->delete();
 
     return jsonSuccess(); // null, 'Users deleted successfully.'
