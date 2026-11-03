@@ -98,7 +98,8 @@ Pengujian otomatis menggunakan SQLite in-memory, bukan verifikasi produksi untuk
    ```
 
    Run the command without `--preset` for an interactive selection. The default preset is
-   `site`.
+   `site`. RBAC defaults to `simple`; add `--rbac=standard` or `--rbac=advanced` when needed.
+   See [RBAC presets](Feature-Management#rbac-presets).
 
    UI presets detect Bun, npm, or pnpm automatically. To choose explicitly, use
    `--package-manager=bun|npm|pnpm`; see

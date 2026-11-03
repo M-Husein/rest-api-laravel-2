@@ -35,6 +35,12 @@ Skip follow-up steps:
 php artisan starter:install --preset=api-ui --no-migrate --no-build
 ```
 
+Choose an RBAC preset:
+
+```bash
+php artisan starter:install --preset=site --rbac=advanced
+```
+
 When running non-interactively (for example in scripts) add `--no-interaction` to avoid the
 confirmation prompt.
 
@@ -52,6 +58,21 @@ confirmation prompt.
 - `--dry-run` prints the plan without changing anything.
 - Requirement and conflict rules are validated before any change is applied.
 - Unknown presets or features fail fast with the available options listed.
+
+## RBAC presets
+
+RBAC is optional and independent from product presets. The default is `simple`.
+
+| Preset | Behavior |
+|--------|----------|
+| `simple` | Role-only `Admin`/`Member` protection. No granular permissions. |
+| `standard` | Roles plus granular permissions. `Admin` gets all permissions; `Member` gets none. |
+| `advanced` | Granular permissions, model policies, and ownership checks. `Member` can view only their own login histories. |
+| `none` | No role or permission enforcement. Authenticated users pass RBAC checks. |
+
+The selection is stored as `rbac` in `features.json`. Applying a preset seeds roles and
+permissions unless `--no-migrate` is used. Changing the preset does not reassign existing
+users, and `none` disables enforcement without deleting existing roles or permissions.
 
 ## How it works
 
