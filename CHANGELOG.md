@@ -24,6 +24,13 @@ All notable changes to this project are documented in this file.
   `--package-manager=bun|npm|pnpm` to choose the frontend package manager explicitly.
   `composer setup` and `composer dev` continue to detect it automatically.
 
+### Fixed
+
+- Mencegah bulk delete user menghapus akun yang sedang login melalui
+  `POST /api/v1/users/delete` (`abort_if` 403 jika ID user terautentikasi ada dalam `ids`).
+- Tambah impor `Illuminate\Support\Str` pada `UserController` agar pencarian user
+  berdasarkan username/UUID tidak error.
+
 ## [0.3.1] - 2026-10-25
 
 ### Added
