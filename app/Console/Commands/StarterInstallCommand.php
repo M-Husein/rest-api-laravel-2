@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Support\Frontend\PackageManager;
 use App\Support\Rbac\RbacInstaller;
 use App\Support\Rbac\RbacPreset;
+use App\Support\Rbac\RbacUiMode;
 use App\Support\Starter\FeatureInstaller;
 use App\Support\Starter\FeatureRepository;
 use Illuminate\Console\Command;
@@ -21,7 +22,8 @@ class StarterInstallCommand extends Command
         {--no-migrate : Skip database migrations}
         {--no-build : Skip frontend install and build}
         {--package-manager= : Frontend package manager to use (bun, npm, or pnpm)}
-        {--rbac= : RBAC preset to apply (simple, standard, advanced, or none)}';
+        {--rbac= : RBAC preset to apply (simple, standard, advanced, or none)}
+        {--rbac-ui= : Advanced frontend mode (server or client)}';
 
     protected $description = 'Install or remove starterkit feature packages';
 
@@ -43,6 +45,11 @@ class StarterInstallCommand extends Command
             ? strtolower(trim($rbac))
             : null;
 
+        $rbacUi = $this->option('rbac-ui');
+        $rbacUi = is_string($rbacUi) && trim($rbacUi) !== ''
+            ? strtolower(trim($rbacUi))
+            : null;
+
         if ($rbac !== null && ! RbacPreset::exists($rbac)) {
             $this->components->error(
                 "Unsupported RBAC preset [{$rbac}]. Supported: "
@@ -51,6 +58,35 @@ class StarterInstallCommand extends Command
             );
 
             return self::FAILURE;
+        }
+
+        if ($rbacUi !== null && ! RbacUiMode::exists($rbacUi)) {
+            $this->components->error(
+                "Unsupported RBAC UI mode [{$rbacUi}]. Supported: "
+                .implode(', ', array_keys(RbacUiMode::all()))
+                .'.'
+            );
+
+            return self::FAILURE;
+        }
+
+        if ($rbacUi !== null && $rbac !== RbacPreset::ADVANCED) {
+            $this->components->error('The --rbac-ui option requires --rbac=advanced.');
+
+            return self::FAILURE;
+        }
+
+        if ($rbac === RbacPreset::ADVANCED && $rbacUi === null) {
+            $rbacUi = $this->input->isInteractive() && ! $this->option('dry-run')
+                ? $this->choice(
+                    'Advanced frontend mode',
+                    [
+                        RbacUiMode::SERVER => 'server / authoritative (recommended)',
+                        RbacUiMode::CLIENT => 'client / local',
+                    ],
+                    RbacUiMode::default()
+                )
+                : RbacUiMode::default();
         }
 
         if ($packageManager !== null) {
@@ -100,7 +136,7 @@ class StarterInstallCommand extends Command
         $plan = $repository->plan($desired);
         $featureSelectionRequested = $preset !== null || $with !== [] || $without !== [];
 
-        $this->renderPlan($desired, $plan, $preset, $packageManager, $rbac);
+        $this->renderPlan($desired, $plan, $preset, $packageManager, $rbac, $rbacUi);
 
         if ($this->option('dry-run')) {
             $this->components->info('Dry run: no changes were made.');
@@ -130,6 +166,7 @@ class StarterInstallCommand extends Command
                     $rbac,
                     ! $this->option('no-migrate'),
                     fn (string $line) => $this->line($line),
+                    $rbacUi,
                 );
             }
         } catch (Throwable $e) {
@@ -149,10 +186,15 @@ class StarterInstallCommand extends Command
         ?string $preset,
         ?string $packageManager,
         ?string $rbac,
+        ?string $rbacUi,
     ): void {
         $this->components->twoColumnDetail('Preset', $preset ?? '(current selection)');
         $this->components->twoColumnDetail('Package manager', $packageManager ?? 'auto');
         $this->components->twoColumnDetail('RBAC', $rbac ?? '(current selection)');
+
+        if ($rbac === RbacPreset::ADVANCED) {
+            $this->components->twoColumnDetail('RBAC UI', $rbacUi ?? RbacUiMode::default());
+        }
 
         $rows = [];
 

@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { Authenticated } from "@refinedev/core";
+import { Authenticated, CanAccess } from "@refinedev/core";
 import { Outlet } from "react-router";
 import { View as ErrorComponent } from '@/components/views/errors/View';
 import { ErrorBoundary } from "@/components/ErrorBoundary";
@@ -22,11 +22,13 @@ const LayoutAdminApp = () => (
     key="auth-admin"
     fallback={<CrossZoneRedirect to="/login" />}
   >
-    {lazyApp(
-      <LayoutAdmin>
-        <Outlet />
-      </LayoutAdmin>
-    )}
+    <CanAccess resource="app" action="list" fallback={<ErrorComponent code={403} />}>
+      {lazyApp(
+        <LayoutAdmin>
+          <Outlet />
+        </LayoutAdmin>
+      )}
+    </CanAccess>
   </Authenticated>
 );
 

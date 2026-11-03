@@ -30,6 +30,19 @@ $advancedPermissions = [
 return [
     'default' => 'simple',
 
+    'default_ui_mode' => 'server',
+
+    'ui_modes' => [
+        'server' => [
+            'label' => 'server / authoritative',
+            'description' => 'Record-level UI checks are delegated to the backend policy layer.',
+        ],
+        'client' => [
+            'label' => 'client / local',
+            'description' => 'Record-level UI checks use local permissions and record data.',
+        ],
+    ],
+
     'presets' => [
         'simple' => [
             'label' => 'Simple (role-only)',

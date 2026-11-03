@@ -4,6 +4,7 @@ import { toggleLoaderApp } from '@/utils/dom';
 import { getUser, updateUser, clearUser, getAvatarUrl } from '@/utils/user';
 import { getMeta } from '@/utils/browser';
 import { featureApi } from '@/core/feature';
+import { clearAccess, getAccess } from '@/providers/accessControl/access';
 
 // const setLang = (lang: string): void => {
 //   localStorage.setItem("i18nextLng", lang);
@@ -94,6 +95,8 @@ export const authProvider: AuthProvider = {
           ...response.data, 
           avatar: getAvatarUrl(response.data.avatar),
         });
+
+        clearAccess();
 
         /**
          * The Telemetry Path: Fire-and-forget (Notice there is NO `await` here)
@@ -186,6 +189,8 @@ export const authProvider: AuthProvider = {
       const bc = new BroadcastChannel(import.meta.env.VITE_BC_NAME);
       bc.postMessage({ type: "LOGOUT" });
       // window.location.replace('/login');
+
+      clearAccess();
 
       return {
         success: true,
@@ -281,6 +286,7 @@ export const authProvider: AuthProvider = {
         // 401 = session expired or not logged in
         if (status === 401) {
           clearUser(); // Clear data
+          clearAccess();
 
           return {
             authenticated: false,
@@ -304,7 +310,7 @@ export const authProvider: AuthProvider = {
     return authCheckPromise;
   },
 
-  getPermissions: async () => null,
+  getPermissions: async () => getAccess(),
 
   getIdentity: async () => {
     const user = getUser();
@@ -370,6 +376,7 @@ export const authProvider: AuthProvider = {
     switch(status){
       case 401: {
         clearUser(); // Clear data
+        clearAccess();
 
         return {
           logout: true,

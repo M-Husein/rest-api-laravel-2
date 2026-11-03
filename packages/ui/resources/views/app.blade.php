@@ -57,7 +57,8 @@ const APP=Object.freeze({
   defaultLang:"{{$defaultLang}}",
   locales:@json(config('localizer.locales')),
   strategy:"pathname",
-  csp:"{{$csp}}"
+  csp:"{{$csp}}",
+  rbac:@json(\App\Support\Rbac\RbacPreset::current())
 });
 window.__APP__={
   user:@json($user,$flags),

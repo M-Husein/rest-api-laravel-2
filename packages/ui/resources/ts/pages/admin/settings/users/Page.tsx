@@ -3,7 +3,7 @@ import { useDocumentTitle } from "@/hooks/useDocumentTitle";
 import type { TableColumnsType } from 'antd';
 import { Button, Modal } from 'antd';
 // import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { useGetIdentity, useCan, useTranslate, useDelete, useDeleteMany } from "@refinedev/core";
+import { useGetIdentity, useCan, CanAccess, useTranslate, useDelete, useDeleteMany } from "@refinedev/core";
 import { useTable, getDefaultSortOrder } from "@/utils/core";
 import { useSearchParams, Link } from "react-router";
 import dayjs from 'dayjs';
@@ -185,28 +185,30 @@ const Content = ({ title }: { title: string }) => {
         const isSystem = isUserSystem(row);
         return (
           <>
-            <Button
-              title="Edit"
-              size="small"
-              ghost
-              type="primary"
-              icon={<b>✏️</b>} // <EditOutlined />
-              disabled={(isSystem && !isUserSystem(currentUser)) || loadingProcess}
-              // onClick={() => toggleFormModal(row)}
-            />
+            <CanAccess resource="users" action="edit" params={{ id: row.id }}>
+              <Button
+                title="Edit"
+                size="small"
+                ghost
+                type="primary"
+                icon={<b>✏️</b>}
+                disabled={(isSystem && !isUserSystem(currentUser)) || loadingProcess}
+              />
+            </CanAccess>
             {' '}
             {!isSystem && (
-              <Button
-                title="Delete"
-                size="small"
-                type="primary"
-                ghost
-                danger
-                icon={<b>🗑️</b>} // <DeleteOutlined />
-                disabled={loadingProcess} // isSystem || 
-                // className={isSystem ? "invisible" : ""}
-                onClick={() => clickDelete(row)}
-              />
+              <CanAccess resource="users" action="delete" params={{ id: row.id }}>
+                <Button
+                  title="Delete"
+                  size="small"
+                  type="primary"
+                  ghost
+                  danger
+                  icon={<b>🗑️</b>}
+                  disabled={loadingProcess}
+                  onClick={() => clickDelete(row)}
+                />
+              </CanAccess>
             )}
           </>
         );
@@ -220,13 +222,15 @@ const Content = ({ title }: { title: string }) => {
       content={
         <>
           {!!selectedRowKeys.length && (
-            <Button
-              danger
-              type="primary"
-              onClick={onClickDeleteRows}
-            >
-              {translate('buttons.deleteSelected')} ({selectedRowKeys.length})
-            </Button>
+            <CanAccess resource="users" action="delete">
+              <Button
+                danger
+                type="primary"
+                onClick={onClickDeleteRows}
+              >
+                {translate('buttons.deleteSelected')} ({selectedRowKeys.length})
+              </Button>
+            </CanAccess>
           )}
 
           <ButtonReload
@@ -237,9 +241,10 @@ const Content = ({ title }: { title: string }) => {
           
           <Button
             type="primary"
-            // onClick={() => toggleFormModal({ name: '' })}
           >
-            Create
+            <CanAccess resource="users" action="create">
+              Create
+            </CanAccess>
           </Button>
         </>
       }

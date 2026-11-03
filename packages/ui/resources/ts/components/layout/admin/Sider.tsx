@@ -5,8 +5,8 @@ import { FaList, FaBars } from "react-icons/fa6"; // FaHouse, FaChevronLeft
 // import { QuestionCircleFilled } from '@ant-design/icons'; // , SearchOutlined
 import {
   // useTranslate,
-  CanAccess,
   useMenu,
+  usePermissions,
   // useRefineContext,
   type TreeMenuItem,
   // useWarnAboutChange,
@@ -14,6 +14,8 @@ import {
 } from "@refinedev/core";
 import { useTranslation } from "react-i18next";
 import { useThemedLayoutContext } from "@/hooks/useThemedLayoutContext";
+import type { AccessPayload } from '@/providers/accessControl';
+import { canByPermission, permissionFor } from '@/providers/accessControl/permissions';
 // import { NavLink } from '@/components/router'; // , A
 import { NavLink } from 'react-router';
 import { debounce } from 'q-js-utils/debounce';
@@ -66,6 +68,48 @@ export const Sider = ({
   const breakpoint = Grid.useBreakpoint();
   // const isMobile = typeof breakpoint.lg === "undefined" ? false : !breakpoint.lg;
   const isMobile = !breakpoint.lg;
+
+  const { data: accessControl } = usePermissions<AccessPayload>({});
+
+  const filterTreeItems = (tree: TreeMenuItem[]): TreeMenuItem[] => {
+    if (APP.rbac === 'none') {
+      return tree;
+    }
+
+    if (!accessControl) {
+      return [];
+    }
+
+    const allowed = (item: TreeMenuItem): boolean => {
+      if (item.meta?.external) {
+        return true;
+      }
+
+      if (item.children.length > 0) {
+        return true;
+      }
+
+      return canByPermission(accessControl, permissionFor(item.name, 'list'));
+    };
+
+    return tree
+      .map((item) => {
+        const children = item.children.length
+          ? filterTreeItems(item.children)
+          : [];
+
+        if (item.children.length && children.length === 0) {
+          return null;
+        }
+
+        if (!allowed(item)) {
+          return null;
+        }
+
+        return { ...item, children } as TreeMenuItem;
+      })
+      .filter((item): item is TreeMenuItem => item != null);
+  };
   // const searchInputRef = useRef<any>(null);
 
   const [searchOn, setSearchOn] = useState<boolean>(false);
@@ -87,7 +131,7 @@ export const Sider = ({
   );
 
   const renderTreeView = (tree: TreeMenuItem[], selectedKey?: string): ItemType[] => {
-    return tree.map((item: TreeMenuItem) => {
+    return filterTreeItems(tree).map((item: TreeMenuItem) => {
       // const { icon, label, route, key, name, children, parentName, meta, options } = item;
       const { key, name, children, meta, list: route } = item;
       const parentName = meta?.parent;
@@ -102,16 +146,7 @@ export const Sider = ({
           key: key,
           icon: icon ?? <FaList />,
           disabled,
-          label: (
-            <CanAccess
-              key={key}
-              resource={name} // resourceName
-              action="list"
-              params={{ resource: item }}
-            >
-              {label}
-            </CanAccess>
-          ),
+          label,
           // Recursively call renderTreeView to get the 'children' array of objects
           children: renderTreeView(children, selectedKey),
           // The CanAccess wrapping logic is moved to the label for the SubMenu title
@@ -130,12 +165,7 @@ export const Sider = ({
         disabled,
         // style: isActiveLink,
         label: (
-          <CanAccess
-            key={key}
-            resource={name} // resourceName
-            action="list"
-            params={{ resource: item }}
-          >
+          <>
             {meta?.external ? (
               <a
                 href={route ?? ""}
@@ -157,10 +187,10 @@ export const Sider = ({
               </NavLink>
             )}
             {!siderCollapsed && isSelected && <div className="a-menu-tree-arrow" />}
-          </CanAccess>
+          </>
         )
       } as ItemType;
-    }).filter(item => item != null) as ItemType[]; // Filter out nulls if CanAccess didn't render anything
+    });
   };
 
   // console.log('menuItems:', menuItems);

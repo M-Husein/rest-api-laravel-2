@@ -6,6 +6,7 @@ use App\Models\LoginHistory;
 use App\Models\User;
 use App\Support\Rbac\RbacInstaller;
 use App\Support\Rbac\RbacPreset;
+use App\Support\Rbac\RbacUiMode;
 use Database\Seeders\RbacSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
@@ -56,6 +57,149 @@ class RbacTest extends TestCase
             file_put_contents($path, $original);
             RbacPreset::forget();
         }
+    }
+
+    public function test_ui_mode_defaults_to_server_for_advanced(): void
+    {
+        $this->withRbacPreset(RbacPreset::ADVANCED, function () {
+            $this->assertSame(RbacUiMode::SERVER, RbacUiMode::current());
+        });
+    }
+
+    public function test_ui_mode_writes_to_features_manifest(): void
+    {
+        $path = base_path('features.json');
+        $original = file_get_contents($path);
+
+        try {
+            $this->withRbacPreset(RbacPreset::ADVANCED, function () use ($path) {
+                RbacUiMode::write(RbacUiMode::CLIENT);
+                $this->assertSame(RbacUiMode::CLIENT, RbacUiMode::current());
+
+                $manifest = json_decode(file_get_contents($path), true);
+                $this->assertSame(RbacUiMode::CLIENT, $manifest['rbac_ui']);
+            });
+        } finally {
+            file_put_contents($path, $original);
+            RbacPreset::forget();
+            RbacUiMode::forget();
+        }
+    }
+
+    public function test_ui_mode_is_cleared_for_non_advanced_presets(): void
+    {
+        $path = base_path('features.json');
+        $original = file_get_contents($path);
+
+        try {
+            $this->withRbacPreset(RbacPreset::ADVANCED, function () {
+                RbacUiMode::write(RbacUiMode::CLIENT);
+            });
+
+            (new RbacInstaller)->apply(RbacPreset::STANDARD, false);
+
+            $manifest = json_decode(file_get_contents($path), true);
+            $this->assertArrayNotHasKey('rbac_ui', $manifest);
+            $this->assertNull(RbacUiMode::current(RbacPreset::STANDARD));
+        } finally {
+            file_put_contents($path, $original);
+            RbacPreset::forget();
+            RbacUiMode::forget();
+        }
+    }
+
+    public function test_access_payload_includes_ui_mode(): void
+    {
+        $this->withRbacPreset(RbacPreset::ADVANCED, function () {
+            (new RbacSeeder)->seed(RbacPreset::ADVANCED);
+
+            $admin = $this->makeUser();
+            $admin->assignRole('Admin');
+
+            Sanctum::actingAs($admin);
+
+            $this->getJson('/api/v1/me/access')
+                ->assertOk()
+                ->assertJson([
+                    'success' => true,
+                    'data' => [
+                        'preset' => RbacPreset::ADVANCED,
+                        'ui_mode' => RbacUiMode::SERVER,
+                        'is_admin' => true,
+                    ],
+                ]);
+        });
+    }
+
+    public function test_access_check_allows_admin_to_delete_user(): void
+    {
+        $this->withRbacPreset(RbacPreset::ADVANCED, function () {
+            (new RbacSeeder)->seed(RbacPreset::ADVANCED);
+
+            $admin = $this->makeUser();
+            $admin->assignRole('Admin');
+            $target = $this->makeUser();
+
+            Sanctum::actingAs($admin);
+
+            $this->postJson('/api/v1/me/access/check', [
+                'resource' => 'users',
+                'action' => 'delete',
+                'id' => $target->id,
+            ])->assertOk()->assertJson(['success' => true, 'data' => ['can' => true]]);
+        });
+    }
+
+    public function test_access_check_denies_member_from_deleting_other_user(): void
+    {
+        $this->withRbacPreset(RbacPreset::ADVANCED, function () {
+            (new RbacSeeder)->seed(RbacPreset::ADVANCED);
+
+            $member = $this->makeUser();
+            $member->assignRole('Member');
+            $target = $this->makeUser();
+
+            Sanctum::actingAs($member);
+
+            $this->postJson('/api/v1/me/access/check', [
+                'resource' => 'users',
+                'action' => 'delete',
+                'id' => $target->id,
+            ])->assertOk()->assertJson(['success' => true, 'data' => ['can' => false]]);
+        });
+    }
+
+    public function test_access_check_denies_member_from_viewing_other_login_history(): void
+    {
+        $this->withRbacPreset(RbacPreset::ADVANCED, function () {
+            (new RbacSeeder)->seed(RbacPreset::ADVANCED);
+
+            $member = $this->makeUser();
+            $member->assignRole('Member');
+            $foreign = LoginHistory::create(['user_id' => $this->makeUser()->id, 'ip_address' => '127.0.0.1']);
+
+            Sanctum::actingAs($member);
+
+            $this->postJson('/api/v1/me/access/check', [
+                'resource' => 'login-histories',
+                'action' => 'show',
+                'id' => $foreign->id,
+            ])->assertOk()->assertJson(['success' => true, 'data' => ['can' => false]]);
+        });
+    }
+
+    public function test_access_check_allows_authenticated_users_for_none(): void
+    {
+        $this->withRbacPreset(RbacPreset::NONE, function () {
+            $user = $this->makeUser();
+            Sanctum::actingAs($user);
+
+            $this->postJson('/api/v1/me/access/check', [
+                'resource' => 'users',
+                'action' => 'delete',
+                'id' => $user->id,
+            ])->assertOk()->assertJson(['success' => true, 'data' => ['can' => true]]);
+        });
     }
 
     public function test_standard_preset_seeds_permissions_and_assigns_admin(): void

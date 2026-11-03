@@ -336,9 +336,32 @@ php artisan starter:install --preset=site --rbac=advanced
 | `advanced` | Permission granular, policy model, dan pemeriksaan kepemilikan. `Member` hanya dapat melihat login history miliknya sendiri. |
 | `none` | Tidak ada penegakan role atau permission. User terautentikasi lolos pemeriksaan RBAC. |
 
-Pilihan disimpan sebagai `rbac` di `features.json`. Saat preset diterapkan, role dan
+Untuk `advanced`, pilih mode evaluasi frontend record-level dengan `--rbac-ui`:
+
+```bash
+php artisan starter:install --preset=site --rbac=advanced --rbac-ui=server
+php artisan starter:install --preset=site --rbac=advanced --rbac-ui=client
+```
+
+| Mode UI | Perilaku |
+|---------|----------|
+| `server` (default, direkomendasikan) | Pemeriksaan record-level UI memanggil `/api/v1/me/access/check` dan cocok dengan policy backend secara tepat. |
+| `client` | Pemeriksaan record-level UI menggunakan permission dan data record lokal. Lebih cepat, tetapi hanya perkiraan; backend tetap menegaskan otorisasi. |
+
+Pilihan disimpan sebagai `rbac` dan, untuk `advanced`, `rbac_ui` di `features.json`. Saat preset diterapkan, role dan
 permission di-seed kecuali memakai `--no-migrate`. Mengubah preset tidak mengubah role user
 yang sudah ada, dan `none` menonaktifkan penegakan tanpa menghapus role atau permission lama.
+
+Kontrol akses frontend hanya diaktifkan di aplikasi admin. Untuk `none`, tidak ada `accessControlProvider` yang dipasang dan `CanAccess`/`useCan` mengizinkan semua user terautentikasi.
+
+### Catatan pengembangan kontrol akses frontend
+
+Mode server melakukan satu permintaan `/api/v1/me/access/check` per record agar UI mencerminkan policy backend secara tepat. React Query menyimpan cache setiap hasil.
+
+Alternatif yang dipertimbangkan:
+- Render berdasarkan permission dan cek pada saat diklik: lebih sedikit permintaan, tetapi UI mungkin menampilkan aksi yang nantinya ditolak backend.
+- Endpoint batch `/api/v1/me/access/check` untuk banyak ID: lebih efisien untuk tabel besar, tetapi memerlukan endpoint batch dan kontrak provider yang lebih kompleks.
+
 
 ### Nama preset lama
 
