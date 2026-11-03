@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Support\Rbac\RbacPreset;
 use App\Support\Starter\FeatureRepository;
 use Illuminate\Support\Facades\File;
 use InvalidArgumentException;
@@ -98,6 +99,53 @@ class StarterInstallCommandTest extends TestCase
         ])
             ->assertFailed()
             ->expectsOutputToContain('Unsupported package manager');
+    }
+
+    public function test_install_dry_run_accepts_rbac_option(): void
+    {
+        $before = file_get_contents(base_path('features.json'));
+
+        $this->artisan('starter:install', [
+            '--rbac' => 'advanced',
+            '--dry-run' => true,
+        ])
+            ->assertSuccessful()
+            ->expectsOutputToContain('RBAC');
+
+        $this->assertSame($before, file_get_contents(base_path('features.json')));
+    }
+
+    public function test_install_fails_for_unknown_rbac_preset(): void
+    {
+        $this->artisan('starter:install', [
+            '--rbac' => 'custom',
+            '--dry-run' => true,
+        ])
+            ->assertFailed()
+            ->expectsOutputToContain('Unsupported RBAC preset');
+    }
+
+    public function test_install_rbac_only_skips_feature_installation(): void
+    {
+        $path = base_path('features.json');
+        $before = file_get_contents($path);
+
+        try {
+            $this->artisan('starter:install', [
+                '--rbac' => 'standard',
+                '--no-migrate' => true,
+                '--no-interaction' => true,
+            ])
+                ->assertSuccessful()
+                ->expectsOutputToContain('No feature changes requested');
+
+            $manifest = json_decode(file_get_contents($path), true);
+
+            $this->assertSame('standard', $manifest['rbac']);
+        } finally {
+            file_put_contents($path, $before);
+            RbacPreset::forget();
+        }
     }
 
     public function test_repository_resolves_requirements_and_conflicts(): void

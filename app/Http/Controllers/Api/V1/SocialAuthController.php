@@ -298,7 +298,7 @@ class SocialAuthController extends Controller{
             'email_verified_at' => now(),
             'password' => null
           ])
-          ->assignRole(User::ROLE_MEMBER);
+          ->assignRoleIfEnabled(User::ROLE_MEMBER);
         }catch(UniqueConstraintViolationException $e){
           // Another request inserted the user – fetch it now (with trashed)
           $user = User::withTrashed()->where('email', $email)->first();

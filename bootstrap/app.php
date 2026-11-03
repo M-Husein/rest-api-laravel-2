@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Spatie\Permission\Middleware\{RoleMiddleware,PermissionMiddleware,RoleOrPermissionMiddleware};
 use NielsNumbers\LaravelLocalizer\Middleware\{SetLocale,RedirectLocale};
-use App\Http\Middleware\{SecurityHeaders,SecureApiHeaders};
+use App\Http\Middleware\{EnsureRbac,SecurityHeaders,SecureApiHeaders};
 
 return Application::configure(basePath:dirname(__DIR__))
   ->withRouting(
@@ -47,7 +47,8 @@ return Application::configure(basePath:dirname(__DIR__))
     $middleware->alias([
       'role' => RoleMiddleware::class,
       'permission' => PermissionMiddleware::class,
-      'role_or_permission' => RoleOrPermissionMiddleware::class
+      'role_or_permission' => RoleOrPermissionMiddleware::class,
+      'rbac' => EnsureRbac::class
     ]);
   })
   ->withExceptions(function(Exceptions $exceptions){

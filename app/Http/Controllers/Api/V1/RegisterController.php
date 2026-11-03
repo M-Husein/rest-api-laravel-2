@@ -44,7 +44,7 @@ class RegisterController extends Controller{
       'password' => Hash::make($validated['password']),
       'country' => $validated['country'] ?? null
     ])
-    ->assignRole(User::ROLE_MEMBER);
+    ->assignRoleIfEnabled(User::ROLE_MEMBER);
 
     // Fire registered event to send verification email (requires implements MustVerifyEmail)
     event(new Registered($user));

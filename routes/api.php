@@ -91,9 +91,13 @@ Route::prefix('v1')->group(function(){
       // ->where('provider', $providerPattern);
 
     Route::delete('users/delete', [UserController::class, 'destroyMany'])
-      ->middleware('role:Admin');
+      ->middleware('rbac:users.delete,deleteAny,App\Models\User');
     Route::apiResource('users', UserController::class)
-      ->middleware('role:Admin');
+      ->middlewareFor('index', 'rbac:users.view,viewAny,App\Models\User')
+      ->middlewareFor('store', 'rbac:users.create,create,App\Models\User')
+      ->middlewareFor('show', 'rbac:users.view,view,App\Models\User')
+      ->middlewareFor('update', 'rbac:users.update,update,App\Models\User')
+      ->middlewareFor('destroy', 'rbac:users.delete,delete,App\Models\User');
 
     // login_histories
     // 1. Frontend Telemetry (Ad-blocker evasion - strictly POST)
@@ -101,13 +105,15 @@ Route::prefix('v1')->group(function(){
 
     // 2. Admin Dashboard Management (Strictly GET and DELETE)
     Route::delete('login-histories/delete', [LoginHistoriesController::class, 'destroyMany'])
-      ->middleware('role:Admin');
+      ->middleware('rbac:login_histories.delete,deleteAny,App\Models\LoginHistory');
     Route::apiResource('login-histories', LoginHistoriesController::class)
       ->except(['store','update'])
-      ->middleware('role:Admin');
+      ->middlewareFor('index', 'rbac:login_histories.view,viewAny,App\Models\LoginHistory')
+      ->middlewareFor('show', 'rbac:login_histories.view_own,view,App\Models\LoginHistory')
+      ->middlewareFor('destroy', 'rbac:login_histories.delete,delete,App\Models\LoginHistory');
 
     Route::post('clear-cache', ClearCacheController::class)
-      ->middleware('role:Admin');
+      ->middleware('rbac:cache.clear');
   });
 
   // Session Management (SPA — web devices)

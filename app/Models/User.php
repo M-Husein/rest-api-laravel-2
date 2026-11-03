@@ -11,12 +11,42 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\UserProvider;
 use App\Traits\HasUsername;
+use App\Support\Rbac\RbacPreset;
 
 class User extends Authenticatable implements MustVerifyEmail{
   use HasApiTokens,HasFactory,Notifiable,SoftDeletes,HasRoles,HasUsername;
 
   public const ROLE_ADMIN = 'Admin';
   public const ROLE_MEMBER = 'Member';
+
+  public function isAdmin(): bool{
+    return $this->hasRole(self::ROLE_ADMIN);
+  }
+
+  public function hasPermission(string $permission): bool{
+    return $this->can($permission);
+  }
+
+  /**
+   * @param list<string> $permissions
+   */
+  public function allowedTo(array $permissions): bool{
+    foreach($permissions as $permission){
+      if($this->can($permission)){
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public function assignRoleIfEnabled(string $role): static{
+    if(RbacPreset::enabled()){
+      $this->assignRole($role);
+    }
+
+    return $this;
+  }
 
   /**
    * The attributes that are mass assignable.

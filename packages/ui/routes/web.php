@@ -22,5 +22,5 @@ Route::middleware('web')->group(function () {
 
     Route::get('app/{any?}', [UiController::class, 'dashboard'])
         ->where('any', '.*')
-        ->middleware(['auth', 'role:Admin']);
+        ->middleware(['auth', 'rbac:admin.access']);
 });
