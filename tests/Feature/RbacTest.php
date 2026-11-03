@@ -292,6 +292,7 @@ class RbacTest extends TestCase
 
             $this->deleteJson('/api/v1/users/'.$admin->id)->assertForbidden();
             $this->deleteJson('/api/v1/users/delete', ['ids' => [$target->id]])->assertOk();
+            $this->deleteJson('/api/v1/users/delete', ['ids' => [$admin->id]])->assertForbidden();
             $this->assertSoftDeleted('users', ['id' => $target->id]);
         });
     }

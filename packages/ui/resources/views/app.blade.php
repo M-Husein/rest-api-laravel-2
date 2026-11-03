@@ -55,7 +55,7 @@ const APP=Object.freeze({
   api:"/api/v1",
   timeout:{{ config('app.timeout') }},
   defaultLang:"{{$defaultLang}}",
-  locales:@json(config('localizer.locales')),
+  locales:Object.freeze(@json(config('localizer.locales'))),
   strategy:"pathname",
   csp:"{{$csp}}",
   rbac:@json(\App\Support\Rbac\RbacPreset::current())

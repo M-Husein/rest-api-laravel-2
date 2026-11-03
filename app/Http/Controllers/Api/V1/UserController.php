@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Support\QueryBuilder;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use App\Models\User;
 
 class UserController extends Controller{
@@ -190,6 +191,12 @@ class UserController extends Controller{
       'ids' => ['required','array','min:1'],
       'ids.*' => ['integer']
     ]);
+
+    abort_if(
+      in_array($request->user()->id, $ids['ids'], true),
+      403,
+      'You cannot delete your own account.'
+    );
 
     User::whereIn('id', $ids['ids'])->delete();
 

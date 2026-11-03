@@ -41,7 +41,7 @@ const APP=Object.freeze({
   api:"/api/v1", {{-- "{{ $baseUrl }}/api/v1" --}}
   timeout:{{ config('app.timeout') }},
   defaultLang:"{{ config('app.fallback_locale') }}",
-  locales:@json(config('localizer.locales')),
+  locales:Object.freeze(@json(config('localizer.locales'))),
   strategy:"user",
   csp:"{{$csp}}",
   rbac:@json(\App\Support\Rbac\RbacPreset::current())
