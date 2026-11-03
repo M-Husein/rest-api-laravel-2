@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\{
+  AccessController,
   AuthController,
   AuthSpaController,
   AuthTokenController,
@@ -58,6 +59,9 @@ Route::prefix('v1')->group(function(){
   Route::middleware('auth:sanctum')->group(function(){
     Route::get('me', [AuthController::class, 'me']);
     Route::put('me', [AuthController::class, 'updateUser']);
+
+    Route::get('me/access', [AccessController::class, 'show']);
+    Route::post('me/access/check', [AccessController::class, 'check']);
 
     // Set Password — for social-registered users with no password
     Route::post('me/password', [AuthController::class, 'setPassword']);

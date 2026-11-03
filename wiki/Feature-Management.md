@@ -70,9 +70,24 @@ RBAC is optional and independent from product presets. The default is `simple`.
 | `advanced` | Granular permissions, model policies, and ownership checks. `Member` can view only their own login histories. |
 | `none` | No role or permission enforcement. Authenticated users pass RBAC checks. |
 
-The selection is stored as `rbac` in `features.json`. Applying a preset seeds roles and
+For `advanced`, choose the frontend record-level evaluation mode with `--rbac-ui`:
+
+```bash
+php artisan starter:install --preset=site --rbac=advanced --rbac-ui=server
+php artisan starter:install --preset=site --rbac=advanced --rbac-ui=client
+```
+
+| UI mode | Behavior |
+|---------|----------|
+| `server` (default, recommended) | Record-level UI checks call `/api/v1/me/access/check` and match backend policies exactly. |
+| `client` | Record-level UI checks use local permissions and record data. Faster, but only an approximation; backend still enforces authorization. |
+
+The selection is stored as `rbac` and, for `advanced`, `rbac_ui` in `features.json`. Applying a preset seeds roles and
 permissions unless `--no-migrate` is used. Changing the preset does not reassign existing
 users, and `none` disables enforcement without deleting existing roles or permissions.
+
+Frontend access control is only enabled in the admin app. For `none`, no `accessControlProvider` is installed and `CanAccess`/`useCan` allow all authenticated users.
+
 
 ## How it works
 

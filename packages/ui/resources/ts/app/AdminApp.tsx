@@ -4,7 +4,7 @@ import { getFeatureProviders, composeProviders } from '@/core/feature';
 import { FEATURES } from '@/features.generated';
 import { LocaleProvider } from '@/i18n';
 import { adminRoutes } from '@/routes/admin';
-import { RefineProvider } from './RefineProvider';
+import { AdminRefineProvider } from './AdminRefineProvider';
 
 const featureProviders = getFeatureProviders(FEATURES);
 
@@ -14,7 +14,7 @@ export const AdminApp = () => {
       createBrowserRouter(
         [
           {
-            Component: RefineProvider,
+            Component: AdminRefineProvider,
             children: adminRoutes,
           },
         ],

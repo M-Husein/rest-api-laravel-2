@@ -10,6 +10,13 @@ All notable changes to this project are documented in this file.
   installer option, role/permission seeding, middleware, and model policies.
 - Add `RbacPreset`, `RbacInstaller`, `RbacSeeder`, `EnsureRbac`, and policies for users,
   login histories, articles, and contacts.
+- Add RBAC frontend UI mode (`--rbac-ui=server|client`) for `advanced`, stored as
+  `rbac_ui` in `features.json`. Default is `server`.
+- Add frontend `accessControlProvider` integration for the admin app: `/api/v1/me/access`
+  payload endpoint, `/api/v1/me/access/check` record-level endpoint, admin-area gating,
+  sidebar menu filtering, and users page action gating.
+- For `none`, no frontend `accessControlProvider` is installed and `CanAccess`/`useCan`
+  allow all authenticated users.
 
 ### Removed
 

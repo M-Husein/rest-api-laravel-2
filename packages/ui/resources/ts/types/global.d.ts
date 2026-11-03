@@ -8,6 +8,7 @@ interface AppConfig {
   },
   strategy: 'pathname' | 'query' | 'user' | 'storage',
   csp: string,
+  rbac: 'simple' | 'standard' | 'advanced' | 'none',
   // socials: string[],
 }
 

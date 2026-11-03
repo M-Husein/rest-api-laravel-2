@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Refine } from '@refinedev/core';
 import type { I18nProvider } from '@refinedev/core';
+import type { AccessControlProvider } from '@refinedev/core';
 import routerBindings, { DocumentTitleHandler } from '@refinedev/react-router';
 import { Outlet } from 'react-router';
 import { useTranslation } from 'react-i18next';
@@ -31,7 +32,9 @@ const handleRetry = (failureCount: number, error: any) => {
   return failureCount <= 2;
 };
 
-export const RefineProvider = () => {
+export const RefineProvider = (props: {
+  accessControlProvider?: AccessControlProvider;
+}) => {
   const { t, i18n } = useTranslation();
 
   const i18nProvider = useMemo<I18nProvider>(
@@ -59,6 +62,7 @@ export const RefineProvider = () => {
         notificationProvider={useNotificationProvider}
         routerProvider={routerBindings}
         authProvider={authProvider}
+        accessControlProvider={props.accessControlProvider}
         resources={RESOURCES}
         options={{
           disableTelemetry: true,

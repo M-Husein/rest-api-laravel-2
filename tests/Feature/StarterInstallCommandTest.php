@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Support\Rbac\RbacPreset;
+use App\Support\Rbac\RbacUiMode;
 use App\Support\Starter\FeatureRepository;
 use Illuminate\Support\Facades\File;
 use InvalidArgumentException;
@@ -113,6 +114,67 @@ class StarterInstallCommandTest extends TestCase
             ->expectsOutputToContain('RBAC');
 
         $this->assertSame($before, file_get_contents(base_path('features.json')));
+    }
+
+    public function test_install_dry_run_accepts_rbac_ui_option(): void
+    {
+        $before = file_get_contents(base_path('features.json'));
+
+        $this->artisan('starter:install', [
+            '--rbac' => 'advanced',
+            '--rbac-ui' => 'client',
+            '--dry-run' => true,
+        ])
+            ->assertSuccessful()
+            ->expectsOutputToContain('RBAC UI');
+
+        $this->assertSame($before, file_get_contents(base_path('features.json')));
+    }
+
+    public function test_install_writes_rbac_ui_mode(): void
+    {
+        $path = base_path('features.json');
+        $before = file_get_contents($path);
+
+        try {
+            $this->artisan('starter:install', [
+                '--rbac' => 'advanced',
+                '--rbac-ui' => 'client',
+                '--no-migrate' => true,
+                '--no-interaction' => true,
+            ])
+                ->assertSuccessful();
+
+            $manifest = json_decode(file_get_contents($path), true);
+
+            $this->assertSame('advanced', $manifest['rbac']);
+            $this->assertSame('client', $manifest['rbac_ui']);
+        } finally {
+            file_put_contents($path, $before);
+            RbacPreset::forget();
+            RbacUiMode::forget();
+        }
+    }
+
+    public function test_install_fails_for_unknown_rbac_ui_mode(): void
+    {
+        $this->artisan('starter:install', [
+            '--rbac' => 'advanced',
+            '--rbac-ui' => 'invalid',
+            '--dry-run' => true,
+        ])
+            ->assertFailed()
+            ->expectsOutputToContain('Unsupported RBAC UI mode');
+    }
+
+    public function test_install_fails_for_rbac_ui_without_advanced(): void
+    {
+        $this->artisan('starter:install', [
+            '--rbac-ui' => 'client',
+            '--dry-run' => true,
+        ])
+            ->assertFailed()
+            ->expectsOutputToContain('requires --rbac=advanced');
     }
 
     public function test_install_fails_for_unknown_rbac_preset(): void

@@ -43,7 +43,8 @@ const APP=Object.freeze({
   defaultLang:"{{ config('app.fallback_locale') }}",
   locales:@json(config('localizer.locales')),
   strategy:"user",
-  csp:"{{$csp}}"
+  csp:"{{$csp}}",
+  rbac:@json(\App\Support\Rbac\RbacPreset::current())
 });
 window.__APP__={
   user:@json($user,$flags),
