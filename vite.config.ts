@@ -32,6 +32,7 @@ export default defineConfig({
 		// tailwindcss(),
 	],
   resolve: {
+    dedupe: ['react', 'react-dom'],
     alias: [
       {
         find: '@programmeria/ui/feature',

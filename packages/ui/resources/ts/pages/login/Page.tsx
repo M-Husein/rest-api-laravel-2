@@ -1,10 +1,9 @@
 import { useEffect } from "react";
-import { useLogin } from "@refinedev/core"; // type HttpError,
+import { HttpError, useLogin } from "@refinedev/core";
 import { useTranslation } from 'react-i18next';
 import { Input, Button, Divider, message } from "antd"; // Checkbox
 import { Link, useNavigate } from "react-router";
-// import { useForm } from "@refinedev/react-hook-form";
-import { useForm } from 'react-hook-form';
+import { useForm } from "@refinedev/react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Layout } from '@/components/layout/auth/Layout';
@@ -63,7 +62,7 @@ export default function Page(){
     control,
     // watch,
     handleSubmit, 
-  } = useForm<IFormValues>({ // <IFormValues, HttpError, IFormValues>
+  } = useForm<IFormValues, HttpError, IFormValues>({
     resolver: zodResolver(
       z.object({
         identifier: z.string().trim().min(2, t("error.required", nsCommon)),
