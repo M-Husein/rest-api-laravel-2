@@ -14,6 +14,8 @@ use Programmeria\LocaleSwitcher\Http\Middleware\SetLang;
 use Programmeria\LocaleSwitcher\Http\Middleware\SetUserLocale as SetUserLocaleMiddleware;
 use Programmeria\LocaleSwitcher\Listeners\SetUserLocale;
 use Programmeria\LocaleSwitcher\Models\Language;
+use Programmeria\LocaleSwitcher\Console\LocaleAddCommand;
+use Programmeria\LocaleSwitcher\Console\LocaleSyncCommand;
 
 class LocaleSwitcherServiceProvider extends ServiceProvider
 {
@@ -21,6 +23,10 @@ class LocaleSwitcherServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([LocaleAddCommand::class, LocaleSyncCommand::class]);
+        }
 
         $kernel = $this->app->make(Kernel::class);
 
