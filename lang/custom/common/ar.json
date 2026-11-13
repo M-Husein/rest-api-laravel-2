@@ -1,0 +1,363 @@
+{
+  "antd": {
+    "locale": "ar",
+    "Pagination": {
+      "items_per_page": "/ الصفحة",
+      "jump_to": "الذهاب إلى",
+      "jump_to_confirm": "تأكيد",
+      "page": "الصفحة",
+      "prev_page": "الصفحة السابقة",
+      "next_page": "الصفحة التالية",
+      "prev_5": "خمس صفحات سابقة",
+      "next_5": "خمس صفحات تالية",
+      "prev_3": "ثلاث صفحات سابقة",
+      "next_3": "ثلاث صفحات تالية",
+      "page_size": "مقاس الصفحه"
+    },
+    "DatePicker": {
+      "lang": {
+        "placeholder": "اختيار التاريخ",
+        "yearPlaceholder": "اختيار السنة",
+        "quarterPlaceholder": "اختيار ربع السنة",
+        "monthPlaceholder": "اختيار الشهر",
+        "weekPlaceholder": "اختيار الأسبوع",
+        "rangePlaceholder": [
+          "البداية",
+          "النهاية"
+        ],
+        "rangeYearPlaceholder": [
+          "سنة البداية",
+          "سنة النهاية"
+        ],
+        "rangeQuarterPlaceholder": [
+          "ربع سنة البداية",
+          "ربع سنة النهاية"
+        ],
+        "rangeMonthPlaceholder": [
+          "شهر البداية",
+          "شهر النهاية"
+        ],
+        "rangeWeekPlaceholder": [
+          "أسبوع البداية",
+          "أسبوع النهاية"
+        ],
+        "yearFormat": "YYYY",
+        "monthFormat": "MMMM",
+        "monthBeforeYear": true,
+        "shortWeekDays": [
+          "الأحد",
+          "الإثنين",
+          "الثلاثاء",
+          "الأربعاء",
+          "الخميس",
+          "الجمعة",
+          "السبت"
+        ],
+        "shortMonths": [
+          "يناير",
+          "فبراير",
+          "مارس",
+          "إبريل",
+          "مايو",
+          "يونيو",
+          "يوليو",
+          "أغسطس",
+          "سبتمبر",
+          "أكتوبر",
+          "نوفمبر",
+          "ديسمبر"
+        ],
+        "dayFormat": "D",
+        "cellMeridiemFormat": "A",
+        "locale": "ar_EG",
+        "today": "اليوم",
+        "now": "الأن",
+        "backToToday": "العودة إلى اليوم",
+        "ok": "تأكيد",
+        "clear": "مسح",
+        "week": "الأسبوع",
+        "month": "الشهر",
+        "year": "السنة",
+        "timeSelect": "اختيار الوقت",
+        "dateSelect": "اختيار التاريخ",
+        "monthSelect": "اختيار الشهر",
+        "yearSelect": "اختيار السنة",
+        "decadeSelect": "اختيار العقد",
+        "previousMonth": "الشهر السابق",
+        "nextMonth": "الشهر التالى",
+        "previousYear": "العام السابق",
+        "nextYear": "العام التالى",
+        "previousDecade": "العقد السابق",
+        "nextDecade": "العقد التالى",
+        "previousCentury": "القرن السابق",
+        "nextCentury": "القرن التالى"
+      },
+      "timePickerLocale": {
+        "placeholder": "اختيار الوقت",
+        "rangePlaceholder": [
+          "وقت البدء",
+          "وقت الانتهاء"
+        ]
+      }
+    },
+    "TimePicker": {
+      "placeholder": "اختيار الوقت",
+      "rangePlaceholder": [
+        "وقت البدء",
+        "وقت الانتهاء"
+      ]
+    },
+    "Calendar": {
+      "lang": {
+        "placeholder": "اختيار التاريخ",
+        "yearPlaceholder": "اختيار السنة",
+        "quarterPlaceholder": "اختيار ربع السنة",
+        "monthPlaceholder": "اختيار الشهر",
+        "weekPlaceholder": "اختيار الأسبوع",
+        "rangePlaceholder": [
+          "البداية",
+          "النهاية"
+        ],
+        "rangeYearPlaceholder": [
+          "سنة البداية",
+          "سنة النهاية"
+        ],
+        "rangeQuarterPlaceholder": [
+          "ربع سنة البداية",
+          "ربع سنة النهاية"
+        ],
+        "rangeMonthPlaceholder": [
+          "شهر البداية",
+          "شهر النهاية"
+        ],
+        "rangeWeekPlaceholder": [
+          "أسبوع البداية",
+          "أسبوع النهاية"
+        ],
+        "yearFormat": "YYYY",
+        "monthFormat": "MMMM",
+        "monthBeforeYear": true,
+        "shortWeekDays": [
+          "الأحد",
+          "الإثنين",
+          "الثلاثاء",
+          "الأربعاء",
+          "الخميس",
+          "الجمعة",
+          "السبت"
+        ],
+        "shortMonths": [
+          "يناير",
+          "فبراير",
+          "مارس",
+          "إبريل",
+          "مايو",
+          "يونيو",
+          "يوليو",
+          "أغسطس",
+          "سبتمبر",
+          "أكتوبر",
+          "نوفمبر",
+          "ديسمبر"
+        ],
+        "dayFormat": "D",
+        "cellMeridiemFormat": "A",
+        "locale": "ar_EG",
+        "today": "اليوم",
+        "now": "الأن",
+        "backToToday": "العودة إلى اليوم",
+        "ok": "تأكيد",
+        "clear": "مسح",
+        "week": "الأسبوع",
+        "month": "الشهر",
+        "year": "السنة",
+        "timeSelect": "اختيار الوقت",
+        "dateSelect": "اختيار التاريخ",
+        "monthSelect": "اختيار الشهر",
+        "yearSelect": "اختيار السنة",
+        "decadeSelect": "اختيار العقد",
+        "previousMonth": "الشهر السابق",
+        "nextMonth": "الشهر التالى",
+        "previousYear": "العام السابق",
+        "nextYear": "العام التالى",
+        "previousDecade": "العقد السابق",
+        "nextDecade": "العقد التالى",
+        "previousCentury": "القرن السابق",
+        "nextCentury": "القرن التالى"
+      },
+      "timePickerLocale": {
+        "placeholder": "اختيار الوقت",
+        "rangePlaceholder": [
+          "وقت البدء",
+          "وقت الانتهاء"
+        ]
+      }
+    },
+    "global": {
+      "placeholder": "يرجى التحديد",
+      "close": "إغلاق",
+      "show": "إظهار",
+      "hide": "إخفاء",
+      "sortable": "قابل للفرز"
+    },
+    "Table": {
+      "filterTitle": "الفلاتر",
+      "filterConfirm": "تأكيد",
+      "filterReset": "إعادة ضبط",
+      "selectAll": "اختيار الكل",
+      "selectInvert": "إلغاء الاختيار",
+      "selectionAll": "حدد جميع البيانات",
+      "sortTitle": "رتب",
+      "expand": "توسيع الصف",
+      "collapse": "طي الصف",
+      "triggerDesc": "ترتيب تنازلي",
+      "triggerAsc": "ترتيب تصاعدي",
+      "cancelSort": "إلغاء الترتيب",
+      "filterEmptyText": "لا مرشحات",
+      "filterCheckAll": "حدد كافة العناصر",
+      "filterSearchPlaceholder": "البحث في المرشحات",
+      "emptyText": "لا توجد بيانات",
+      "selectNone": "مسح كافة البيانات"
+    },
+    "Tour": {
+      "Next": "التالي",
+      "Previous": "السابق",
+      "Finish": "إنهاء"
+    },
+    "Modal": {
+      "okText": "تأكيد",
+      "cancelText": "إلغاء",
+      "justOkText": "تأكيد"
+    },
+    "Popconfirm": {
+      "okText": "تأكيد",
+      "cancelText": "إلغاء"
+    },
+    "Transfer": {
+      "titles": [
+        "",
+        ""
+      ],
+      "searchPlaceholder": "ابحث هنا",
+      "itemUnit": "عنصر",
+      "itemsUnit": "عناصر",
+      "remove": "إزالة",
+      "selectCurrent": "حدد الصفحة الحالية",
+      "removeCurrent": "إزالة الصفحة الحالية",
+      "selectAll": "حدد كافة البيانات",
+      "deselectAll": "إلغاء تحديد كافة البيانات",
+      "removeAll": "إزالة كافة البيانات",
+      "selectInvert": "عكس الصفحة الحالية"
+    },
+    "Upload": {
+      "uploading": "جاري الرفع...",
+      "removeFile": "احذف الملف",
+      "uploadError": "مشكلة فى الرفع",
+      "previewFile": "استعرض الملف",
+      "downloadFile": "تحميل الملف"
+    },
+    "Empty": {
+      "description": "لا توجد بيانات"
+    },
+    "Icon": {
+      "icon": "أيقونة"
+    },
+    "Text": {
+      "edit": "تعديل",
+      "copy": "نسخ",
+      "copied": "نقل",
+      "expand": "وسع",
+      "collapse": "طي"
+    },
+    "Carousel": {
+      "prevSlide": "الشريحة السابقة",
+      "nextSlide": "الشريحة التالية"
+    },
+    "Form": {
+      "optional": "(اختياري)",
+      "defaultValidateMessages": {
+        "default": "خطأ في حقل الإدخال ${label}",
+        "required": "يرجى إدخال ${label}",
+        "enum": "${label} يجب أن يكون واحدا من [${enum}]",
+        "whitespace": "${label} لا يمكن أن يكون حرفًا فارغًا",
+        "date": {
+          "format": "${label} تنسيق التاريخ غير صحيح",
+          "parse": "${label} لا يمكن تحويلها إلى تاريخ",
+          "invalid": "تاريخ ${label} غير صحيح"
+        },
+        "types": {
+          "string": "ليس ${label} من نوع ${type} صالحًا",
+          "method": "ليس ${label} من نوع ${type} صالحًا",
+          "array": "ليس ${label} من نوع ${type} صالحًا",
+          "object": "ليس ${label} من نوع ${type} صالحًا",
+          "number": "ليس ${label} من نوع ${type} صالحًا",
+          "date": "ليس ${label} من نوع ${type} صالحًا",
+          "boolean": "ليس ${label} من نوع ${type} صالحًا",
+          "integer": "ليس ${label} من نوع ${type} صالحًا",
+          "float": "ليس ${label} من نوع ${type} صالحًا",
+          "regexp": "ليس ${label} من نوع ${type} صالحًا",
+          "email": "ليس ${label} من نوع ${type} صالحًا",
+          "url": "ليس ${label} من نوع ${type} صالحًا",
+          "hex": "ليس ${label} من نوع ${type} صالحًا"
+        },
+        "string": {
+          "len": "يجب ${label} ان يكون ${len} أحرف",
+          "min": "${label} على الأقل ${min} أحرف",
+          "max": "${label} يصل إلى ${max} أحرف",
+          "range": "يجب ${label} ان يكون مابين ${min}-${max} أحرف"
+        },
+        "number": {
+          "len": "${len} ان يساوي ${label} يجب",
+          "min": "${min} الأدنى هو ${label} حد",
+          "max": "${max} الأقصى هو ${label} حد",
+          "range": "${max}-${min} ان يكون مابين ${label} يجب"
+        },
+        "array": {
+          "len": "يجب أن يكون ${label} طوله ${len}",
+          "min": "يجب أن يكون ${label} طوله الأدنى ${min}",
+          "max": "يجب أن يكون ${label} طوله الأقصى ${max}",
+          "range": "يجب أن يكون ${label} طوله مابين ${min}-${max}"
+        },
+        "pattern": {
+          "mismatch": "لا يتطابق ${label} مع ${pattern}"
+        }
+      }
+    },
+    "QRCode": {
+      "expired": "انتهت صلاحية رمز الاستجابة السريعة",
+      "refresh": "انقر للتحديث",
+      "scanned": "تم المسح"
+    },
+    "ColorPicker": {
+      "presetEmpty": "لا يوجد",
+      "transparent": "شفاف",
+      "singleColor": "لون واحد",
+      "gradientColor": "تدرج لوني"
+    }
+  },
+  "calendar": {
+    "formats": {
+      "LT": "HH:mm",
+      "LTS": "HH:mm:ss",
+      "L": "D/‏M/‏YYYY",
+      "LL": "D MMMM YYYY",
+      "LLL": "D MMMM YYYY HH:mm",
+      "LLLL": "dddd D MMMM YYYY HH:mm"
+    },
+    "relativeTime": {
+      "future": "بعد %s",
+      "past": "منذ %s",
+      "s": "ثانية واحدة",
+      "m": "دقيقة واحدة",
+      "mm": "%d دقائق",
+      "h": "ساعة واحدة",
+      "hh": "%d ساعات",
+      "d": "يوم واحد",
+      "dd": "%d أيام",
+      "M": "شهر واحد",
+      "MM": "%d أشهر",
+      "y": "عام واحد",
+      "yy": "%d أعوام"
+    }
+  }
+}

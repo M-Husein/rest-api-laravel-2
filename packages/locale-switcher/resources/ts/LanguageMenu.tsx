@@ -9,7 +9,9 @@ const renderFlag = (lang: string | undefined, size: number) => (
     shape="square"
     alt={lang}
     src={`/media/img/flags/lang-${lang}.svg`}
-  />
+  >
+    {(lang ?? '?').slice(0, 2).toUpperCase()}
+  </Avatar>
 );
 
 export const LanguageMenu = ({

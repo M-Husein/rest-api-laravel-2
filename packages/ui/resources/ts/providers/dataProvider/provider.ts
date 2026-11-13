@@ -357,20 +357,24 @@ export const dataProvider = (
   custom: async ({
     url,
     method,
+    payload,
+    headers,
     filters,
     sorters,
-    meta: { 
-      queryContext, 
-      searchParams, 
-      q, 
-      select, 
-      mode, 
-      pagination, // : { currentPage = 1, pageSize = 10, mode = "server" } = {}, 
+    meta: {
+      queryContext,
+      searchParams,
+      q,
+      select,
+      mode,
+      pagination, // : { currentPage = 1, pageSize = 10, mode = "server" } = {},
       ...requestOptions
     } = {},
   }) => {
     const response: any = await httpRequest(url, {
       method: (method as MethodCommons) ?? "get",
+      headers,
+      json: payload,
       signal: queryContext?.signal,
       ...requestOptions,
       searchParams: buildQueryParams(

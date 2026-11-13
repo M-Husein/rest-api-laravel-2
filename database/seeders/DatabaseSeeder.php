@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder{
   public function run(): void{
     $this->call([
+      LanguagesTableSeeder::class,
       ImportDefaultTranslationsSeeder::class,
       ImportPageTranslationsSeeder::class,
       RbacSeeder::class,

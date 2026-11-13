@@ -4,6 +4,7 @@ namespace App\Providers;
 use Illuminate\Routing\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\{RateLimiter,Event,Gate};
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\{OpenApi,SecurityScheme};

@@ -16,10 +16,6 @@ export interface FeatureI18n {
   changeLanguage(lang: string): Promise<unknown>;
 }
 
-export interface FeatureHttp {
-  put(path: string, options?: { json?: unknown }): Promise<unknown>;
-}
-
 export interface FeatureApi {
   translate(key: string, params?: Record<string, unknown>): string;
   registerTranslator(
@@ -52,9 +48,6 @@ export interface FeatureApi {
 
   updateUser(patch: Partial<FeatureUser>): void;
   registerUserUpdater(fn: (patch: Partial<FeatureUser>) => void): void;
-
-  getHttp(): FeatureHttp;
-  registerHttp(client: FeatureHttp): void;
 
   getI18n(): FeatureI18n;
   registerI18n(i18n: FeatureI18n): void;

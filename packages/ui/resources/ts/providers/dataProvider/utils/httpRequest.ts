@@ -129,6 +129,3 @@ export const httpRequest = api.extend({
   },
 });
 
-featureApi.registerHttp({
-  put: (path, options) => httpRequest.put(path, options).json(),
-});

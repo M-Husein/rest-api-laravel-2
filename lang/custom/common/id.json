@@ -55,6 +55,8 @@
     "ensure": "Apakah Anda yakin {{name}}?"
   },
   "error": {
+    "403": "Maaf, Anda tidak bisa mengakses fitur ini.",
+    "404": "Maaf, halaman yang Anda kunjungi tidak ada.",
     "unspecific": "Terjadi Kesalahan",
     "noInternet": "Tidak ada koneksi internet",
     "create": "Gagal membuat, silahkan coba lagi",
@@ -64,8 +66,6 @@
     "minLength": "Minimal {{v}} karakter",
     "trim": "Tidak boleh ada spasi, tab/enter di awal & akhir",
     "unique": "Item harus unik",
-    "403": "Maaf, Anda tidak bisa mengakses fitur ini.",
-    "404": "Maaf, halaman yang Anda kunjungi tidak ada.",
     "resource404": "Apakah Anda yakin telah membuat sumber daya {{resource}}.",
     "login": "Permintaan gagal atau nama pengguna atau kata sandi tidak valid",
     "logout": "Gagal logout",
@@ -140,5 +140,293 @@
     "invalid_union": "Input tidak valid",
     "invalid_element": "Nilai tidak valid di {{v}}",
     "notMatch": "{{v}} tidak sama"
+  },
+  "antd": {
+    "locale": "id",
+    "Pagination": {
+      "items_per_page": "/ halaman",
+      "jump_to": "Menuju",
+      "jump_to_confirm": "konfirmasi",
+      "page": "Halaman",
+      "prev_page": "Halaman Sebelumnya",
+      "next_page": "Halaman Berikutnya",
+      "prev_5": "5 Halaman Sebelumnya",
+      "next_5": "5 Halaman Berikutnya",
+      "prev_3": "3 Halaman Sebelumnya",
+      "next_3": "3 Halaman Berikutnya",
+      "page_size": "ukuran halaman"
+    },
+    "DatePicker": {
+      "lang": {
+        "placeholder": "Pilih tanggal",
+        "yearPlaceholder": "Pilih tahun",
+        "quarterPlaceholder": "Pilih kuartal",
+        "monthPlaceholder": "Pilih bulan",
+        "weekPlaceholder": "Pilih minggu",
+        "rangePlaceholder": [
+          "Tanggal awal",
+          "Tanggal akhir"
+        ],
+        "rangeYearPlaceholder": [
+          "Tahun awal",
+          "Tahun akhir"
+        ],
+        "rangeQuarterPlaceholder": [
+          "Kuartal awal",
+          "Kuartal akhir"
+        ],
+        "rangeMonthPlaceholder": [
+          "Bulan awal",
+          "Bulan akhir"
+        ],
+        "rangeWeekPlaceholder": [
+          "Minggu awal",
+          "Minggu akhir"
+        ],
+        "yearFormat": "YYYY",
+        "dayFormat": "D",
+        "cellMeridiemFormat": "A",
+        "locale": "id_ID",
+        "today": "Hari ini",
+        "now": "Sekarang",
+        "backToToday": "Kembali ke hari ini",
+        "ok": "Baik",
+        "clear": "Bersih",
+        "week": "Minggu",
+        "month": "Bulan",
+        "year": "Tahun",
+        "timeSelect": "pilih waktu",
+        "dateSelect": "pilih tanggal",
+        "weekSelect": "Pilih satu minggu",
+        "monthSelect": "Pilih satu bulan",
+        "yearSelect": "Pilih satu tahun",
+        "decadeSelect": "Pilih satu dekade",
+        "previousMonth": "Bulan sebelumnya",
+        "nextMonth": "Bulan selanjutnya",
+        "previousYear": "Tahun lalu",
+        "nextYear": "Tahun selanjutnya",
+        "previousDecade": "Dekade terakhir",
+        "nextDecade": "Dekade berikutnya",
+        "previousCentury": "Abad terakhir",
+        "nextCentury": "Abad berikutnya"
+      },
+      "timePickerLocale": {
+        "placeholder": "Pilih waktu",
+        "rangePlaceholder": [
+          "Waktu awal",
+          "Waktu akhir"
+        ]
+      }
+    },
+    "TimePicker": {
+      "placeholder": "Pilih waktu",
+      "rangePlaceholder": [
+        "Waktu awal",
+        "Waktu akhir"
+      ]
+    },
+    "Calendar": {
+      "lang": {
+        "placeholder": "Pilih tanggal",
+        "yearPlaceholder": "Pilih tahun",
+        "quarterPlaceholder": "Pilih kuartal",
+        "monthPlaceholder": "Pilih bulan",
+        "weekPlaceholder": "Pilih minggu",
+        "rangePlaceholder": [
+          "Tanggal awal",
+          "Tanggal akhir"
+        ],
+        "rangeYearPlaceholder": [
+          "Tahun awal",
+          "Tahun akhir"
+        ],
+        "rangeQuarterPlaceholder": [
+          "Kuartal awal",
+          "Kuartal akhir"
+        ],
+        "rangeMonthPlaceholder": [
+          "Bulan awal",
+          "Bulan akhir"
+        ],
+        "rangeWeekPlaceholder": [
+          "Minggu awal",
+          "Minggu akhir"
+        ],
+        "yearFormat": "YYYY",
+        "dayFormat": "D",
+        "cellMeridiemFormat": "A",
+        "locale": "id_ID",
+        "today": "Hari ini",
+        "now": "Sekarang",
+        "backToToday": "Kembali ke hari ini",
+        "ok": "Baik",
+        "clear": "Bersih",
+        "week": "Minggu",
+        "month": "Bulan",
+        "year": "Tahun",
+        "timeSelect": "pilih waktu",
+        "dateSelect": "pilih tanggal",
+        "weekSelect": "Pilih satu minggu",
+        "monthSelect": "Pilih satu bulan",
+        "yearSelect": "Pilih satu tahun",
+        "decadeSelect": "Pilih satu dekade",
+        "previousMonth": "Bulan sebelumnya",
+        "nextMonth": "Bulan selanjutnya",
+        "previousYear": "Tahun lalu",
+        "nextYear": "Tahun selanjutnya",
+        "previousDecade": "Dekade terakhir",
+        "nextDecade": "Dekade berikutnya",
+        "previousCentury": "Abad terakhir",
+        "nextCentury": "Abad berikutnya"
+      },
+      "timePickerLocale": {
+        "placeholder": "Pilih waktu",
+        "rangePlaceholder": [
+          "Waktu awal",
+          "Waktu akhir"
+        ]
+      }
+    },
+    "global": {
+      "placeholder": "Silahkan pilih",
+      "close": "Tutup",
+      "show": "Tampilkan",
+      "hide": "Sembunyikan",
+      "sortable": "dapat diurutkan"
+    },
+    "Table": {
+      "filterTitle": "Menu filter",
+      "filterConfirm": "OK",
+      "filterReset": "Reset",
+      "filterEmptyText": "Tidak ada filter",
+      "filterCheckAll": "Pilih semua item",
+      "filterSearchPlaceholder": "Cari di filter",
+      "emptyText": "Tidak ada data",
+      "selectAll": "Pilih halaman saat ini",
+      "selectInvert": "Balikkan halaman saat ini",
+      "selectNone": "Hapus semua data",
+      "selectionAll": "Pilih semua data",
+      "sortTitle": "Urutkan",
+      "expand": "Perluas baris",
+      "collapse": "Perkecil baris",
+      "triggerDesc": "Klik untuk mengurutkan secara menurun",
+      "triggerAsc": "Klik untuk mengurutkan secara menaik",
+      "cancelSort": "Klik untuk membatalkan pengurutan"
+    },
+    "Tour": {
+      "Next": "Selanjutnya",
+      "Previous": "Sebelumnya",
+      "Finish": "Selesai"
+    },
+    "Modal": {
+      "okText": "OK",
+      "cancelText": "Batal",
+      "justOkText": "OK"
+    },
+    "Popconfirm": {
+      "okText": "OK",
+      "cancelText": "Batal"
+    },
+    "Transfer": {
+      "titles": [
+        "",
+        ""
+      ],
+      "searchPlaceholder": "Cari di sini",
+      "itemUnit": "data",
+      "itemsUnit": "data",
+      "remove": "Hapus",
+      "selectCurrent": "Pilih halaman saat ini",
+      "removeCurrent": "Hapus halaman saat ini",
+      "selectAll": "Pilih semua data",
+      "deselectAll": "Batal pilih semua data",
+      "removeAll": "Hapus semua data",
+      "selectInvert": "Balikkan halaman saat ini"
+    },
+    "Upload": {
+      "uploading": "Mengunggah...",
+      "removeFile": "Hapus file",
+      "uploadError": "Kesalahan pengunggahan",
+      "previewFile": "Pratinjau file",
+      "downloadFile": "Unduh file"
+    },
+    "Empty": {
+      "description": "Tidak ada data"
+    },
+    "Icon": {
+      "icon": "ikon"
+    },
+    "Text": {
+      "edit": "Ubah",
+      "copy": "Salin",
+      "copied": "Disalin",
+      "expand": "Perluas",
+      "collapse": "Perkecil"
+    },
+    "Carousel": {
+      "prevSlide": "Slide sebelumnya",
+      "nextSlide": "Slide berikutnya"
+    },
+    "Form": {
+      "optional": "(optional)",
+      "defaultValidateMessages": {
+        "default": "Kesalahan validasi untuk ${label}",
+        "required": "Tolong masukkan ${label}",
+        "enum": "${label} harus menjadi salah satu dari [${enum}]",
+        "whitespace": "${label} tidak boleh berupa karakter kosong",
+        "date": {
+          "format": "${label} format tanggal tidak valid",
+          "parse": "${label} tidak dapat diubah menjadi tanggal",
+          "invalid": "${label} adalah tanggal yang tidak valid"
+        },
+        "types": {
+          "string": "${label} tidak valid ${type}",
+          "method": "${label} tidak valid ${type}",
+          "array": "${label} tidak valid ${type}",
+          "object": "${label} tidak valid ${type}",
+          "number": "${label} tidak valid ${type}",
+          "date": "${label} tidak valid ${type}",
+          "boolean": "${label} tidak valid ${type}",
+          "integer": "${label} tidak valid ${type}",
+          "float": "${label} tidak valid ${type}",
+          "regexp": "${label} tidak valid ${type}",
+          "email": "${label} tidak valid ${type}",
+          "url": "${label} tidak valid ${type}",
+          "hex": "${label} tidak valid ${type}"
+        },
+        "string": {
+          "len": "${label} harus berupa ${len} karakter",
+          "min": "${label} harus minimal ${min} karakter",
+          "max": "${label} harus maksimal ${max} karakter",
+          "range": "${label} harus diantara ${min}-${max} karakter"
+        },
+        "number": {
+          "len": "${label} harus sama dengan ${len}",
+          "min": "${label} harus minimal ${min}",
+          "max": "${label} harus maksimal ${max}",
+          "range": "${label} harus di antara ${min}-${max}"
+        },
+        "array": {
+          "len": "Harus ${len} ${label}",
+          "min": "Minimal ${min} ${label}",
+          "max": "Maksimal ${max} ${label}",
+          "range": "Jumlah ${label} harus di antara ${min}-${max}"
+        },
+        "pattern": {
+          "mismatch": "${label} tidak sesuai dengan pola ${pattern}"
+        }
+      }
+    },
+    "QRCode": {
+      "expired": "Kode QR sudah habis masa berlakunya",
+      "refresh": "Segarkan",
+      "scanned": "Dipindai"
+    },
+    "ColorPicker": {
+      "presetEmpty": "Kosong",
+      "transparent": "Transparan",
+      "singleColor": "Warna tunggal",
+      "gradientColor": "Warna gradien"
+    }
   }
 }

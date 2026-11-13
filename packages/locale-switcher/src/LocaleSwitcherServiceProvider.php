@@ -11,6 +11,10 @@ use Illuminate\Support\ServiceProvider;
 use Programmeria\LocaleSwitcher\Http\Middleware\SetLang;
 use Programmeria\LocaleSwitcher\Http\Middleware\SetUserLocale as SetUserLocaleMiddleware;
 use Programmeria\LocaleSwitcher\Listeners\SetUserLocale;
+use Programmeria\LocaleSwitcher\Models\Language;
+use Programmeria\LocaleSwitcher\Support\LocaleConfig;
+use Programmeria\LocaleSwitcher\Console\LocaleAddCommand;
+use Programmeria\LocaleSwitcher\Console\LocaleSyncCommand;
 
 class LocaleSwitcherServiceProvider extends ServiceProvider
 {
@@ -18,6 +22,10 @@ class LocaleSwitcherServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([LocaleAddCommand::class, LocaleSyncCommand::class]);
+        }
 
         $kernel = $this->app->make(Kernel::class);
 
@@ -29,6 +37,20 @@ class LocaleSwitcherServiceProvider extends ServiceProvider
         Event::listen(Authenticated::class, SetUserLocale::class);
 
         $this->registerFeatureFillable();
+        $this->resolveDynamicLocales();
+    }
+
+    /**
+     * Merge active DB languages into the localizer config at runtime.
+     *
+     * This runs in the provider (facades available) instead of
+     * config/localizer.php, because config files are evaluated before
+     * the facade root is set. Static config stays as the fallback for
+     * contexts where the table is missing (migrate, fresh install).
+     */
+    private function resolveDynamicLocales(): void
+    {
+        LocaleConfig::refresh();
     }
 
     /**

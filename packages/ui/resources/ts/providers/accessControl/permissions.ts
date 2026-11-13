@@ -15,6 +15,7 @@ export const RESOURCE_PERMISSIONS: Record<string, string | null> = {
   articles: null,
   app: 'admin.access',
   settings: null,
+  languages: 'languages.view',
   devs: 'admin.access',
   currency: 'admin.access',
   country: 'admin.access',
@@ -63,6 +64,14 @@ export const ACTION_PERMISSIONS: Record<string, Record<string, string>> = {
   },
   app: {
     list: 'admin.access',
+  },
+  languages: {
+    list: 'languages.view',
+    show: 'languages.view',
+    create: 'languages.manage',
+    edit: 'languages.manage',
+    update: 'languages.manage',
+    delete: 'languages.manage',
   },
 };
 

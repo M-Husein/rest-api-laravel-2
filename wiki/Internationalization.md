@@ -20,7 +20,9 @@ feature adds the locale switcher, per-user preference, and localization strategi
 ## Terms
 
 - **Default locale**: `config('app.fallback_locale')`, currently `en`.
-- **Supported locales**: `config('localizer.supported_locales')`, currently `en` and `id`.
+- **Supported locales**: `config('localizer.supported_locales')`, resolved at runtime
+  from the active rows of the `languages` DB table (cached, static `en`/`id`
+  fallback when the table is missing). Currently `en` and `id`.
 - **Public zone**: localized routes registered through `Route::localize()`, outside `/app`.
 - **Admin zone**: `/app` and `/app/*`.
 - **API zone**: `/api/*`.
@@ -158,6 +160,55 @@ Rules:
 - The core i18n runtime owns `featureApi.getRequestHeaders()` and sends
   `i18n.language` as `Accept-Language`; locale strategies do not own HTTP headers.
 
+## Managing languages
+
+Languages are data, not config. The `languages` table (`code`, `name`,
+`native_name`, `direction`, `is_active`, `is_default`, `sort_order`) is the
+source of truth; `config/localizer.php` only holds the static fallback.
+`LocaleConfig::refresh()` merges active DB rows into runtime config on every
+boot (per request in production), with `Language::CACHE_KEY` busted on every
+model save/delete.
+
+Adding a language (developer/admin):
+
+- Admin UI: Settings → Languages → Add language. The antd Select lists the
+  16 preset languages from `locales.preset.php` (codes not yet added).
+- CLI: `php artisan locale:add ms`, or `locale:add xx --name="Custom"`.
+- `PUT /api/v1/admin/languages`, `PATCH/DELETE .../languages/{code}`,
+  `POST .../languages/{code}/default`, `POST .../languages/{code}/sync`
+  (all under `rbac:languages.view` / `rbac:languages.manage`).
+- The switcher, `APP.locales`, hreflang, validation rules, and middleware pick
+  the new language up automatically — no deploy needed (page reload to refresh
+  the frozen `APP` payload).
+
+Translations for a new language:
+
+- `php artisan locale:sync {code}` imports `lang/{code}/`, `{code}.json`, and
+  `custom/common/{code}.json` (missing keys only; `--force` overwrites).
+- The `lang/` folder is the seed/reset source. Missing strings fall back to
+  English at runtime; the 14 preset languages ship without files.
+- antd component strings live under the `common` group with the `antd.*` key
+  prefix (see Adapters below).
+
+## Adapters (no runtime locale imports)
+
+`validation.ts` maps zod codes to our `v.*` keys instead of importing zod
+locales. antd and dayjs follow the same pattern:
+
+- `antdAdapter.buildAntdLocale(lang)` constructs the antd `Locale` object from
+  `antd.*` translation keys with English defaults. No `antd/es/locale/*` module
+  is ever imported. Per-language `monthBeforeYear` comes from `localeMeta.ts`
+  (mirrors official antd locales); missing flags fall back to initials.
+- `dayjsAdapter.applyDayjsLocale(lang)` registers a custom dayjs locale built
+  from `Intl.DateTimeFormat` month/weekday names, `weekStart` from
+  `localeMeta.ts`, and `calendar.*` keys with English defaults. Requires the
+  official `localizedFormat` plugin (no dayjs locale files).
+- RTL: `document.dir` follows `localeMeta.direction` (`ar` is `rtl`); the
+  `locale_directions` config is populated from the DB.
+- Adding a language needs no new imports — only translation rows (optional)
+  and, for flags, `public/media/img/flags/lang-{code}.svg` (most presets
+  already ship one).
+
 ## Backend contract
 
 - Public localized routes are registered with `Route::localize()` and use the package's
@@ -183,8 +234,8 @@ Rules:
 - Admin pages are private and excluded from public SEO.
 - Server-rendered metadata, page translations, and `html lang` follow the resolved public
   locale.
-- `locale_directions` stays empty until an RTL locale is added; when added, set `dir`
-  accordingly.
+- `locale_directions` is populated from the DB (`direction` column); `document.dir`
+  follows it, so `ar` renders RTL.
 
 Example for `/id/articles`:
 
@@ -223,6 +274,9 @@ Implemented:
 - Hreflang links use canonical localized URLs.
 - Regression tests: `tests/Feature/LocaleContractTest.php` and
   `tests/frontend/locale.test.ts`.
+- Dynamic languages: `tests/Feature/LanguagesApiTest.php` (CRUD, presets,
+  default protection, sync) and `tests/frontend/adapters.test.ts`
+  (antd/dayjs adapters, meta fallbacks).
 
 ## Acceptance tests
 
@@ -295,9 +349,10 @@ API:
 
 - Browser auto-detection on the public site.
 - Session or cookie locale persistence.
-- Regional locales such as `en-US` or `pt-BR`.
+- Regional locales such as `en-US` (dash variants like `pt-br` are accepted by validation but have no preset metadata; extend `locales.preset.php` to support them fully).
 - Translated URL slugs.
-- RTL support until an RTL locale is added.
+- Full RTL QA (direction handling exists via `locale_directions`/`document.dir`;
+  per-component visual review per RTL language is still manual).
 - Server-rendered admin localization.
 - Porting this contract to other languages before the PHP behavior is implemented and
   tested.
