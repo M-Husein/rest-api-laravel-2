@@ -1,5 +1,11 @@
 <?php
 // use NielsNumbers\LaravelLocalizer\Detectors\{UserDetector,BrowserDetector};
+
+// Static fallback — used when the DB is unavailable (fresh install, migrate
+// context). Keep in sync with LanguagesTableSeeder. Dynamic languages from
+// the `languages` table are merged at runtime by LocaleSwitcherServiceProvider
+// (config files load before facades are available, so no DB access here).
+// The `lang/` folder files are the seed/reset source for translation content.
 $locales = [
   'en' => 'English',
   'id' => 'Indonesia'
