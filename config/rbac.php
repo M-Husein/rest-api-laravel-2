@@ -10,6 +10,8 @@ $standardPermissions = [
     'login_histories.view_own',
     'login_histories.delete',
     'cache.clear',
+    'languages.view',
+    'languages.manage',
 ];
 
 $advancedPermissions = [

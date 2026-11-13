@@ -55,6 +55,8 @@
     "ensure": "Are you sure to {{name}}?"
   },
   "error": {
+    "403": "Sorry, you are not authorized to access this feature.",
+    "404": "Sorry, the page you visited does not exist.",
     "unspecific": "Something went wrong",
     "noInternet": "No internet connection",
     "create": "Failed to create, please try again",
@@ -64,8 +66,6 @@
     "minLength": "Minimum {{v}} characters",
     "trim": "There should be no spaces, tabs/enter at the beginning & end",
     "unique": "Items must be unique",
-    "403": "Sorry, you are not authorized to access this feature.",
-    "404": "Sorry, the page you visited does not exist.",
     "resource404": "Are you sure you have created the {{resource}} resource.",
     "login": "Request failed or invalid username or password",
     "logout": "Failed to logout",
@@ -140,5 +140,293 @@
     "invalid_union": "Invalid input",
     "invalid_element": "Invalid value in {{v}}",
     "notMatch": "{{v}} don't match"
+  },
+  "antd": {
+    "Calendar": {
+      "lang": {
+        "backToToday": "Back to today",
+        "cellMeridiemFormat": "A",
+        "clear": "Clear",
+        "dateSelect": "select date",
+        "dayFormat": "D",
+        "decadeSelect": "Choose a decade",
+        "locale": "en_US",
+        "month": "Month",
+        "monthPlaceholder": "Select month",
+        "monthSelect": "Choose a month",
+        "nextCentury": "Next century",
+        "nextDecade": "Next decade",
+        "nextMonth": "Next month",
+        "nextYear": "Next year",
+        "now": "Now",
+        "ok": "OK",
+        "placeholder": "Select date",
+        "previousCentury": "Last century",
+        "previousDecade": "Last decade",
+        "previousMonth": "Previous month",
+        "previousYear": "Last year",
+        "quarterPlaceholder": "Select quarter",
+        "rangeMonthPlaceholder": [
+          "Start month",
+          "End month"
+        ],
+        "rangePlaceholder": [
+          "Start date",
+          "End date"
+        ],
+        "rangeQuarterPlaceholder": [
+          "Start quarter",
+          "End quarter"
+        ],
+        "rangeWeekPlaceholder": [
+          "Start week",
+          "End week"
+        ],
+        "rangeYearPlaceholder": [
+          "Start year",
+          "End year"
+        ],
+        "timeSelect": "select time",
+        "today": "Today",
+        "week": "Week",
+        "weekPlaceholder": "Select week",
+        "weekSelect": "Choose a week",
+        "year": "Year",
+        "yearFormat": "YYYY",
+        "yearPlaceholder": "Select year",
+        "yearSelect": "Choose a year"
+      },
+      "timePickerLocale": {
+        "placeholder": "Select time",
+        "rangePlaceholder": [
+          "Start time",
+          "End time"
+        ]
+      }
+    },
+    "Carousel": {
+      "nextSlide": "Next slide",
+      "prevSlide": "Previous slide"
+    },
+    "ColorPicker": {
+      "gradientColor": "Gradient",
+      "presetEmpty": "Empty",
+      "singleColor": "Single",
+      "transparent": "Transparent"
+    },
+    "DatePicker": {
+      "lang": {
+        "backToToday": "Back to today",
+        "cellMeridiemFormat": "A",
+        "clear": "Clear",
+        "dateSelect": "select date",
+        "dayFormat": "D",
+        "decadeSelect": "Choose a decade",
+        "locale": "en_US",
+        "month": "Month",
+        "monthPlaceholder": "Select month",
+        "monthSelect": "Choose a month",
+        "nextCentury": "Next century",
+        "nextDecade": "Next decade",
+        "nextMonth": "Next month",
+        "nextYear": "Next year",
+        "now": "Now",
+        "ok": "OK",
+        "placeholder": "Select date",
+        "previousCentury": "Last century",
+        "previousDecade": "Last decade",
+        "previousMonth": "Previous month",
+        "previousYear": "Last year",
+        "quarterPlaceholder": "Select quarter",
+        "rangeMonthPlaceholder": [
+          "Start month",
+          "End month"
+        ],
+        "rangePlaceholder": [
+          "Start date",
+          "End date"
+        ],
+        "rangeQuarterPlaceholder": [
+          "Start quarter",
+          "End quarter"
+        ],
+        "rangeWeekPlaceholder": [
+          "Start week",
+          "End week"
+        ],
+        "rangeYearPlaceholder": [
+          "Start year",
+          "End year"
+        ],
+        "timeSelect": "select time",
+        "today": "Today",
+        "week": "Week",
+        "weekPlaceholder": "Select week",
+        "weekSelect": "Choose a week",
+        "year": "Year",
+        "yearFormat": "YYYY",
+        "yearPlaceholder": "Select year",
+        "yearSelect": "Choose a year"
+      },
+      "timePickerLocale": {
+        "placeholder": "Select time",
+        "rangePlaceholder": [
+          "Start time",
+          "End time"
+        ]
+      }
+    },
+    "Empty": {
+      "description": "No data"
+    },
+    "Form": {
+      "defaultValidateMessages": {
+        "array": {
+          "len": "Must be ${len} ${label}",
+          "max": "At most ${max} ${label}",
+          "min": "At least ${min} ${label}",
+          "range": "The amount of ${label} must be between ${min}-${max}"
+        },
+        "date": {
+          "format": "${label} date format is invalid",
+          "invalid": "${label} is an invalid date",
+          "parse": "${label} cannot be converted to a date"
+        },
+        "default": "Field validation error for ${label}",
+        "enum": "${label} must be one of [${enum}]",
+        "number": {
+          "len": "${label} must be equal to ${len}",
+          "max": "${label} must be maximum ${max}",
+          "min": "${label} must be minimum ${min}",
+          "range": "${label} must be between ${min}-${max}"
+        },
+        "pattern": {
+          "mismatch": "${label} does not match the pattern ${pattern}"
+        },
+        "required": "Please enter ${label}",
+        "string": {
+          "len": "${label} must be ${len} characters",
+          "max": "${label} must be up to ${max} characters",
+          "min": "${label} must be at least ${min} characters",
+          "range": "${label} must be between ${min}-${max} characters"
+        },
+        "types": {
+          "array": "${label} is not a valid ${type}",
+          "boolean": "${label} is not a valid ${type}",
+          "date": "${label} is not a valid ${type}",
+          "email": "${label} is not a valid ${type}",
+          "float": "${label} is not a valid ${type}",
+          "hex": "${label} is not a valid ${type}",
+          "integer": "${label} is not a valid ${type}",
+          "method": "${label} is not a valid ${type}",
+          "number": "${label} is not a valid ${type}",
+          "object": "${label} is not a valid ${type}",
+          "regexp": "${label} is not a valid ${type}",
+          "string": "${label} is not a valid ${type}",
+          "url": "${label} is not a valid ${type}"
+        },
+        "whitespace": "${label} cannot be a blank character"
+      },
+      "optional": "(optional)"
+    },
+    "Icon": {
+      "icon": "icon"
+    },
+    "Modal": {
+      "cancelText": "Cancel",
+      "justOkText": "OK",
+      "okText": "OK"
+    },
+    "Pagination": {
+      "items_per_page": "/ page",
+      "jump_to": "Go to",
+      "jump_to_confirm": "confirm",
+      "next_3": "Next 3 Pages",
+      "next_5": "Next 5 Pages",
+      "next_page": "Next Page",
+      "page": "Page",
+      "page_size": "Page Size",
+      "prev_3": "Previous 3 Pages",
+      "prev_5": "Previous 5 Pages",
+      "prev_page": "Previous Page"
+    },
+    "Popconfirm": {
+      "cancelText": "Cancel",
+      "okText": "OK"
+    },
+    "QRCode": {
+      "expired": "QR code expired",
+      "refresh": "Refresh",
+      "scanned": "Scanned"
+    },
+    "Table": {
+      "cancelSort": "Click to cancel sorting",
+      "collapse": "Collapse row",
+      "emptyText": "No data",
+      "expand": "Expand row",
+      "filterCheckAll": "Select all items",
+      "filterConfirm": "OK",
+      "filterEmptyText": "No filters",
+      "filterReset": "Reset",
+      "filterSearchPlaceholder": "Search in filters",
+      "filterTitle": "Filter menu",
+      "selectAll": "Select current page",
+      "selectInvert": "Invert current page",
+      "selectNone": "Clear all data",
+      "selectionAll": "Select all data",
+      "sortTitle": "Sort",
+      "triggerAsc": "Click to sort ascending",
+      "triggerDesc": "Click to sort descending"
+    },
+    "Text": {
+      "collapse": "Collapse",
+      "copied": "Copied",
+      "copy": "Copy",
+      "edit": "Edit",
+      "expand": "Expand"
+    },
+    "TimePicker": {
+      "placeholder": "Select time",
+      "rangePlaceholder": [
+        "Start time",
+        "End time"
+      ]
+    },
+    "Tour": {
+      "Finish": "Finish",
+      "Next": "Next",
+      "Previous": "Previous"
+    },
+    "Transfer": {
+      "deselectAll": "Deselect all data",
+      "itemUnit": "item",
+      "itemsUnit": "items",
+      "remove": "Remove",
+      "removeAll": "Remove all data",
+      "removeCurrent": "Remove current page",
+      "searchPlaceholder": "Search here",
+      "selectAll": "Select all data",
+      "selectCurrent": "Select current page",
+      "selectInvert": "Invert current page",
+      "titles": [
+        "",
+        ""
+      ]
+    },
+    "Upload": {
+      "downloadFile": "Download file",
+      "previewFile": "Preview file",
+      "removeFile": "Remove file",
+      "uploadError": "Upload error",
+      "uploading": "Uploading..."
+    },
+    "global": {
+      "close": "Close",
+      "hide": "Hide",
+      "placeholder": "Please select",
+      "show": "Show",
+      "sortable": "sortable"
+    },
+    "locale": "en"
   }
 }
