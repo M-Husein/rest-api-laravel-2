@@ -20,7 +20,9 @@ menambahkan menu bahasa, preferensi per pengguna, dan strategi lokalisasi.
 ## Istilah
 
 - **Locale default**: `config('app.fallback_locale')`, saat ini `en`.
-- **Locale didukung**: `config('localizer.supported_locales')`, saat ini `en` dan `id`.
+- **Locale didukung**: `config('localizer.supported_locales')`, di-resolve saat runtime
+  dari baris aktif tabel `languages` di DB (cache, fallback statis `en`/`id` jika
+  tabel belum ada). Saat ini `en` dan `id`.
 - **Zona publik**: route terlokalisasi yang didaftarkan lewat `Route::localize()`, di luar
   `/app`.
 - **Zona admin**: `/app` dan `/app/*`.
@@ -178,6 +180,56 @@ Aturan:
   memperbarui user yang login.
 - Route `/app` dan `/api` tidak boleh dibungkus `Route::localize()`.
 
+## Mengelola bahasa
+
+Bahasa adalah data, bukan config. Tabel `languages` (`code`, `name`, `native_name`,
+`direction`, `is_active`, `is_default`, `sort_order`) adalah sumber kebenaran;
+`config/localizer.php` hanya berisi fallback statis. `LocaleConfig::refresh()`
+menggabungkan baris DB aktif ke config runtime setiap boot (per request di
+production), dengan cache `Language::CACHE_KEY` yang dibatalkan setiap
+save/delete model.
+
+Menambah bahasa (developer/admin):
+
+- UI admin: Settings → Languages → Add language. Select antd berisi 16 bahasa
+  preset dari `locales.preset.php` (hanya kode yang belum ditambahkan).
+- CLI: `php artisan locale:add ms`, atau `locale:add xx --name="Custom"`.
+- `PUT /api/v1/admin/languages`, `PATCH/DELETE .../languages/{code}`,
+  `POST .../languages/{code}/default`, `POST .../languages/{code}/sync`
+  (semua di bawah `rbac:languages.view` / `rbac:languages.manage`).
+- Switcher, `APP.locales`, hreflang, aturan validasi, dan middleware otomatis
+  mengikuti bahasa baru — tanpa deploy (reload halaman untuk refresh payload
+  `APP` yang frozen).
+
+Terjemahan untuk bahasa baru:
+
+- `php artisan locale:sync {code}` mengimpor `lang/{code}/`, `{code}.json`,
+  dan `custom/common/{code}.json` (hanya key yang belum ada; `--force` menimpa).
+- Folder `lang/` adalah sumber seed/reset. String yang belum ada fallback ke
+  Inggris saat runtime; 14 bahasa preset dikirim tanpa file.
+- String komponen antd ada di grup `common` dengan prefix key `antd.*`
+  (lihat Adapter di bawah).
+
+## Adapter (tanpa import locale saat runtime)
+
+`validation.ts` memetakan kode zod ke key i18n `v.*` alih-alih mengimpor locale
+zod. antd dan dayjs memakai pola yang sama:
+
+- `antdAdapter.buildAntdLocale(lang)` membangun objek `Locale` antd dari key
+  terjemahan `antd.*` dengan default Inggris. Tidak ada modul
+  `antd/es/locale/*` yang diimpor saat runtime. `monthBeforeYear` per bahasa
+  dari `localeMeta.ts` (cermin locale resmi antd); ikon yang hilang fallback
+  ke inisial.
+- `dayjsAdapter.applyDayjsLocale(lang)` mendaftarkan locale dayjs kustom dari
+  nama bulan/hari `Intl.DateTimeFormat`, `weekStart` dari `localeMeta.ts`, dan
+  key `calendar.*` dengan default Inggris. Perlu plugin resmi
+  `localizedFormat` (tanpa file locale dayjs).
+- RTL: `document.dir` mengikuti `localeMeta.direction` (`ar` adalah `rtl`);
+  config `locale_directions` diisi dari DB.
+- Menambah bahasa tidak perlu import baru — hanya baris terjemahan (opsional)
+  dan, untuk bendera, `public/media/img/flags/lang-{code}.svg` (sebagian besar
+  preset sudah tersedia).
+
 ## Kontrak SEO
 
 - URL publik kanonik memakai locale default tanpa prefix.
@@ -187,8 +239,8 @@ Aturan:
 - Halaman admin bersifat privat dan dikecualikan dari SEO publik.
 - Metadata server-rendered, terjemahan halaman, dan `html lang` mengikuti locale publik
   yang ter-resolve.
-- `locale_directions` tetap kosong sampai locale RTL ditambahkan; saat ditambahkan, atur
-  `dir` sesuai.
+- `locale_directions` diisi dari DB (kolom `direction`); `document.dir`
+  mengikutinya, sehingga `ar` tampil RTL.
 
 Contoh untuk `/id/articles`:
 
@@ -226,8 +278,9 @@ Sudah diimplementasikan:
   request preferensi gagal.
 - `i18nBackend` mengirim bahasa yang diminta di `Accept-Language`.
 - Link hreflang memakai URL lokal kanonik.
-- Regression test: `tests/Feature/LocaleContractTest.php` dan
-  `tests/frontend/locale.test.ts`.
+- Bahasa dinamis: `tests/Feature/LanguagesApiTest.php` (CRUD, preset,
+  proteksi default, sync) dan `tests/frontend/adapters.test.ts`
+  (adapter antd/dayjs, fallback meta).
 
 ## Acceptance test
 
@@ -301,8 +354,11 @@ API:
 
 - Auto-deteksi browser di situs publik.
 - Persistensi locale di session atau cookie.
-- Locale regional seperti `en-US` atau `pt-BR`.
+- Locale regional seperti `en-US` (varian dash seperti `pt-br` lolos validasi
+  tetapi belum punya metadata preset; perluas `locales.preset.php` untuk
+  dukungan penuh).
 - Slug URL terjemahan.
-- Dukungan RTL sampai locale RTL ditambahkan.
+- QA RTL penuh (penanganan arah ada lewat `locale_directions`/`document.dir`;
+  review visual per komponen untuk tiap bahasa RTL tetap manual).
 - Lokalisasi admin server-rendered.
 - Porting kontrak ini ke bahasa lain sebelum perilaku PHP diimplementasikan dan diuji.
