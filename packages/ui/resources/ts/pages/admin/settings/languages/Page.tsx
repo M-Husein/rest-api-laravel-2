@@ -272,12 +272,15 @@ export default function Page() {
         pagination={false}
       />
       <Modal
+        style={{
+          top: 9
+        }}
         title={editing ? `Edit language [${editing.code}]` : 'Add language'}
         open={modalOpen}
         onOk={submit}
         onCancel={() => setModalOpen(false)}
         confirmLoading={saving}
-        destroyOnClose
+        destroyOnHidden 
       >
         <Form form={form} layout="vertical" preserve={false}>
           {!editing && (
