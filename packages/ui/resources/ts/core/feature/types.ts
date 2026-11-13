@@ -17,7 +17,16 @@ export interface FeatureI18n {
 }
 
 export interface FeatureHttp {
-  put(path: string, options?: { json?: unknown }): Promise<unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  get(path: string, options?: { searchParams?: any }): Promise<unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  post(path: string, options?: { json?: any }): Promise<unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  put(path: string, options?: { json?: any }): Promise<unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  patch(path: string, options?: { json?: any }): Promise<unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  delete(path: string, options?: { json?: any }): Promise<unknown>;
 }
 
 export interface FeatureApi {

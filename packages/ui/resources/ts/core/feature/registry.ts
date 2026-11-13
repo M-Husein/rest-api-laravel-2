@@ -21,7 +21,11 @@ let clearLocale: () => void = () => {};
 let userGetter: () => FeatureUser | null = () => null;
 let userUpdater: (patch: Partial<FeatureUser>) => void = () => {};
 let httpClient: FeatureHttp = {
+  get: async () => undefined,
+  post: async () => undefined,
   put: async () => undefined,
+  patch: async () => undefined,
+  delete: async () => undefined,
 };
 let i18nRuntime: FeatureI18n = {
   changeLanguage: async () => undefined,

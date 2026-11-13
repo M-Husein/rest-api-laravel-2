@@ -25,7 +25,7 @@ type PresetRow = {
   added: boolean;
 };
 
-const http = () => featureApi.getHttp() as any;
+const http = () => featureApi.getHttp();
 
 const flag = (code: string, size = 20) => (
   <Avatar
@@ -46,18 +46,19 @@ export default function Page() {
   const [editing, setEditing] = useState<LanguageRow | null>(null);
   const [saving, setSaving] = useState(false);
   const [form] = Form.useForm();
+  const [messageApi, messageHolder] = message.useMessage();
 
   const reload = useCallback(async () => {
     setLoading(true);
     try {
       const [langs, opts]: any[] = await Promise.all([
-        http().get('admin/languages').json(),
-        http().get('admin/language-presets').json(),
+        http().get('admin/languages'),
+        http().get('admin/language-presets'),
       ]);
       setRows(langs?.data ?? []);
       setPresets(opts?.data ?? []);
     } catch {
-      message.error('Failed to load languages');
+      messageApi.error('Failed to load languages');
     } finally {
       setLoading(false);
     }
@@ -96,14 +97,14 @@ export default function Page() {
       setSaving(true);
       if (editing) {
         const { code, ...body } = values;
-        await http().put(`admin/languages/${editing.code}`, { json: body }).json();
-        message.success(`Language [${editing.code}] updated`);
+        await http().put(`admin/languages/${editing.code}`, { json: body });
+        messageApi.success(`Language [${editing.code}] updated`);
       } else {
-        const res: any = await http().post('admin/languages', { json: values }).json();
-        const sync: any = await http().post(`admin/languages/${values.code}/sync`, { json: {} }).json();
-        message.success(res?.message || `Language [${values.code}] added`);
+        const res: any = await http().post('admin/languages', { json: values });
+        const sync: any = await http().post(`admin/languages/${values.code}/sync`, { json: {} });
+        messageApi.success(res?.message || `Language [${values.code}] added`);
         if (typeof sync?.data?.imported === 'number') {
-          message.info(`Imported ${sync.data.imported} translation lines (missing strings fall back to English)`);
+          messageApi.info(`Imported ${sync.data.imported} translation lines (missing strings fall back to English)`);
         }
       }
       setModalOpen(false);
@@ -111,7 +112,7 @@ export default function Page() {
     } catch (e: any) {
       if (e?.response) {
         const body: any = await e.response.json().catch(() => null);
-        message.error(body?.message || 'Save failed');
+        messageApi.error(body?.message || 'Save failed');
       }
     } finally {
       setSaving(false);
@@ -120,42 +121,42 @@ export default function Page() {
 
   const toggleActive = async (row: LanguageRow, active: boolean) => {
     try {
-      await http().put(`admin/languages/${row.code}`, { json: { is_active: active } }).json();
-      message.success(`Language [${row.code}] ${active ? 'activated' : 'deactivated'}`);
+      await http().put(`admin/languages/${row.code}`, { json: { is_active: active } });
+      messageApi.success(`Language [${row.code}] ${active ? 'activated' : 'deactivated'}`);
       reload();
     } catch {
-      message.error('Update failed');
+      messageApi.error('Update failed');
     }
   };
 
   const setDefault = async (row: LanguageRow) => {
     try {
-      const res: any = await http().post(`admin/languages/${row.code}/default`, { json: {} }).json();
-      message.success(res?.message || `Default set to [${row.code}]`);
+      const res: any = await http().post(`admin/languages/${row.code}/default`, { json: {} });
+      messageApi.success(res?.message || `Default set to [${row.code}]`);
       reload();
     } catch {
-      message.error('Update failed');
+      messageApi.error('Update failed');
     }
   };
 
   const syncNow = async (row: LanguageRow) => {
     try {
-      const res: any = await http().post(`admin/languages/${row.code}/sync`, { json: {} }).json();
-      message.success(`Synced ${res?.data?.imported ?? 0} lines for [${row.code}]`);
+      const res: any = await http().post(`admin/languages/${row.code}/sync`, { json: {} });
+      messageApi.success(`Synced ${res?.data?.imported ?? 0} lines for [${row.code}]`);
     } catch {
-      message.error('Sync failed');
+      messageApi.error('Sync failed');
     }
   };
 
   const remove = async (row: LanguageRow) => {
     try {
-      await http().delete(`admin/languages/${row.code}`).json();
-      message.success(`Language [${row.code}] deleted`);
+      await http().delete(`admin/languages/${row.code}`);
+      messageApi.success(`Language [${row.code}] deleted`);
       reload();
     } catch (e: any) {
       if (e?.response) {
         const body: any = await e.response.json().catch(() => null);
-        message.error(body?.message || 'Delete failed');
+        messageApi.error(body?.message || 'Delete failed');
       }
     }
   };
@@ -247,7 +248,7 @@ export default function Page() {
         onOk={submit}
         onCancel={() => setModalOpen(false)}
         confirmLoading={saving}
-        destroyOnClose
+        destroyOnHidden 
       >
         <Form form={form} layout="vertical" preserve={false}>
           {!editing && (
@@ -290,6 +291,8 @@ export default function Page() {
           </Form.Item>
         </Form>
       </Modal>
+
+      {messageHolder}
     </CanAccess>
   );
 }
