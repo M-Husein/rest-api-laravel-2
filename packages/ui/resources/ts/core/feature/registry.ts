@@ -2,7 +2,6 @@ import type { FC, PropsWithChildren } from 'react';
 import type {
   FeatureApi,
   FeatureDescriptor,
-  FeatureHttp,
   FeatureI18n,
   FeatureNavItem,
   FeatureUser,
@@ -20,13 +19,6 @@ let changeLocale: (lang: string) => void | Promise<void> = async () => {};
 let clearLocale: () => void = () => {};
 let userGetter: () => FeatureUser | null = () => null;
 let userUpdater: (patch: Partial<FeatureUser>) => void = () => {};
-let httpClient: FeatureHttp = {
-  get: async () => undefined,
-  post: async () => undefined,
-  put: async () => undefined,
-  patch: async () => undefined,
-  delete: async () => undefined,
-};
 let i18nRuntime: FeatureI18n = {
   changeLanguage: async () => undefined,
 };
@@ -84,11 +76,6 @@ export const featureApi: FeatureApi = {
   updateUser: (patch) => userUpdater(patch),
   registerUserUpdater: (fn) => {
     userUpdater = fn;
-  },
-
-  getHttp: () => httpClient,
-  registerHttp: (client) => {
-    httpClient = client;
   },
 
   getI18n: () => i18nRuntime,

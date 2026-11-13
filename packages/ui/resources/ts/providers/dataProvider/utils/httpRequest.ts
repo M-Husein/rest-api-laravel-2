@@ -129,10 +129,3 @@ export const httpRequest = api.extend({
   },
 });
 
-featureApi.registerHttp({
-  get: (path, options) => httpRequest.get(path, options).json(),
-  post: (path, options) => httpRequest.post(path, options).json(),
-  put: (path, options) => httpRequest.put(path, options).json(),
-  patch: (path, options) => httpRequest.patch(path, options).json(),
-  delete: (path, options) => httpRequest.delete(path, options).json(),
-});

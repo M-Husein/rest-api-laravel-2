@@ -1,12 +1,17 @@
 import { message } from 'antd';
 import type { LocaleStrategy } from '../contract';
 import { featureApi } from '@programmeria/ui/feature';
+import { dataProvider } from '@/providers/dataProvider';
 import { getStoredUserLocale } from '../url';
 
 const currentUserLocale = () => getStoredUserLocale();
 
 const saveToServer = (locale: string) =>
-  featureApi.getHttp().put('me/language', { json: { lang: locale } });
+  dataProvider(APP.api).custom?.({
+    url: 'me/language',
+    method: 'put',
+    payload: { lang: locale },
+  });
 
 export const userStrategy: LocaleStrategy = {
   name: 'user',

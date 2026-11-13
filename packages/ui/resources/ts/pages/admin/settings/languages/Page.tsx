@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { Avatar, Button, Form, Input, InputNumber, Modal, Popconfirm, Select, Switch, Table, Tag, message } from "antd";
-import { CanAccess } from "@refinedev/core";
+import { CanAccess, useCreate, useCustomMutation, useDelete, useList, useUpdate } from "@refinedev/core";
 import { TranslationOutlined } from '@ant-design/icons';
-import { featureApi } from '@/core/feature';
+import { useTable } from "@/utils/core";
 import { Header } from '@/components/table/Header';
 import { Unauthorized } from '@/components/Unauthorized';
 
@@ -25,8 +25,6 @@ type PresetRow = {
   added: boolean;
 };
 
-const http = () => featureApi.getHttp();
-
 const flag = (code: string, size = 20) => (
   <Avatar
     size={size}
@@ -38,33 +36,37 @@ const flag = (code: string, size = 20) => (
   </Avatar>
 );
 
+const RESOURCE = 'admin/languages';
+
 export default function Page() {
-  const [rows, setRows] = useState<LanguageRow[]>([]);
-  const [presets, setPresets] = useState<PresetRow[]>([]);
-  const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<LanguageRow | null>(null);
-  const [saving, setSaving] = useState(false);
   const [form] = Form.useForm();
   const [messageApi, messageHolder] = message.useMessage();
 
-  const reload = useCallback(async () => {
-    setLoading(true);
-    try {
-      const [langs, opts]: any[] = await Promise.all([
-        http().get('admin/languages'),
-        http().get('admin/language-presets'),
-      ]);
-      setRows(langs?.data ?? []);
-      setPresets(opts?.data ?? []);
-    } catch {
-      messageApi.error('Failed to load languages');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const { tableProps, tableQuery } = useTable<LanguageRow>({
+    resource: RESOURCE,
+    pagination: { mode: 'off' },
+    syncWithLocation: false,
+  });
 
-  useEffect(() => { reload(); }, [reload]);
+  const { query: presetsQuery, result: presetsResult } = useList<PresetRow>({
+    resource: 'admin/language-presets',
+    pagination: { mode: 'off' },
+  });
+
+  const { mutate: createLang, mutation: createMutation } = useCreate();
+  const { mutate: updateLang, mutation: updateMutation } = useUpdate();
+  const { mutate: deleteLang } = useDelete();
+  const { mutate: runCustom, mutation: customMutation } = useCustomMutation();
+  const saving = createMutation.isPending || updateMutation.isPending || customMutation.isPending;
+
+  const presets: PresetRow[] = (presetsResult?.data as PresetRow[] | undefined) ?? [];
+
+  const reload = () => {
+    tableQuery.refetch();
+    presetsQuery.refetch();
+  };
 
   const openAdd = () => {
     setEditing(null);
@@ -94,71 +96,98 @@ export default function Page() {
   const submit = async () => {
     try {
       const values = await form.validateFields();
-      setSaving(true);
       if (editing) {
-        const { code, ...body } = values;
-        await http().put(`admin/languages/${editing.code}`, { json: body });
-        messageApi.success(`Language [${editing.code}] updated`);
+        const { code: _ignored, ...body } = values;
+        updateLang(
+          { resource: RESOURCE, id: editing.code, values: body },
+          {
+            onSuccess: () => {
+              messageApi.success(`Language [${editing.code}] updated`);
+              setModalOpen(false);
+              reload();
+            },
+            onError: (e: any) => messageApi.error(e?.message || 'Update failed'),
+          }
+        );
       } else {
-        const res: any = await http().post('admin/languages', { json: values });
-        const sync: any = await http().post(`admin/languages/${values.code}/sync`, { json: {} });
-        messageApi.success(res?.message || `Language [${values.code}] added`);
-        if (typeof sync?.data?.imported === 'number') {
-          messageApi.info(`Imported ${sync.data.imported} translation lines (missing strings fall back to English)`);
-        }
+        createLang(
+          { resource: RESOURCE, values },
+          {
+            onSuccess: (res: any) => {
+              messageApi.success(res?.message || `Language [${values.code}] added`);
+              runCustom(
+                { url: `${RESOURCE}/${values.code}/sync`, method: 'post', values: {} },
+                {
+                  onSuccess: (syncRes: any) => {
+                    const n = syncRes?.data?.imported ?? syncRes?.imported;
+                    if (typeof n === 'number') {
+                      messageApi.info(`Imported ${n} translation lines (missing strings fall back to English)`);
+                    }
+                  },
+                }
+              );
+              setModalOpen(false);
+              reload();
+            },
+            onError: (e: any) => messageApi.error(e?.message || 'Save failed'),
+          }
+        );
       }
-      setModalOpen(false);
-      reload();
-    } catch (e: any) {
-      if (e?.response) {
-        const body: any = await e.response.json().catch(() => null);
-        messageApi.error(body?.message || 'Save failed');
+    } catch {
+      // validation failed — form shows errors
+    }
+  };
+
+  const toggleActive = (row: LanguageRow, active: boolean) => {
+    updateLang(
+      { resource: RESOURCE, id: row.code, values: { is_active: active } },
+      {
+        onSuccess: () => {
+          messageApi.success(`Language [${row.code}] ${active ? 'activated' : 'deactivated'}`);
+          reload();
+        },
+        onError: (e: any) => messageApi.error(e?.message || 'Update failed'),
       }
-    } finally {
-      setSaving(false);
-    }
+    );
   };
 
-  const toggleActive = async (row: LanguageRow, active: boolean) => {
-    try {
-      await http().put(`admin/languages/${row.code}`, { json: { is_active: active } });
-      messageApi.success(`Language [${row.code}] ${active ? 'activated' : 'deactivated'}`);
-      reload();
-    } catch {
-      messageApi.error('Update failed');
-    }
-  };
-
-  const setDefault = async (row: LanguageRow) => {
-    try {
-      const res: any = await http().post(`admin/languages/${row.code}/default`, { json: {} });
-      messageApi.success(res?.message || `Default set to [${row.code}]`);
-      reload();
-    } catch {
-      messageApi.error('Update failed');
-    }
-  };
-
-  const syncNow = async (row: LanguageRow) => {
-    try {
-      const res: any = await http().post(`admin/languages/${row.code}/sync`, { json: {} });
-      messageApi.success(`Synced ${res?.data?.imported ?? 0} lines for [${row.code}]`);
-    } catch {
-      messageApi.error('Sync failed');
-    }
-  };
-
-  const remove = async (row: LanguageRow) => {
-    try {
-      await http().delete(`admin/languages/${row.code}`);
-      messageApi.success(`Language [${row.code}] deleted`);
-      reload();
-    } catch (e: any) {
-      if (e?.response) {
-        const body: any = await e.response.json().catch(() => null);
-        messageApi.error(body?.message || 'Delete failed');
+  const setDefault = (row: LanguageRow) => {
+    runCustom(
+      { url: `${RESOURCE}/${row.code}/default`, method: 'post', values: {} },
+      {
+        onSuccess: (res: any) => {
+          messageApi.success(res?.message || `Default set to [${row.code}]`);
+          reload();
+        },
+        onError: (e: any) => messageApi.error(e?.message || 'Update failed'),
       }
-    }
+    );
+  };
+
+  const syncNow = (row: LanguageRow) => {
+    runCustom(
+      { url: `${RESOURCE}/${row.code}/sync`, method: 'post', values: {} },
+      {
+        onSuccess: (res: any) => {
+          const n = res?.data?.imported ?? res?.imported ?? 0;
+          messageApi.success(`Synced ${n} lines for [${row.code}]`);
+        },
+        onError: (e: any) => messageApi.error(e?.message || 'Sync failed'),
+      }
+    );
+  };
+
+  const remove = (row: LanguageRow) => {
+    deleteLang(
+      { resource: RESOURCE, id: row.code },
+      {
+        onSuccess: (res: any) => {
+          messageApi.success(res?.message || `Language [${row.code}] deleted`);
+          reload();
+        },
+        onError: (e: any) => messageApi.error(e?.message || e?.response?.message || 'Delete failed'),
+      }
+    );
   };
 
   const columns = [
@@ -225,6 +254,7 @@ export default function Page() {
 
   return (
     <CanAccess resource="languages" action="list" fallback={<Unauthorized />}>
+      {messageHolder}
       <Header
         title="Languages"
         content={
@@ -236,10 +266,9 @@ export default function Page() {
         }
       />
       <Table
+        {...tableProps}
         rowKey="code"
-        dataSource={rows}
         columns={columns as any}
-        loading={loading}
         pagination={false}
       />
       <Modal
@@ -248,7 +277,7 @@ export default function Page() {
         onOk={submit}
         onCancel={() => setModalOpen(false)}
         confirmLoading={saving}
-        destroyOnHidden 
+        destroyOnClose
       >
         <Form form={form} layout="vertical" preserve={false}>
           {!editing && (
@@ -291,8 +320,6 @@ export default function Page() {
           </Form.Item>
         </Form>
       </Modal>
-
-      {messageHolder}
     </CanAccess>
   );
 }
