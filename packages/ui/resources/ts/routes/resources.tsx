@@ -1,4 +1,4 @@
-import { HomeOutlined, UserOutlined, SettingOutlined, ToolOutlined } from '@ant-design/icons';
+import { HomeOutlined, UserOutlined, SettingOutlined, ToolOutlined, TranslationOutlined } from '@ant-design/icons';
 import { LuFlag } from "react-icons/lu";
 import { GrCurrency } from "react-icons/gr";
 import { PiMapPinAreaFill, PiCity, PiPhone } from "react-icons/pi";
@@ -52,6 +52,11 @@ export const RESOURCES: any[] = [
     name: "users",
     list: "/settings/users",
     meta: { parent: "settings", label: "Users", icon: <UserOutlined /> },
+  },
+  {
+    name: "languages",
+    list: "/settings/languages",
+    meta: { parent: "settings", label: "Languages", icon: <TranslationOutlined /> },
   },
   {
     name: "contacts",

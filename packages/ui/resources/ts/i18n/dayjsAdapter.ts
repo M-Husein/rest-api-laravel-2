@@ -1,6 +1,9 @@
 import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 import i18next from 'i18next';
 import { getLocaleMeta } from './localeMeta';
+
+dayjs.extend(localizedFormat);
 
 /**
  * Applies a custom dayjs locale built from OUR translation keys plus the

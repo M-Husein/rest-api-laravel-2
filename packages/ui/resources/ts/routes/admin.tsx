@@ -57,6 +57,15 @@ export const adminRoutes: any[] = [
               },
             ],
           },
+          {
+            path: "languages",
+            children: [
+              {
+                index: true,
+                element: lazyComponent(lazy(() => import('@/pages/admin/settings/languages/Page')))
+              },
+            ],
+          },
         ],
       },
     ]
