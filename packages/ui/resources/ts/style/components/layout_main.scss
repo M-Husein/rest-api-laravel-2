@@ -26,9 +26,15 @@
 .a-layout-sider-collapsed .sider-search .a-input-affix-wrapper {
   display: none;
 }
+
+.sider-search .a-input-affix-wrapper,
+.sider-search button {
+  border-radius: 0 !important;
+}
+
 .a-layout-sider-collapsed .sider-search button {
-  width: 100%;
-  border-radius: 6px !important;
+  width: 100% !important;
+  // border-radius: 0 !important;
 }
 .a-layout-sider-collapsed .sider-menu [role=menuitem] .a-menu-title-content {
   font-size: 0;
